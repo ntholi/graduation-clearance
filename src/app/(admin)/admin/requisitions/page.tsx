@@ -32,7 +32,7 @@ export default function RequisitionPage() {
                 />
               </Flex>
               <Divider />
-              <ScrollArea h={{ base: 150, sm: '71vh' }} type='always' p={'sm'}>
+              <ScrollArea h={{ base: 150, sm: '80vh' }} type='always' p={'sm'}>
                 <Text>Here We Are</Text>
               </ScrollArea>
             </Stack>
@@ -41,7 +41,7 @@ export default function RequisitionPage() {
       </GridCol>
       <GridCol span={{ base: 13, sm: 10 }}>
         <Paper withBorder>
-          <ScrollArea h='78vh' type='always'>
+          <ScrollArea h='88.5vh' type='always'>
             <Text>Here We Are</Text>
           </ScrollArea>
         </Paper>
