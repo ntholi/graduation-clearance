@@ -16,12 +16,12 @@ export default function Navigation() {
 
   return (
     <AppShell.Navbar p='xs'>
-      <AppShell.Section grow component={ScrollArea} pr={'lg'}>
+      <AppShell.Section grow component={ScrollArea}>
         <NavLink
-          label='Certificates'
+          label='Requisitions'
           component={Link}
-          active={pathname.startsWith('/admin/certificates')}
-          href={'#'}
+          active={pathname.startsWith('/admin/requisitions')}
+          href={'/admin/requisitions'}
           leftSection={<IconFileDescription size='1.1rem' />}
           rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
         />
