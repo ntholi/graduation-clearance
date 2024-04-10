@@ -4,6 +4,7 @@ import {
   Flex,
   Grid,
   GridCol,
+  NavLink,
   Paper,
   ScrollArea,
   Stack,
@@ -13,10 +14,11 @@ import {
 import React from 'react';
 import SearchField from '../../components/SearchField';
 import CreateButton from '../../components/CreateButton';
-import DeleteIconButton from '../../components/DeleteIconButton';
 import { create } from './actions';
+import prisma from '@/lib/prisma';
 
-export default function RequisitionPage() {
+export default async function RequisitionPage() {
+  const list = await prisma.requisition.findMany();
   return (
     <Grid columns={14} gutter={'xl'}>
       <GridCol span={{ base: 13, sm: 4 }} pr={{ base: 7, sm: 0 }}>
@@ -33,7 +35,13 @@ export default function RequisitionPage() {
               </Flex>
               <Divider />
               <ScrollArea h={{ base: 150, sm: '80vh' }} type='always' p={'sm'}>
-                <Text>Here We Are</Text>
+                {list.map((item) => (
+                  <NavLink
+                    key={item.id}
+                    label={item.title}
+                    href={`/admin/requisitions/${item.id}`}
+                  />
+                ))}
               </ScrollArea>
             </Stack>
           </Flex>
