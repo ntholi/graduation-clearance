@@ -2,7 +2,7 @@ import '@mantine/core/styles.css';
 
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import type { Metadata } from 'next';
-import { Providers } from './providers';
+import Providers from './providers';
 
 export const metadata: Metadata = {
   title: 'Registry Admin',
