@@ -12,7 +12,7 @@ import {
   useComputedColorScheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { modals } from '@mantine/modals';
+
 import {
   IconChevronRight,
   IconFileDescription,
@@ -22,8 +22,9 @@ import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { PropsWithChildren } from 'react';
-import AccessDenied from './base/AccessDenied';
-import Logo from './base/Logo';
+import AccessDenied from './AccessDenied';
+import Logo from './Logo';
+import Navigation from './Navigation';
 
 export default function AdminShell({ children }: PropsWithChildren) {
   const [opened, { toggle }] = useDisclosure();
@@ -68,53 +69,5 @@ export default function AdminShell({ children }: PropsWithChildren) {
         {hasAccess ? children : <AccessDenied />}
       </AppShell.Main>
     </AppShell>
-  );
-}
-
-function UserButton() {
-  const { data: session } = useSession();
-
-  const openModal = () =>
-    modals.openConfirmModal({
-      centered: true,
-      title: 'Confirm logout',
-      children: 'Are you sure you want to logout?',
-      confirmProps: { color: 'dark' },
-      labels: { confirm: 'Logout', cancel: 'Cancel' },
-      onConfirm: () => signOut(),
-    });
-
-  return (
-    <NavLink
-      label='Logout'
-      description={session?.user?.name}
-      onClick={openModal}
-      leftSection={<Avatar src={session?.user?.name} />}
-      rightSection={<IconLogout2 size='1.1rem' />}
-    />
-  );
-}
-
-function Navigation() {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  return (
-    <AppShell.Navbar p='xs'>
-      <AppShell.Section grow component={ScrollArea} pr={'lg'}>
-        <NavLink
-          label='Certificates'
-          component={Link}
-          active={pathname.startsWith('/admin/certificates')}
-          href={'#'}
-          leftSection={<IconFileDescription size='1.1rem' />}
-          rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
-        />
-      </AppShell.Section>
-      <AppShell.Section>
-        <Divider mb='md' />
-        <UserButton />
-      </AppShell.Section>
-    </AppShell.Navbar>
   );
 }
