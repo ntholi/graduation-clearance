@@ -12,16 +12,20 @@ model User {
   name        String?
   email       String?       @unique
   image       String?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  Requisition Requisition[]
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+  requisition Requisition[]
+
+  @@map("users")
 }
 
 model Requisition {
   id        String   @id @default(cuid())
   title     String
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdBy User     @relation(fields: [userId], references: [id])
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated-at")
+
+  @@map("requisitions")
 }
