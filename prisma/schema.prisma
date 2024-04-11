@@ -15,6 +15,7 @@ model User {
   createdAt   DateTime      @default(now()) @map("created_at")
   updatedAt   DateTime      @updatedAt @map("updated_at")
   requisition Requisition[]
+  AuditLog    AuditLog[]
 
   @@map("users")
 }
@@ -28,4 +29,16 @@ model Requisition {
   updatedAt DateTime @updatedAt @map("updated-at")
 
   @@map("requisitions")
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String
+  model     String
+  value     Json?
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now()) @map("created_at")
+  userId    String   @map("user_id")
+
+  @@map("audit_logs")
 }
