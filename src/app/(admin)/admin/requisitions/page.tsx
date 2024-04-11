@@ -4,6 +4,7 @@ import {
   Flex,
   Grid,
   GridCol,
+  Group,
   NavLink,
   Paper,
   ScrollArea,
@@ -23,28 +24,26 @@ export default async function RequisitionPage() {
     <Grid columns={14} gutter={'xl'}>
       <GridCol span={{ base: 13, sm: 4 }} pr={{ base: 7, sm: 0 }}>
         <Paper withBorder>
-          <Flex>
-            <Stack gap={0} w={'100%'}>
-              <Flex h={60} py='md' justify='space-between' pe={'md'}>
-                <SearchField />
-                <CreateButton
-                  onCreate={create}
-                  title='Requisition'
-                  form={<Form />}
+          <Stack gap={0} w={'100%'}>
+            <Flex p={'md'} justify='space-between'>
+              <SearchField w={'72%'} />
+              <CreateButton
+                onCreate={create}
+                title='Requisition'
+                form={<Form />}
+              />
+            </Flex>
+            <Divider />
+            <ScrollArea h={{ base: 150, sm: '80vh' }} type='always' p={'sm'}>
+              {list.map((item) => (
+                <NavLink
+                  key={item.id}
+                  label={item.title}
+                  href={`/admin/requisitions/${item.id}`}
                 />
-              </Flex>
-              <Divider />
-              <ScrollArea h={{ base: 150, sm: '80vh' }} type='always' p={'sm'}>
-                {list.map((item) => (
-                  <NavLink
-                    key={item.id}
-                    label={item.title}
-                    href={`/admin/requisitions/${item.id}`}
-                  />
-                ))}
-              </ScrollArea>
-            </Stack>
-          </Flex>
+              ))}
+            </ScrollArea>
+          </Stack>
         </Paper>
       </GridCol>
       <GridCol span={{ base: 13, sm: 10 }}>
