@@ -4,6 +4,8 @@ import { authOptions } from '../../api/auth/[...nextauth]/auth';
 
 export async function auditLog(model: string, operation: string, args: any) {
   if (model === 'AuditLog') return;
+  if (model === 'User') return;
+
   const session = await getServerSession(authOptions);
   await prisma.auditLog.create({
     data: {

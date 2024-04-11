@@ -1,6 +1,7 @@
 import { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import axios from 'axios';
+import prisma from '@/lib/prisma';
 
 const scopes = ['email', 'openid', 'profile'];
 
@@ -23,6 +24,22 @@ export const authOptions: NextAuthOptions = {
   ],
   secret: process.env.JWT_SECRET,
   callbacks: {
+    async signIn({ user: { email, name } }) {
+      if (!email) {
+        console.error('No email found in user object');
+        return false;
+      }
+      const user = await prisma.user.findFirst({ where: { email } });
+      if (!user) {
+        await prisma.user.create({
+          data: {
+            email: email,
+            name: name,
+          },
+        });
+      }
+      return true;
+    },
     async jwt({ token, account }: any) {
       if (account) {
         token = Object.assign({}, token, {
