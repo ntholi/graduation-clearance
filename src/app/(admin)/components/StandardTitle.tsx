@@ -8,10 +8,10 @@ type Props = {
 export default function StandardTitle({ value }: Props) {
   return (
     <>
-      <Title order={4} fw={100}>
+      <Title order={3} fw={100}>
         {value}
       </Title>
-      <Divider mt={7} />
+      <Divider mt={'md'} />
     </>
   );
 }
