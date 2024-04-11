@@ -12,6 +12,7 @@ model User {
   name        String?
   email       String        @unique
   image       String?
+  role        Role          @default(USER)
   createdAt   DateTime      @default(now()) @map("created_at")
   updatedAt   DateTime      @updatedAt @map("updated_at")
   requisition Requisition[]
@@ -41,4 +42,10 @@ model AuditLog {
   userId    String   @map("user_id")
 
   @@map("audit_logs")
+}
+
+enum Role {
+  USER
+  ADMIN
+  SUPERADMIN
 }

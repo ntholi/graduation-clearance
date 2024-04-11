@@ -41,6 +41,14 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
     async jwt({ token, account }: any) {
+      if (token) {
+        if (token.email) {
+          const user = await prisma.user.findFirst({
+            where: { email: token.email },
+          });
+          token.id = user?.id;
+        }
+      }
       if (account) {
         token = Object.assign({}, token, {
           accessToken: account.access_token,
@@ -78,6 +86,7 @@ export const authOptions: NextAuthOptions = {
           accessTokenExpires: token.accessTokenExpires,
         });
       }
+      session.user.id = token.id;
       return session;
     },
   },

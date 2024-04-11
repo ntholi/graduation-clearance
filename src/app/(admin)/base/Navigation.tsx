@@ -1,4 +1,16 @@
-import { AppShell, Avatar, Divider, NavLink, ScrollArea } from '@mantine/core';
+import {
+  ActionIcon,
+  AppShell,
+  Avatar,
+  Box,
+  Divider,
+  Flex,
+  Group,
+  NavLink,
+  ScrollArea,
+  Stack,
+  Text,
+} from '@mantine/core';
 import {
   IconChevronRight,
   IconFileDescription,
@@ -27,7 +39,7 @@ export default function Navigation() {
         />
       </AppShell.Section>
       <AppShell.Section>
-        <Divider mb='md' />
+        <Divider />
         <UserButton />
       </AppShell.Section>
     </AppShell.Navbar>
@@ -48,12 +60,19 @@ function UserButton() {
     });
 
   return (
-    <NavLink
-      label='Logout'
-      description={session?.user?.name}
-      onClick={openModal}
-      leftSection={<Avatar src={session?.user?.name} />}
-      rightSection={<IconLogout2 size='1.1rem' />}
-    />
+    <Flex mt={'md'} mb={'sm'} justify='space-between' align={'center'}>
+      <Group>
+        <Avatar src={session?.user?.image} />
+        <Stack gap={5}>
+          <Text size='0.9rem'>{session?.user?.name}</Text>
+          <Text size='0.7rem' c={'dimmed'}>
+            {session?.user?.email}
+          </Text>
+        </Stack>
+      </Group>
+      <ActionIcon variant='default' size={'lg'}>
+        <IconLogout2 size='1rem' onClick={openModal} />
+      </ActionIcon>
+    </Flex>
   );
 }
