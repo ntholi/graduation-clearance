@@ -1,4 +1,4 @@
-export function date(date: Date | undefined | null) {
+export function formatDate(date: Date | undefined | null) {
   if (!date) return '';
   const formatter = new Intl.DateTimeFormat('en-LS', {
     year: 'numeric',
