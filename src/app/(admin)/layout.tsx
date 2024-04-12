@@ -1,6 +1,7 @@
 import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
 
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import { ColorSchemeScript } from '@mantine/core';
 import type { Metadata } from 'next';
 import Providers from './providers';
 

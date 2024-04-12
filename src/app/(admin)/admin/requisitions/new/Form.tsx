@@ -14,11 +14,12 @@ import {
   Textarea,
   Title,
 } from '@mantine/core';
+import { DateInput } from '@mantine/dates';
 import { isNotEmpty, useForm } from '@mantine/form';
 import { Requisition, RequisitionItem } from '@prisma/client';
 import { IconTrashFilled } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 
 type Props = {
   onSubmit: (
@@ -32,11 +33,17 @@ export default function Form({ onSubmit }: Props) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [items, setItems] = useState<RequisitionItem[]>([]);
-  const form = useForm<Requisition>({
+  const { setValues, ...form } = useForm<Requisition>({
     validate: {
       title: isNotEmpty('Title is required'),
     },
   });
+
+  useEffect(() => {
+    if (form.values.date === undefined) {
+      setValues({ date: new Date() });
+    }
+  }, [form.values.date, setValues]);
 
   async function handleSubmit(values: Requisition) {
     startTransition(async () => {
@@ -50,6 +57,7 @@ export default function Form({ onSubmit }: Props) {
       <FormHeader title='Requisition' isLoading={pending} />
       <Stack p={'xl'}>
         <TextInput label='Title' {...form.getInputProps('title')} />
+        <DateInput label='Date' {...form.getInputProps('date')} />
         <Textarea
           label='Description'
           rows={3}
@@ -75,8 +83,8 @@ function ItemsInput({ items, setItems }: ItemsInputProps) {
       setItems((prev) => [...prev, form.values]);
       form.setValues({
         description: '',
-        unitPrice: undefined,
-        quantity: undefined,
+        unitPrice: 0,
+        quantity: 0,
       });
     }
   }
