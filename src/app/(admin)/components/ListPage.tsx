@@ -1,5 +1,4 @@
-import React, { PropsWithChildren } from 'react';
-import prisma from '@/lib/prisma';
+'use client';
 import {
   Button,
   Divider,
@@ -7,22 +6,28 @@ import {
   Grid,
   GridCol,
   NavLink,
+  NavLinkProps,
   Paper,
   ScrollArea,
   Stack,
-  Text,
-  TextInput,
 } from '@mantine/core';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import React from 'react';
 import SearchField from './SearchField';
+
+type NavItem = {
+  href: string;
+} & NavLinkProps;
 
 type Props = {
   recourse: string;
-  list: React.ReactNode;
+  nav: NavItem[];
   children: React.ReactNode;
 };
 
-export default function ListPage({ children, recourse, list }: Props) {
+export default function ListPage({ children, recourse, nav }: Props) {
+  const pathname = usePathname();
   return (
     <Grid columns={14} gutter={'xl'}>
       <GridCol span={{ base: 13, sm: 4 }} pr={{ base: 7, sm: 0 }}>
@@ -40,7 +45,14 @@ export default function ListPage({ children, recourse, list }: Props) {
             </Flex>
             <Divider />
             <ScrollArea h={{ base: 150, sm: '80vh' }} type='always' p={'sm'}>
-              {list}
+              {nav.map((item) => (
+                <NavLink
+                  key={item.href}
+                  component={Link}
+                  {...item}
+                  active={pathname === item.href}
+                />
+              ))}
             </ScrollArea>
           </Stack>
         </Paper>
