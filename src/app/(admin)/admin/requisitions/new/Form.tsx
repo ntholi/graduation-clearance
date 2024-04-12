@@ -1,6 +1,7 @@
 'use client';
 import FormHeader from '@/app/(admin)/components/FormHeader';
 import {
+  ActionIcon,
   Button,
   Divider,
   Flex,
@@ -8,19 +9,23 @@ import {
   NumberInput,
   Paper,
   Stack,
+  Table,
   TextInput,
   Textarea,
   Title,
-  TableData,
-  Table,
 } from '@mantine/core';
 import { isNotEmpty, useForm } from '@mantine/form';
 import { Requisition, RequisitionItem } from '@prisma/client';
+import { IconTrashFilled } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 
 type Props = {
-  onSubmit: (values: Requisition) => Promise<Requisition>;
+  onSubmit: (
+    values: Requisition & {
+      items: RequisitionItem[];
+    }
+  ) => Promise<Requisition>;
 };
 
 export default function Form({ onSubmit }: Props) {
@@ -35,7 +40,7 @@ export default function Form({ onSubmit }: Props) {
 
   async function handleSubmit(values: Requisition) {
     startTransition(async () => {
-      const { id } = await onSubmit(values);
+      const { id } = await onSubmit(Object.assign(values, { items }));
       router.push(`/admin/requisitions/${id}`);
     });
   }
@@ -68,21 +73,35 @@ function ItemsInput({ items, setItems }: ItemsInputProps) {
     console.log(form.validate());
     if (!form.validate().hasErrors) {
       setItems((prev) => [...prev, form.values]);
-      form.reset();
+      form.setValues({
+        description: '',
+        unitPrice: undefined,
+        quantity: undefined,
+      });
     }
   }
 
-  const tableData: TableData = {
-    head: ['Description', 'Unit Price', 'Quantity'],
-    body: items.map((item) => [
-      `${item.description}`,
-      `${item.unitPrice}`,
-      `${item.quantity}`,
-    ]),
-  };
+  const rows = items.map((it) => (
+    <Table.Tr key={it.id}>
+      <Table.Td>{it.description}</Table.Td>
+      <Table.Td>{it.quantity}</Table.Td>
+      <Table.Td>{`${it.unitPrice}`}</Table.Td>
+      <Table.Td>
+        <ActionIcon
+          color='red'
+          variant='light'
+          onClick={() => {
+            setItems((prev) => prev.filter((item) => item.id !== it.id));
+          }}
+        >
+          <IconTrashFilled size={'1rem'} />
+        </ActionIcon>
+      </Table.Td>
+    </Table.Tr>
+  ));
 
   return (
-    <Paper p={'sm'} pb={'xl'} withBorder>
+    <Paper mt={'lg'} p={'sm'} pb={'xl'} withBorder>
       <Title order={4} fw={100} mb={5}>
         Items
       </Title>
@@ -109,7 +128,17 @@ function ItemsInput({ items, setItems }: ItemsInputProps) {
         </Flex>
       </form>
       <Divider my={15} />
-      <Table data={tableData} />
+      <Table>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>Description</Table.Th>
+            <Table.Th>Unit Price</Table.Th>
+            <Table.Th>Quantity</Table.Th>
+            <Table.Th></Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>{rows}</Table.Tbody>
+      </Table>
     </Paper>
   );
 }
