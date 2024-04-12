@@ -1,8 +1,9 @@
-import { Stack } from '@mantine/core';
-import React from 'react';
-import prisma from '@/lib/prisma';
-import { notFound } from 'next/navigation';
 import FieldView from '@/app/(admin)/components/FieldView';
+import HeaderDisplay from '@/app/(admin)/components/HeaderDisplay';
+import { formatDate } from '@/lib/format';
+import prisma from '@/lib/prisma';
+import { Box, Group, Stack } from '@mantine/core';
+import { notFound } from 'next/navigation';
 
 type Props = {
   params: {
@@ -21,8 +22,18 @@ export default async function Page({ params: { id } }: Props) {
   }
 
   return (
-    <Stack p={'xl'}>
-      <FieldView label='Title' value={item.title} />
-    </Stack>
+    <Box p={'lg'}>
+      <HeaderDisplay title={item.title} />
+      <Box p={'xl'}>
+        <Group grow>
+          <Stack>
+            <FieldView label='Title' value={item.title} />
+            <FieldView label='Status' value={item.description} />
+            <FieldView label='Date' value={formatDate(item.date)} />
+          </Stack>
+          <Box></Box>
+        </Group>
+      </Box>
+    </Box>
   );
 }
