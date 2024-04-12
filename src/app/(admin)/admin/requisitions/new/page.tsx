@@ -1,14 +1,21 @@
-import StandardTitle from '@/app/(admin)/components/StandardTitle';
-import { Box, Stack, TextInput } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import React from 'react';
+import { Box } from '@mantine/core';
 import Form from './Form';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/auth';
 
-export default function NewPage() {
+export default async function NewPage() {
+  const session = await getServerSession(authOptions);
   return (
     <Box p={'lg'}>
-      <StandardTitle value={'New Requisition'} />
-      <Form />
+      <Form
+        onSubmit={async (value) => {
+          'use server';
+          await new Promise((resolve) => setTimeout(resolve, 3000));
+          // await prisma.requisition.create({
+          //   data: { ...value, userId: session!.user!.id },
+          // });
+        }}
+      />
     </Box>
   );
 }
