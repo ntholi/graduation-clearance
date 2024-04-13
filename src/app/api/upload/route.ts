@@ -3,15 +3,15 @@ import { google, drive_v3 } from 'googleapis';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]/auth';
 import { Readable } from 'stream';
+import { STUDENTS_FOLDER } from '@/lib/constants';
+import googleDrive from '@/lib/google-drive';
 
-const uploadToGoogleDrive = async (_file: File, accessToken: string) => {
-  const oauth2Client = new google.auth.OAuth2();
-  oauth2Client.setCredentials({ access_token: accessToken });
-  const service = google.drive({ version: 'v3', auth: oauth2Client });
+const uploadToGoogleDrive = async (_file: File) => {
+  const drive = await googleDrive();
 
   const fileMetadata: drive_v3.Schema$File = {
     name: _file.name,
-    parents: ['1uB57yjnOnksslvynfgCMIw0XiAHhj_6m'],
+    parents: [STUDENTS_FOLDER],
   };
 
   const buffer = Buffer.from(await _file.arrayBuffer());
@@ -21,7 +21,7 @@ const uploadToGoogleDrive = async (_file: File, accessToken: string) => {
     mimeType: _file.type,
     body: stream,
   };
-  const file = await service.files.create({
+  const file = await drive.files.create({
     requestBody: fileMetadata,
     media: media,
   });
@@ -29,14 +29,10 @@ const uploadToGoogleDrive = async (_file: File, accessToken: string) => {
 };
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions);
   const formData = await req.formData();
   const file = formData.get('file') as File;
 
-  const response = await uploadToGoogleDrive(
-    file,
-    session?.accessToken as string
-  );
+  const response = await uploadToGoogleDrive(file);
 
   return NextResponse.json({ message: 'Files Created' });
 }
