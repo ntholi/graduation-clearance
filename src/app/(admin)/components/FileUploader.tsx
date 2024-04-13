@@ -26,6 +26,7 @@ export default function FileUploader({ onComplete }: Props) {
     if (!file) return;
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('folder', 'cool-folder');
 
     startTransition(async () => {
       const response = await axios.post('/api/upload', formData);
