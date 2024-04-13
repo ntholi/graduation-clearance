@@ -5,7 +5,6 @@ import { getServerSession } from 'next-auth';
 /**
  * A helper function to create a Google Drive API instance
  *
- * @param session - NextAuth session
  * @returns Google Drive API instance
  */
 const googleDrive = async () => {
