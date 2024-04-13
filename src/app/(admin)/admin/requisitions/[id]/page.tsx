@@ -5,7 +5,16 @@ import { STUDENTS_FOLDER } from '@/lib/constants';
 import { formatDate } from '@/lib/format';
 import googleDrive from '@/lib/google-drive';
 import prisma from '@/lib/prisma';
-import { Box, Group, Stack } from '@mantine/core';
+import {
+  Box,
+  Group,
+  Stack,
+  Image,
+  Text,
+  Fieldset,
+  SimpleGrid,
+} from '@mantine/core';
+import { drive_v3 } from 'googleapis';
 import { notFound } from 'next/navigation';
 
 type Props = {
@@ -28,35 +37,42 @@ export default async function Page({ params: { id } }: Props) {
     <Box p={'lg'}>
       <HeaderDisplay title={item.title} />
       <Box p={'xl'}>
-        <Group grow>
-          <Stack>
-            <FieldView label='Title' value={item.title} />
-            <FieldView label='Status' value={item.description} />
-            <FieldView label='Date' value={formatDate(item.date)} />
-          </Stack>
-          <Box>
+        <Stack>
+          <FieldView label='Title' value={item.title} />
+          <FieldView label='Status' value={item.description} />
+          <FieldView label='Date' value={formatDate(item.date)} />
+        </Stack>
+
+        <Fieldset legend='Documents' mt={'xl'}>
+          <SimpleGrid cols={3}>
             <FileUploader />
             <DriveFiles folderId={STUDENTS_FOLDER} />
-          </Box>
-        </Group>
+          </SimpleGrid>
+        </Fieldset>
       </Box>
     </Box>
   );
 }
 
-/**
- * Displays a list of files from Google Drive from the specific folder.
- */
 async function DriveFiles({ folderId }: { folderId: string }) {
   const drive = await googleDrive();
   const files = await drive.files.list({
     q: `'${folderId}' in parents`,
+    fields: 'files(id, name, mimeType, thumbnailLink)',
   });
   return (
-    <Box>
+    <>
       {files?.data?.files?.map((file) => (
-        <Box key={file.id}>{file.name}</Box>
+        <DisplayFile key={file.id} file={file} />
       ))}
-    </Box>
+    </>
+  );
+}
+
+function DisplayFile({ file }: { file: drive_v3.Schema$File }) {
+  return (
+    <>
+      <Image h={200} src={file.thumbnailLink} alt={file.name || ''} />
+    </>
   );
 }
