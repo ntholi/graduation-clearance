@@ -5,9 +5,10 @@ import React from 'react';
 
 export default function FileUploader() {
   async function handleChange(file: File | null) {
+    if (!file) return;
     console.log('handling file upload...');
     const formData = new FormData();
-    formData.append('file', file as Blob);
+    formData.append('file', file);
 
     console.log('sending file to server...');
 

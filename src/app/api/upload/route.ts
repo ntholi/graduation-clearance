@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { google } from 'googleapis';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]/auth';
-import fs from 'fs';
+import { Readable } from 'stream';
 
 const uploadToGoogleDrive = async (_file: File, accessToken: string) => {
   const oauth2Client = new google.auth.OAuth2();
@@ -12,9 +12,13 @@ const uploadToGoogleDrive = async (_file: File, accessToken: string) => {
     name: 'photo.jpg',
     fields: 'id',
   };
+
+  const buffer = Buffer.from(await _file.arrayBuffer());
+  const stream = Readable.from(buffer);
+
   const media = {
     mimeType: 'image/jpeg',
-    body: fs.createReadStream('.gitignore'),
+    body: stream,
   };
   const file = await service.files.create({
     requestBody,
@@ -28,7 +32,6 @@ export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
   const formData = await req.formData();
   const file = formData.get('file') as File;
-  console.log(file);
 
   const response = await uploadToGoogleDrive(
     file,
