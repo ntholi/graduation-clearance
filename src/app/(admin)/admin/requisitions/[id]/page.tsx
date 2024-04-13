@@ -1,4 +1,5 @@
 import FieldView from '@/app/(admin)/components/FieldView';
+import FileUploader from '@/app/(admin)/components/FileUploader';
 import HeaderDisplay from '@/app/(admin)/components/HeaderDisplay';
 import { formatDate } from '@/lib/format';
 import prisma from '@/lib/prisma';
@@ -31,7 +32,9 @@ export default async function Page({ params: { id } }: Props) {
             <FieldView label='Status' value={item.description} />
             <FieldView label='Date' value={formatDate(item.date)} />
           </Stack>
-          <Box></Box>
+          <Box>
+            <FileUploader />
+          </Box>
         </Group>
       </Box>
     </Box>

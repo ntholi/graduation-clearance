@@ -3,7 +3,12 @@ import GoogleProvider from 'next-auth/providers/google';
 import axios from 'axios';
 import prisma from '@/lib/prisma';
 
-const scopes = ['email', 'openid', 'profile'];
+const scopes = [
+  'email',
+  'openid',
+  'profile',
+  'https://www.googleapis.com/auth/drive',
+];
 
 export const authOptions: NextAuthOptions = {
   providers: [
