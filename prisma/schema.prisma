@@ -29,8 +29,23 @@ model Requisition {
   createdBy   User              @relation(fields: [userId], references: [id])
   userId      String            @map("user_id")
   items       RequisitionItem[]
+  documents   Document[]
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
 
   @@map("requisitions")
+}
+
+model Document {
+  id            String       @id @default(cuid())
+  driveId       String       @unique @map("drive_id")
+  description   String?
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
+  requisition   Requisition? @relation(fields: [requisitionId], references: [id])
+  requisitionId String?      @map("requisition_id")
+
+  @@map("documents")
 }
 
 model RequisitionItem {

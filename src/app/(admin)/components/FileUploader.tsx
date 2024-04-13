@@ -14,7 +14,7 @@ import axios from 'axios';
 import React, { useTransition } from 'react';
 
 type Props = {
-  onComplete?: (id: string) => void;
+  onComplete?: (id: string, description: string) => void;
 };
 export default function FileUploader({ onComplete }: Props) {
   const [opened, { open, close }] = useDisclosure(false);
@@ -26,12 +26,11 @@ export default function FileUploader({ onComplete }: Props) {
     if (!file) return;
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('description', description);
 
     startTransition(async () => {
       const response = await axios.post('/api/upload', formData);
       if (onComplete) {
-        onComplete(response.data.id);
+        onComplete(response.data.id, description);
       }
       setFile(null);
       setDescription('');
