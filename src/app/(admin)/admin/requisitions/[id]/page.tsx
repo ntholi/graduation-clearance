@@ -1,7 +1,9 @@
 import FieldView from '@/app/(admin)/components/FieldView';
 import FileUploader from '@/app/(admin)/components/FileUploader';
 import HeaderDisplay from '@/app/(admin)/components/HeaderDisplay';
+import { STUDENTS_FOLDER } from '@/lib/constants';
 import { formatDate } from '@/lib/format';
+import googleDrive from '@/lib/google-drive';
 import prisma from '@/lib/prisma';
 import { Box, Group, Stack } from '@mantine/core';
 import { notFound } from 'next/navigation';
@@ -34,9 +36,27 @@ export default async function Page({ params: { id } }: Props) {
           </Stack>
           <Box>
             <FileUploader />
+            <DriveFiles folderId={STUDENTS_FOLDER} />
           </Box>
         </Group>
       </Box>
+    </Box>
+  );
+}
+
+/**
+ * Displays a list of files from Google Drive from the specific folder.
+ */
+async function DriveFiles({ folderId }: { folderId: string }) {
+  const drive = await googleDrive();
+  const files = await drive.files.list({
+    q: `'${folderId}' in parents`,
+  });
+  return (
+    <Box>
+      {files?.data?.files?.map((file) => (
+        <Box key={file.id}>{file.name}</Box>
+      ))}
     </Box>
   );
 }
