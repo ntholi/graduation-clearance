@@ -28,6 +28,9 @@ export default async function Page({ params: { id } }: Props) {
     where: {
       id,
     },
+    include: {
+      documents: true,
+    },
   });
 
   if (!item) {
@@ -47,12 +50,19 @@ export default async function Page({ params: { id } }: Props) {
         <Fieldset legend='Documents' mt={'xl'}>
           <SimpleGrid cols={3}>
             <FileUploader
-              onComplete={async () => {
+              onComplete={async (fileId, description) => {
                 'use server';
+                await prisma.document.create({
+                  data: {
+                    driveId: fileId,
+                    description,
+                    requisitionId: id,
+                  },
+                });
                 revalidatePath(`/admin/requisitions/${id}`);
               }}
             />
-            <DriveFiles folderId={STUDENTS_FOLDER} />
+            <DriveFiles fileIds={item.documents.map((it) => it.driveId)} />
           </SimpleGrid>
         </Fieldset>
       </Box>
@@ -60,15 +70,21 @@ export default async function Page({ params: { id } }: Props) {
   );
 }
 
-async function DriveFiles({ folderId }: { folderId: string }) {
+async function DriveFiles({ fileIds }: { fileIds: string[] }) {
   const drive = await googleDrive();
-  const files = await drive.files.list({
-    q: `'${folderId}' in parents`,
-    fields: 'files(id, name, mimeType, thumbnailLink)',
-  });
+  const files = await Promise.all(
+    fileIds.map(async (id) => {
+      const { data } = await drive.files.get({
+        fileId: id,
+        fields: 'id, name, thumbnailLink',
+      });
+      return data;
+    })
+  );
+
   return (
     <>
-      {files?.data?.files?.map((file) => (
+      {files.map((file) => (
         <DisplayFile key={file.id} file={file} />
       ))}
     </>
