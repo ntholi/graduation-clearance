@@ -10,9 +10,13 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconCloudUpload } from '@tabler/icons-react';
+import axios from 'axios';
 import React, { useTransition } from 'react';
 
-export default function FileUploader() {
+type Props = {
+  onComplete?: (id: string) => void;
+};
+export default function FileUploader({ onComplete }: Props) {
   const [opened, { open, close }] = useDisclosure(false);
   const [file, setFile] = React.useState<File | null>(null);
   const [description, setDescription] = React.useState<string>('');
@@ -25,10 +29,10 @@ export default function FileUploader() {
     formData.append('description', description);
 
     startTransition(async () => {
-      await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
+      const response = await axios.post('/api/upload', formData);
+      if (onComplete) {
+        onComplete(response.data.id);
+      }
       setFile(null);
       setDescription('');
       close();

@@ -15,6 +15,7 @@ import {
   SimpleGrid,
 } from '@mantine/core';
 import { drive_v3 } from 'googleapis';
+import { revalidatePath } from 'next/cache';
 import { notFound } from 'next/navigation';
 
 type Props = {
@@ -45,7 +46,12 @@ export default async function Page({ params: { id } }: Props) {
 
         <Fieldset legend='Documents' mt={'xl'}>
           <SimpleGrid cols={3}>
-            <FileUploader />
+            <FileUploader
+              onComplete={async () => {
+                'use server';
+                revalidatePath(`/admin/requisitions/${id}`);
+              }}
+            />
             <DriveFiles folderId={STUDENTS_FOLDER} />
           </SimpleGrid>
         </Fieldset>

@@ -1,10 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { google, drive_v3 } from 'googleapis';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../auth/[...nextauth]/auth';
-import { Readable } from 'stream';
 import { STUDENTS_FOLDER } from '@/lib/constants';
 import googleDrive from '@/lib/google-drive';
+import { drive_v3 } from 'googleapis';
+import { NextRequest, NextResponse } from 'next/server';
+import { Readable } from 'stream';
 
 const uploadToGoogleDrive = async (_file: File) => {
   const drive = await googleDrive();
@@ -25,14 +23,12 @@ const uploadToGoogleDrive = async (_file: File) => {
     requestBody: fileMetadata,
     media: media,
   });
-  return file.data.id;
+  return file.data;
 };
 
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
   const file = formData.get('file') as File;
-
   const response = await uploadToGoogleDrive(file);
-
-  return NextResponse.json({ message: 'Files Created' });
+  return NextResponse.json(response);
 }
