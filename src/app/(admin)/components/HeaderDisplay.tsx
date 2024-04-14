@@ -1,5 +1,5 @@
 'use client';
-import { ActionIcon, Button, Divider, Flex, Group, Title } from '@mantine/core';
+import { ActionIcon, Divider, Flex, Group, Title } from '@mantine/core';
 import { IconEdit } from '@tabler/icons-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';

@@ -1,8 +1,7 @@
 'use client';
+import { Button } from '@mantine/core';
 import React, { useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
-import RequisitionPrint from './RequisitionPrint';
-import { Button } from '@mantine/core';
 
 type Props = {
   printable: React.ReactElement;
