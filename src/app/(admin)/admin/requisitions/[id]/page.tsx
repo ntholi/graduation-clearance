@@ -3,7 +3,18 @@ import FieldView from '@/app/(admin)/components/FieldView';
 import HeaderDisplay from '@/app/(admin)/components/HeaderDisplay';
 import { formatDate } from '@/lib/format';
 import prisma from '@/lib/prisma';
-import { Box, Stack } from '@mantine/core';
+import {
+  Box,
+  Fieldset,
+  Stack,
+  Table,
+  TableTbody,
+  TableTd,
+  TableTh,
+  TableThead,
+  TableTr,
+} from '@mantine/core';
+import { RequisitionItem } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { notFound } from 'next/navigation';
 
@@ -19,6 +30,7 @@ export default async function Page({ params: { id } }: Props) {
     },
     include: {
       documents: true,
+      items: true,
     },
   });
 
@@ -34,9 +46,12 @@ export default async function Page({ params: { id } }: Props) {
           <FieldView label='Title' value={item.title} />
           <FieldView label='Status' value={item.description} />
           <FieldView label='Date' value={formatDate(item.date)} />
+          <Fieldset legend='Requisition Items' mt={'md'}>
+            <ItemsTable items={item.items} />
+          </Fieldset>
           <DriveFiles
             legend='Documents'
-            mt={'xl'}
+            mt={'md'}
             documents={item.documents}
             onUpload={async (fileId, description) => {
               'use server';
@@ -53,5 +68,27 @@ export default async function Page({ params: { id } }: Props) {
         </Stack>
       </Box>
     </Box>
+  );
+}
+
+function ItemsTable({ items }: { items: RequisitionItem[] }) {
+  const rows = items.map((it) => (
+    <TableTr key={it.id}>
+      <TableTd>{it.description}</TableTd>
+      <TableTd>{it.quantity}</TableTd>
+      <TableTd>{`${it.unitPrice}`}</TableTd>
+    </TableTr>
+  ));
+  return (
+    <Table>
+      <TableThead>
+        <TableTr>
+          <TableTh>Description</TableTh>
+          <TableTh>Unit Price</TableTh>
+          <TableTh>Quantity</TableTh>
+        </TableTr>
+      </TableThead>
+      <TableTbody>{rows}</TableTbody>
+    </Table>
   );
 }
