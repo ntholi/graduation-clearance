@@ -46,7 +46,7 @@ export default function FileUploader({ onComplete }: Props) {
           <FileInput required label='File' onChange={setFile} value={file} />
           <TextInput
             label='Description'
-            description='Describe the file, may be left empty.'
+            placeholder='Optional'
             onChange={(event) => setDescription(event.currentTarget.value)}
             value={description}
           />
