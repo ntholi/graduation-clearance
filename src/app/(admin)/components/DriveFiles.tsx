@@ -6,12 +6,13 @@ import {
   Paper,
   SimpleGrid,
   Skeleton,
+  Text,
+  rgba,
 } from '@mantine/core';
 import { Document } from '@prisma/client';
-import { drive_v3 } from 'googleapis';
 import Link from 'next/link';
-import FileUploader from './FileUploader';
 import { Suspense } from 'react';
+import FileUploader from './FileUploader';
 
 type Props = {
   documents: Document[];
@@ -43,12 +44,12 @@ function Loader() {
 async function DriveFiles({ documents, onUpload, ...props }: Props) {
   const drive = await googleDrive();
   const files = await Promise.all(
-    documents.map(async ({ driveId }) => {
+    documents.map(async ({ driveId, description }) => {
       const { data } = await drive.files.get({
         fileId: driveId,
         fields: 'id, name, thumbnailLink, webViewLink',
       });
-      return data;
+      return { description, ...data };
     })
   );
 
@@ -56,13 +57,25 @@ async function DriveFiles({ documents, onUpload, ...props }: Props) {
     <>
       {files.map((file) => (
         <Link key={file.id} href={file.webViewLink ?? '#'} target='_blank'>
-          <Paper withBorder h={200}>
+          <Paper withBorder h={200} pos={'relative'}>
             <Image
               h='100%'
               src={file.thumbnailLink}
               alt={''}
               fallbackSrc='/images/paper.png'
             />
+            <Text
+              pos={'absolute'}
+              bottom={0}
+              ta={'center'}
+              w={'100%'}
+              bg={rgba('dark.9', 0.2)}
+              p={5}
+              size='sm'
+              c={'gray'}
+            >
+              {file.description || 'Document'}
+            </Text>
           </Paper>
         </Link>
       ))}
