@@ -18,6 +18,7 @@ import { RequisitionItem } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { notFound } from 'next/navigation';
 import PrintButton from './PrintButton';
+import RequisitionPrint from './RequisitionPrint';
 
 type Props = {
   params: {
@@ -41,8 +42,11 @@ export default async function Page({ params: { id } }: Props) {
 
   return (
     <Box p={'lg'}>
-      <HeaderDisplay title={item.title} />
-      <PrintButton />
+      <HeaderDisplay
+        title={item.title}
+        actionButtons={[<PrintButton printable={<RequisitionPrint />} />]}
+      />
+
       <Box p={'xl'}>
         <Stack>
           <FieldView label='Title' value={item.title} />

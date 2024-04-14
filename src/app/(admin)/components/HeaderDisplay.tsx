@@ -1,5 +1,5 @@
 'use client';
-import { ActionIcon, Button, Divider, Flex, Title } from '@mantine/core';
+import { ActionIcon, Button, Divider, Flex, Group, Title } from '@mantine/core';
 import { IconEdit } from '@tabler/icons-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -7,8 +7,9 @@ import React from 'react';
 
 type props = {
   title: string;
+  actionButtons?: React.ReactNode[];
 };
-export default function HeaderDisplay({ title }: props) {
+export default function HeaderDisplay({ title, actionButtons }: props) {
   const pathname = usePathname();
   return (
     <>
@@ -16,14 +17,17 @@ export default function HeaderDisplay({ title }: props) {
         <Title order={3} fw={100}>
           {title}
         </Title>
-        <ActionIcon
-          component={Link}
-          size={'lg'}
-          href={`${pathname}/edit`}
-          variant='default'
-        >
-          <IconEdit size={'1.1rem'} />
-        </ActionIcon>
+        <Group>
+          {actionButtons}
+          <ActionIcon
+            component={Link}
+            size={'lg'}
+            href={`${pathname}/edit`}
+            variant='default'
+          >
+            <IconEdit size={'1.1rem'} />
+          </ActionIcon>
+        </Group>
       </Flex>
       <Divider my={15} />
     </>

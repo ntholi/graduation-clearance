@@ -2,8 +2,13 @@
 import React, { useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import RequisitionPrint from './RequisitionPrint';
+import { Button } from '@mantine/core';
 
-export default function PrintButton() {
+type Props = {
+  printable: React.ReactElement;
+};
+
+export default function PrintButton({ printable }: Props) {
   const componentRef = useRef(null);
 
   const handlePrint = useReactToPrint({
@@ -13,9 +18,13 @@ export default function PrintButton() {
   return (
     <div>
       <div style={{ display: 'none' }}>
-        <RequisitionPrint ref={componentRef} />
+        {React.cloneElement(printable, {
+          ref: componentRef,
+        })}
       </div>
-      <button onClick={handlePrint}>Print this out!</button>
+      <Button onClick={handlePrint} variant='default'>
+        Print
+      </Button>
     </div>
   );
 }
