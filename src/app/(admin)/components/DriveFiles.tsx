@@ -69,7 +69,7 @@ async function DriveFiles({ documents, onUpload, ...props }: Props) {
               bottom={0}
               ta={'center'}
               w={'100%'}
-              bg={rgba('dark.9', 0.2)}
+              bg={rgba('dark', 0.7)}
               p={5}
               size='sm'
               c={'gray'}
