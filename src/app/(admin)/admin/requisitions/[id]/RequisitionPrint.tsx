@@ -11,6 +11,14 @@ import {
   Image,
   Stack,
   Divider,
+  Table,
+  TableThead,
+  TableTr,
+  TableTh,
+  TableTbody,
+  TableTd,
+  TableTrProps,
+  TextProps,
 } from '@mantine/core';
 import { Requisition, RequisitionItem } from '@prisma/client';
 import { User } from 'next-auth';
@@ -34,8 +42,32 @@ const RequisitionPrint = forwardRef<HTMLDivElement, Props>(
           </Box>
         </Group>
         <Divider my={'md'} />
-        <Row label='Campus' value='Maseru' />
-        <Row label='Name' value={user?.name || ''} />
+        <Table
+          style={{
+            borderCollapse: 'collapse',
+            border: '1px solid black',
+          }}
+        >
+          <TableTbody>
+            <Row
+              label='Campus'
+              value={'Maseru'}
+              labelProps={{ size: '10pt' }}
+              valueProps={{ fw: 'bold', size: '14pt' }}
+            />
+            <Row
+              label='Requested By'
+              value={user?.name || ''}
+              labelProps={{ size: '10pt' }}
+              valueProps={{ fw: 'bold', size: '14pt' }}
+            />
+            <Row
+              label='Head of Department Signature'
+              labelProps={{ size: '10pt' }}
+              valueProps={{ fw: 'bold', size: '14pt' }}
+            />
+          </TableTbody>
+        </Table>
       </Box>
     );
   }
@@ -43,23 +75,30 @@ const RequisitionPrint = forwardRef<HTMLDivElement, Props>(
 
 type RowProps = {
   label: string;
-  value: string;
-} & GridProps;
+  labelProps?: TextProps;
+  value?: string;
+  valueProps?: TextProps;
+} & TableTrProps;
 
-function Row({ label, value, ...props }: RowProps) {
+function Row({ label, value, labelProps, valueProps, ...props }: RowProps) {
   return (
-    <Grid {...props} gutter={5}>
-      <GridCol span={4} style={{ border: '1px solid black' }} p='xs'>
-        <Text size='12px'>{label}</Text>
-      </GridCol>
-      <GridCol
-        span={8}
-        style={{ border: '1px solid black', borderLeftWidth: 0 }}
-        p='sm'
+    <TableTr {...props}>
+      <TableTd
+        style={{
+          border: '1px solid black',
+          width: '250px',
+        }}
       >
-        <Text size='12px'>{value}</Text>
-      </GridCol>
-    </Grid>
+        <Text {...labelProps}>{label}</Text>
+      </TableTd>
+      <TableTd
+        style={{
+          border: '1px solid black',
+        }}
+      >
+        <Text {...valueProps}>{value}</Text>
+      </TableTd>
+    </TableTr>
   );
 }
 
