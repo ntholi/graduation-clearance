@@ -1,26 +1,15 @@
 'use client';
 import {
   AppShell,
-  Avatar,
   Burger,
-  Divider,
   Flex,
   Group,
   LoadingOverlay,
-  NavLink,
-  ScrollArea,
   useComputedColorScheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
-import {
-  IconChevronRight,
-  IconFileDescription,
-  IconLogout2,
-} from '@tabler/icons-react';
-import { signOut, useSession } from 'next-auth/react';
-import Link from 'next/link';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { PropsWithChildren } from 'react';
 import AccessDenied from './AccessDenied';
 import Logo from './Logo';

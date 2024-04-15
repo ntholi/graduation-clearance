@@ -8,6 +8,9 @@ import {
   Group,
   Title,
   Text,
+  Image,
+  Stack,
+  Divider,
 } from '@mantine/core';
 import { Requisition, RequisitionItem } from '@prisma/client';
 
@@ -19,6 +22,16 @@ const RequisitionPrint = forwardRef<HTMLDivElement, Props>(
   ({ requisition, ...props }, ref) => {
     return (
       <Box p='xl' ref={ref} {...props}>
+        <Group>
+          <Image src='/images/logo.png' alt='logo' width={100} height={100} />
+          <Box>
+            <Title order={1} fw={'normal'}>
+              Registry Department
+            </Title>
+            <Title order={2}>Resource Requisition (Capital Asset) </Title>
+          </Box>
+        </Group>
+        <Divider my={'md'} />
         <Row label='Campus' value='Maseru' />
       </Box>
     );
