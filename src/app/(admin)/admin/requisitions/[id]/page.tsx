@@ -44,7 +44,9 @@ export default async function Page({ params: { id } }: Props) {
     <Box p={'lg'}>
       <HeaderDisplay
         title={item.title}
-        actionButtons={[<PrintButton printable={<RequisitionPrint />} />]}
+        actionButtons={[
+          <PrintButton printable={<RequisitionPrint requisition={item} />} />,
+        ]}
       />
 
       <Box p={'xl'}>
