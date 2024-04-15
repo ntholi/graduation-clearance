@@ -1,5 +1,6 @@
 'use client';
 import { Button } from '@mantine/core';
+import { useSession } from 'next-auth/react';
 import React, { useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
 

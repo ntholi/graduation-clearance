@@ -19,6 +19,8 @@ import { revalidatePath } from 'next/cache';
 import { notFound } from 'next/navigation';
 import PrintButton from './PrintButton';
 import RequisitionPrint from './RequisitionPrint';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/auth';
 
 type Props = {
   params: {
@@ -26,6 +28,7 @@ type Props = {
   };
 };
 export default async function Page({ params: { id } }: Props) {
+  const session = await getServerSession(authOptions);
   const item = await prisma.requisition.findUnique({
     where: {
       id,
@@ -45,7 +48,11 @@ export default async function Page({ params: { id } }: Props) {
       <HeaderDisplay
         title={item.title}
         actionButtons={[
-          <PrintButton printable={<RequisitionPrint requisition={item} />} />,
+          <PrintButton
+            printable={
+              <RequisitionPrint user={session?.user} requisition={item} />
+            }
+          />,
         ]}
       />
 
