@@ -112,7 +112,8 @@ function Row({ label, value, labelProps, valueProps, ...props }: RowProps) {
     <TableTr {...props}>
       <BorderTd
         style={{
-          width: '250px',
+          width: '240px',
+          border: '1px solid black',
         }}
       >
         <Text {...labelProps}>{label}</Text>
