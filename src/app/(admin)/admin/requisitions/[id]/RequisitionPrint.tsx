@@ -19,6 +19,8 @@ import {
   TableTd,
   TableTrProps,
   TextProps,
+  TableTdProps,
+  TableThProps,
 } from '@mantine/core';
 import { Requisition, RequisitionItem } from '@prisma/client';
 import { User } from 'next-auth';
@@ -68,6 +70,31 @@ const RequisitionPrint = forwardRef<HTMLDivElement, Props>(
             />
           </TableTbody>
         </Table>
+
+        <Table
+          mt={'lg'}
+          style={{
+            borderCollapse: 'collapse',
+            border: '1px solid black',
+          }}
+        >
+          <TableThead>
+            <TableTr>
+              <DarkTh>Description</DarkTh>
+              <DarkTh>Quantity</DarkTh>
+              <DarkTh>Unit Price</DarkTh>
+              <DarkTh>Total Price</DarkTh>
+            </TableTr>
+          </TableThead>
+          {requisition.items.map((item, index) => (
+            <TableTbody key={index}>
+              <BorderTd>{item.description}</BorderTd>
+              <BorderTd>{item.quantity}</BorderTd>
+              <BorderTd>{item.unitPrice}</BorderTd>
+              <BorderTd>{item.quantity * item.unitPrice}</BorderTd>
+            </TableTbody>
+          ))}
+        </Table>
       </Box>
     );
   }
@@ -76,29 +103,47 @@ const RequisitionPrint = forwardRef<HTMLDivElement, Props>(
 type RowProps = {
   label: string;
   labelProps?: TextProps;
-  value?: string;
+  value?: string | number | null | undefined;
   valueProps?: TextProps;
 } & TableTrProps;
 
 function Row({ label, value, labelProps, valueProps, ...props }: RowProps) {
   return (
     <TableTr {...props}>
-      <TableTd
+      <BorderTd
         style={{
-          border: '1px solid black',
           width: '250px',
         }}
       >
         <Text {...labelProps}>{label}</Text>
-      </TableTd>
-      <TableTd
-        style={{
-          border: '1px solid black',
-        }}
-      >
+      </BorderTd>
+      <BorderTd>
         <Text {...valueProps}>{value}</Text>
-      </TableTd>
+      </BorderTd>
     </TableTr>
+  );
+}
+
+function BorderTd(props: TableTdProps) {
+  return (
+    <TableTd
+      style={{
+        border: '1px solid black',
+      }}
+      {...props}
+    />
+  );
+}
+
+function DarkTh(props: TableThProps) {
+  return (
+    <TableTh
+      style={{
+        backgroundColor: 'black',
+        color: 'white',
+      }}
+      {...props}
+    />
   );
 }
 
