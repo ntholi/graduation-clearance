@@ -21,12 +21,12 @@ type NavItem = {
 } & NavLinkProps;
 
 type Props = {
-  recourse: string;
+  path: string;
   nav: NavItem[];
   children: React.ReactNode;
 };
 
-export default function ListPage({ children, recourse, nav }: Props) {
+export default function ListPage({ children, path, nav }: Props) {
   const pathname = usePathname();
   return (
     <Grid columns={14} gutter={'xl'}>
@@ -35,11 +35,7 @@ export default function ListPage({ children, recourse, nav }: Props) {
           <Stack gap={0} w={'100%'}>
             <Flex p={'md'} justify='space-between'>
               <SearchField w={'72%'} />
-              <Button
-                variant='default'
-                component={Link}
-                href={`/${recourse}/new`}
-              >
+              <Button variant='default' component={Link} href={`/${path}/new`}>
                 New
               </Button>
             </Flex>

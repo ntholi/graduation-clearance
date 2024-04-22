@@ -29,11 +29,19 @@ export default function Navigation() {
   return (
     <AppShell.Navbar p='xs'>
       <AppShell.Section grow component={ScrollArea}>
-        <NavLink
+        {/* <NavLink
           label='Requisitions'
           component={Link}
           active={pathname.startsWith('/admin/requisitions')}
           href={'/admin/requisitions'}
+          leftSection={<IconFileDescription size='1.1rem' />}
+          rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
+        /> */}
+        <NavLink
+          label='Student Cards'
+          component={Link}
+          active={pathname.startsWith('/admin/student-cards')}
+          href={'/admin/student-cards'}
           leftSection={<IconFileDescription size='1.1rem' />}
           rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
         />
