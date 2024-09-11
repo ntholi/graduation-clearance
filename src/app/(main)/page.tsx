@@ -29,10 +29,10 @@ export default async function Home() {
   ];
 
   return (
-    <Container className='mt-10 max-w-4xl mx-auto'>
-      <div className='bg-gradient-to-r from-blue-500/5 to-purple-600/5 text-white rounded-lg shadow-xl p-8 mb-10'>
-        <div className='flex flex-col items-center gap-2.5'>
-          <div className='bg-white p-4 rounded-full'>
+    <Container className='mx-auto mt-10 max-w-4xl'>
+      <div className='mb-10 rounded-lg bg-gradient-to-r from-black/60 to-black/60 p-8 text-white shadow dark:from-blue-500/5 dark:to-purple-600/5'>
+        <div className='flex flex-col items-center gap-2'>
+          <div className='rounded-full bg-white p-4'>
             <User className='size-16 text-blue-500' />
           </div>
           <h1 className='text-4xl sm:text-5xl'>
@@ -44,19 +44,19 @@ export default async function Home() {
           </p>
         </div>
       </div>
-      <h2 className='text-2xl font-semibold mb-6 text-center'>Quick Actions</h2>
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+      <h2 className='mb-6 text-center text-2xl font-semibold'>Actions</h2>
+      <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
         {links.map((link) => (
           <Link key={link.title} href={link.href}>
-            <Card className='hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1'>
+            <Card className='duration-10 transform transition-all hover:-translate-y-0.5 hover:shadow-lg'>
               <CardHeader>
                 <div className='flex items-center space-x-4'>
-                  <div className='bg-primary/10 p-3 rounded-full'>
+                  <div className='rounded-full bg-primary/10 p-3'>
                     <link.icon className='size-8 text-primary' />
                   </div>
                   <div className='flex flex-col'>
                     <CardTitle className='text-xl'>{link.title}</CardTitle>
-                    <CardDescription className='text-sm mt-1'>
+                    <CardDescription className='mt-1 text-sm'>
                       {link.description}
                     </CardDescription>
                   </div>
