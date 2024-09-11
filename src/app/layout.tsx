@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
-import { ModeToggle } from '@/components/theme/mode-toggle';
 import Providers from './providers';
 
 const geistSans = localFont({
@@ -31,10 +30,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
       >
-        <Providers>
-          {children}
-          <ModeToggle />
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

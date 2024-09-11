@@ -10,13 +10,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { LogOut, User } from 'lucide-react';
+import { LogOut, Moon, Sun } from 'lucide-react';
 import { useSession } from 'next-auth/react';
+import { useTheme } from 'next-themes';
 
 export default function UserButton() {
   const { data: session } = useSession();
+  const { theme, setTheme } = useTheme();
 
   if (!session?.user) return null;
+
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
 
   return (
     <DropdownMenu>
@@ -38,14 +44,18 @@ export default function UserButton() {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
-            <User className='mr-2 h-4 w-4' />
-            <span>Profile</span>
+            <LogOut className='mr-2 h-4 w-4' />
+            <span>Log out</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={toggleTheme}>
+            {theme === 'light' ? (
+              <Moon className='mr-2 h-4 w-4' />
+            ) : (
+              <Sun className='mr-2 h-4 w-4' />
+            )}
+            <span>{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuItem>
-          <LogOut className='mr-2 h-4 w-4' />
-          <span>Log out</span>
-        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
