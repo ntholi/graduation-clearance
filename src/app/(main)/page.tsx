@@ -30,10 +30,10 @@ export default async function Home() {
 
   return (
     <Container className='mx-auto mt-10 max-w-4xl'>
-      <div className='mb-10 rounded-lg bg-gradient-to-r from-black/60 to-black/60 p-8 text-white shadow dark:from-blue-500/5 dark:to-purple-600/5'>
+      <div className='mb-10 rounded-lg bg-gradient-to-r from-blue-950/60 to-purple-950/30 p-8 text-white shadow dark:from-blue-500/5 dark:to-purple-600/5'>
         <div className='flex flex-col items-center gap-2'>
           <div className='rounded-full bg-white p-4'>
-            <User className='size-16 text-blue-500' />
+            <User className='size-16 text-foreground/60 dark:text-secondary' />
           </div>
           <h1 className='text-4xl sm:text-5xl'>
             {user?.name || 'Student Name'}
