@@ -6,6 +6,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import Container from '@/components/ui/container';
+import { Separator } from '@/components/ui/separator';
 import { FileText, GraduationCap } from 'lucide-react';
 import Link from 'next/link';
 
@@ -30,14 +31,21 @@ export default async function Home() {
 
   return (
     <Container className='mt-10'>
-      <div className='flex flex-col items-center'>
-        <h1 className='text-3xl sm:text-5xl'>{user?.name || 'Student Name'}</h1>
-        <p className='text-muted-foreground'>901013847</p>
-        <p className='text-muted-foreground text-center'>
-          Bsc Hons in Business Information Technology
-        </p>
+      <div className=''>
+        {/* <p className='text-sm border p-2 bg-card-foreground/5 rounded-md w-fit mx-auto'>
+          Please verify your information below
+        </p> */}
+        <div className='flex flex-col items-center gap-1 mt-10'>
+          <h1 className='text-3xl sm:text-5xl'>
+            {user?.name || 'Student Name'}
+          </h1>
+          <p className='text-muted-foreground'>901013847</p>
+          <p className='text-muted-foreground text-center'>
+            Bsc Hons in Business Information Technology
+          </p>
+        </div>
       </div>
-
+      <Separator className='my-10' />
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-10'>
         {links.map((link) => (
           <Link key={link.title} href={link.href}>

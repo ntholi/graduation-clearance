@@ -14,11 +14,6 @@ export default function Navbar() {
       <Container width='lg' className='flex items-center justify-between'>
         <div className='flex items-center'>
           <Logo className='mr-4 h-14 w-auto' />
-          <div className='hidden space-x-4 md:flex'>
-            <Link href='/' className='hover:text-foreground/60'>
-              Transcripts
-            </Link>
-          </div>
         </div>
         <div className='hidden md:block'>
           <UserButton />
