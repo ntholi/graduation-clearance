@@ -4,6 +4,7 @@ import Logo from './Logo';
 import { Menu, X } from 'lucide-react';
 import Container from '@/components/ui/container';
 import Link from 'next/link';
+import UserButton from './UserButton';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,17 +16,12 @@ export default function Navbar() {
           <Logo className='mr-4 h-14 w-auto' />
           <div className='hidden space-x-4 md:flex'>
             <Link href='/' className='hover:text-foreground/60'>
-              Home
-            </Link>
-            <Link href='/' className='hover:text-foreground/60'>
               Transcripts
             </Link>
           </div>
         </div>
         <div className='hidden md:block'>
-          <Link href='/account' className='hover:text-foreground/60'>
-            Account
-          </Link>
+          <UserButton />
         </div>
         <div className='md:hidden'>
           <button
@@ -40,17 +36,9 @@ export default function Navbar() {
         <div className='absolute left-0 top-20 z-50 h-full w-full bg-background/30 backdrop-blur-md md:hidden'>
           <div className='space-y-3 px-2 pb-3 pt-2'>
             <Link href='/' className='block text-lg hover:text-foreground/60'>
-              Home
-            </Link>
-            <Link href='/' className='block text-lg hover:text-foreground/60'>
               Transcripts
             </Link>
-            <Link
-              href='/account'
-              className='block text-lg hover:text-foreground/60'
-            >
-              Account
-            </Link>
+            <UserButton />
           </div>
         </div>
       )}
