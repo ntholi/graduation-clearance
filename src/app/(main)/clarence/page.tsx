@@ -25,9 +25,9 @@ export default function ClearancePage() {
               <ClarenceStep
                 key={step.id}
                 step={step}
-                isCompleted={completedSteps.has(step.id)}
+                isCleared={completedSteps.has(step.id)}
                 isLast={index === steps.length - 1}
-                onComplete={handleComplete}
+                onClear={handleComplete}
               />
             ))}
           </div>

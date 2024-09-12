@@ -11,24 +11,19 @@ import { Step } from './steps';
 
 interface Props {
   step: Step;
-  isCompleted: boolean;
+  isCleared: boolean;
   isLast: boolean;
-  onComplete: (id: number) => void;
+  onClear: (id: number) => void;
 }
 
-export default function ClarenceStep({
-  step,
-  isCompleted,
-  isLast,
-  onComplete,
-}: Props) {
+function ClarenceStep({ step, isCleared, isLast, onClear }: Props) {
   const Icon = step.icon;
 
   return (
     <div className={`flex ${!isLast ? 'mb-8' : ''}`}>
       <div className='mr-4 flex flex-col items-center'>
         <div
-          className={`rounded-full p-4 ${isCompleted ? 'bg-foreground/90' : 'bg-foreground/30'}`}
+          className={`rounded-full p-4 ${isCleared ? 'bg-foreground/90' : 'bg-foreground/30'}`}
         >
           <Icon className='h-6 w-6 text-background' />
         </div>
@@ -42,14 +37,14 @@ export default function ClarenceStep({
           <CardDescription>{step.description}</CardDescription>
         </CardHeader>
         <CardContent>
-          {isCompleted ? (
+          {isCleared ? (
             <div className='flex items-center text-green-600 dark:text-green-400'>
               <CheckCircle2 className='mr-2 h-5 w-5' />
               <span className='text-sm'>Cleared</span>
             </div>
           ) : (
             <Button
-              onClick={() => onComplete(step.id)}
+              onClick={() => onClear(step.id)}
               variant='outline'
               className='w-full'
             >
@@ -61,3 +56,4 @@ export default function ClarenceStep({
     </div>
   );
 }
+export default ClarenceStep;
