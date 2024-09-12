@@ -15,8 +15,8 @@ export default async function Home() {
 
   const links = [
     {
-      title: 'Graduation',
-      description: 'Clearance for Graduation',
+      title: 'Clearance',
+      description: 'Graduation Clearance',
       href: '/graduation/clearance',
       icon: GraduationCap,
     },

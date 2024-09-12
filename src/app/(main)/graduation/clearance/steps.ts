@@ -17,7 +17,7 @@ export const steps: Step[] = [
   {
     id: 1,
     title: 'Faculty',
-    description: 'No pending repeat modules and GPA above 2.0',
+    description: 'No pending repeat modules and CGPA above 2.0',
     icon: Users,
   },
   {
