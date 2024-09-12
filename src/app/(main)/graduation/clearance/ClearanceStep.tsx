@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { CheckCircle2, Info } from 'lucide-react';
+import { CheckCircle2, CircleAlert } from 'lucide-react';
 import { Step } from './steps';
 
 interface Props {
@@ -45,7 +45,7 @@ function ClearanceStep({ step, isCleared, isLast, onClear }: Props) {
           ) : (
             <div className='flex items-center justify-between'>
               <div className='flex items-center text-red-600 dark:text-red-400'>
-                <Info className='mr-2 h-5 w-5' />
+                <CircleAlert className='mr-2 h-5 w-5' />
                 <span className='text-sm'>Not Cleared</span>
               </div>
               <Button onClick={() => onClear(step.id)}>
