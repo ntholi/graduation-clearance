@@ -44,10 +44,10 @@ export default async function Home() {
       <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
         {links.map((link) => (
           <Link key={link.title} href={link.href}>
-            <Card className='duration-10 transform transition-all hover:-translate-y-0.5 hover:shadow-lg'>
+            <Card className='group hover:text-primary/80 hover:shadow'>
               <CardHeader>
                 <div className='flex items-center space-x-4'>
-                  <div className='rounded-full bg-primary/10 p-3'>
+                  <div className='rounded-full bg-primary/10 p-3 transition-all duration-300 group-hover:scale-110'>
                     <link.icon className='size-8 text-primary' />
                   </div>
                   <div className='flex flex-col'>
