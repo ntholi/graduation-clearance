@@ -35,13 +35,9 @@ export default async function Home() {
           <div className='rounded-full bg-white p-4'>
             <User className='size-16 text-foreground/60 dark:text-secondary' />
           </div>
-          <h1 className='text-4xl sm:text-5xl'>
-            {user?.name || 'Student Name'}
-          </h1>
-          <p className='text-xl'>901013847</p>
-          <p className='text-center'>
-            BSc Hons in Business Information Technology
-          </p>
+          <h1 className='text-2xl sm:text-5xl'>{'Student Name'}</h1>
+          <p className=''>901013847</p>
+          <p className='text-sm'>BSc Hons in Business Information Technology</p>
         </div>
       </div>
       <h2 className='mb-6 text-center text-2xl font-semibold'>Actions</h2>
