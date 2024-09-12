@@ -1,5 +1,11 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { CheckCircle2 } from 'lucide-react';
 import { Step } from './steps';
 
@@ -30,11 +36,12 @@ export default function ClarenceStep({
           <div className='mt-2 h-full w-0.5 bg-gray-300 dark:bg-gray-700'></div>
         )}
       </div>
-      <Card className='flex-grow'>
-        <CardContent className='pt-6'>
-          <h3 className='mb-2 text-xl font-bold text-gray-800 dark:text-gray-100'>
-            {step.title}
-          </h3>
+      <Card className='w-full'>
+        <CardHeader>
+          <CardTitle>{step.title}</CardTitle>
+          <CardDescription>{step.description}</CardDescription>
+        </CardHeader>
+        <CardContent>
           {isCompleted ? (
             <div className='flex items-center text-green-600 dark:text-green-400'>
               <CheckCircle2 className='mr-2 h-5 w-5' />
