@@ -1,4 +1,3 @@
-import { auth } from '@/auth';
 import {
   Card,
   CardDescription,
@@ -10,9 +9,6 @@ import { FileText, GraduationCap, User } from 'lucide-react';
 import Link from 'next/link';
 
 export default async function Home() {
-  const session = await auth();
-  const user = session?.user;
-
   const links = [
     {
       title: 'Clearance',
