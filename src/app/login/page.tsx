@@ -8,10 +8,11 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import Logo from '../(main)/base/Logo';
+import Gradient from '@/components/ui/Gradient';
 
 export default function LoginForm() {
   return (
-    <div className='flex h-screen items-center justify-center p-4'>
+    <Gradient className='flex h-screen items-center justify-center p-4'>
       <Logo
         width={500}
         height={500}
@@ -32,7 +33,7 @@ export default function LoginForm() {
           </Button>
         </CardFooter>
       </Card>
-    </div>
+    </Gradient>
   );
 }
 
