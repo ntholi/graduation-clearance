@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import ClarenceStep from './ClarenceStep';
+import ClearanceStep from './ClearanceStep';
 import { steps } from './steps';
 import Container from '@/components/ui/container';
 
@@ -22,7 +22,7 @@ export default function ClearancePage() {
           </h1>
           <div className='space-y-4'>
             {steps.map((step, index) => (
-              <ClarenceStep
+              <ClearanceStep
                 key={step.id}
                 step={step}
                 isCleared={completedSteps.has(step.id)}

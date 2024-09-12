@@ -16,7 +16,7 @@ interface Props {
   onClear: (id: number) => void;
 }
 
-function ClarenceStep({ step, isCleared, isLast, onClear }: Props) {
+function ClearanceStep({ step, isCleared, isLast, onClear }: Props) {
   const Icon = step.icon;
 
   return (
@@ -56,4 +56,4 @@ function ClarenceStep({ step, isCleared, isLast, onClear }: Props) {
     </div>
   );
 }
-export default ClarenceStep;
+export default ClearanceStep;

@@ -17,7 +17,7 @@ export default async function Home() {
     {
       title: 'Graduation',
       description: 'Clearance for Graduation',
-      href: '/graduation',
+      href: '/graduation/clearance',
       icon: GraduationCap,
     },
     {
