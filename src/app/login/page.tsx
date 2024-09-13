@@ -9,8 +9,21 @@ import {
 } from '@/components/ui/card';
 import Logo from '../(main)/base/Logo';
 import Gradient from '@/components/ui/Gradient';
+import { auth, signIn } from '@/auth';
+import { redirect } from 'next/navigation';
 
-export default function LoginForm() {
+export default async function LoginForm() {
+  const session = await auth();
+
+  if (session) {
+    return redirect('/');
+  }
+
+  const handleSignIn = async () => {
+    'use server';
+    await signIn('google');
+  };
+
   return (
     <Gradient className='flex h-screen items-center justify-center p-4'>
       <Logo
@@ -27,10 +40,12 @@ export default function LoginForm() {
         </CardHeader>
         <CardContent className='grid gap-4'></CardContent>
         <CardFooter>
-          <Button className='w-full'>
-            <GoogleIcon />
-            Sign in with Google
-          </Button>
+          <form action={handleSignIn}>
+            <Button className='w-full'>
+              <GoogleIcon />
+              Sign in with Google
+            </Button>
+          </form>
         </CardFooter>
       </Card>
     </Gradient>
