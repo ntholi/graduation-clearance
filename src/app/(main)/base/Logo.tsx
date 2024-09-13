@@ -10,7 +10,7 @@ type Props = {
   height?: number;
 };
 
-export default function Logo({ className, width = 100, height = 100 }: Props) {
+export default function Logo({ className, width = 150, height = 150 }: Props) {
   const { theme } = useTheme();
 
   return (
