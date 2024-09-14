@@ -1,10 +1,14 @@
-import { defineConfig } from 'drizzle-kit';
+import type { Config } from 'drizzle-kit';
 
-export default defineConfig({
-  dialect: 'postgresql',
+if (!process.env.AUTH_DRIZZLE_URL) {
+  throw new Error('AUTH_DRIZZLE_URL must be a Neon postgres connection string');
+}
+
+export default {
   schema: './src/schema.ts',
   out: './drizzle',
+  dialect: 'postgresql',
   dbCredentials: {
-    url: process.env.DATABASE_URL as string,
+    url: process.env.AUTH_DRIZZLE_URL,
   },
-});
+} satisfies Config;
