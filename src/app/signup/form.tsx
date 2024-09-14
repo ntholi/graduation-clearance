@@ -44,9 +44,6 @@ export function SignUpForm() {
               <FormControl>
                 <Input placeholder='Full Names' {...field} />
               </FormControl>
-              <FormDescription>
-                Your names as registered with the university
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

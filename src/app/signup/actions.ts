@@ -10,9 +10,15 @@ export async function signUpStudent(student: z.infer<typeof signUpSchema>) {
   if (!session?.user) {
     return { error: 'Unauthorized' };
   }
-  return await db.insert(signUps).values({
-    name: student.name,
-    studentNumber: student.studentNumber,
-    userId: session.user.id!,
-  });
+  await db
+    .insert(signUps)
+    .values({
+      name: student.name,
+      studentNumber: student.studentNumber,
+      userId: session.user.id!,
+    })
+    .onConflictDoUpdate({
+      target: signUps.userId,
+      set: { name: student.name, studentNumber: student.studentNumber },
+    });
 }
