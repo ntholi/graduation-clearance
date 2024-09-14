@@ -26,7 +26,8 @@ class Student(Base):
     email = Column(String, unique=True)
     created_at = Column(TIMESTAMP, server_default=func.now())
 
-    user = relationship("User")
+    def __repr__(self):
+        return f"Student(std_no={self.std_no}, user_id={self.user_id}, name={self.name}, national_id={self.national_id}, program={self.program}, email={self.email}, created_at={self.created_at})"
 
 
 class SignUp(Base):
@@ -38,7 +39,8 @@ class SignUp(Base):
     name = Column(String, nullable=False)
     created_at = Column(TIMESTAMP, server_default=func.now())
 
-    user = relationship("User")
+    def __repr__(self):
+        return f"SignUp(id={self.id}, user_id={self.user_id}, std_no={self.std_no}, approved={self.approved}, name={self.name}, created_at={self.created_at})"
 
 
 class Enrollment(Base):
@@ -55,6 +57,9 @@ class Enrollment(Base):
 
     student = relationship("Student")
 
+    def __repr__(self):
+        return f"Enrollment(id={self.id}, std_no={self.std_no}, term={self.term}, semester={self.semester}, gpa={self.gpa}, cgpa={self.cgpa}, credits={self.credits})"
+
 
 class Grade(Base):
     __tablename__ = "grades"
@@ -68,3 +73,6 @@ class Grade(Base):
     credits = Column(Integer, nullable=False)
 
     student = relationship("Student")
+
+    def __repr__(self):
+        return f"Grade(id={self.id}, std_no={self.std_no}, course_code={self.course_code}, course_name={self.course_name}, grade={self.grade}, credits={self.credits})"
