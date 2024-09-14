@@ -15,12 +15,12 @@ export async function signUpStudent(student: z.infer<typeof signUpSchema>) {
     .insert(signUps)
     .values({
       name: student.name,
-      studentNumber: student.studentNumber,
+      stdNo: student.studentNumber,
       userId: session.user.id!,
     })
     .onConflictDoUpdate({
       target: signUps.userId,
-      set: { name: student.name, studentNumber: student.studentNumber },
+      set: { name: student.name, stdNo: student.studentNumber },
     });
 }
 

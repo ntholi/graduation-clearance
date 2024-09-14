@@ -8,6 +8,13 @@
       "when": 1726308193093,
       "tag": "0000_freezing_chronomancer",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1726311508372,
+      "tag": "0001_charming_aaron_stack",
+      "breakpoints": true
     }
   ]
 }

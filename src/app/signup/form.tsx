@@ -38,7 +38,7 @@ export function SignUpForm() {
         if (signUp && 'name' in signUp) {
           form.reset({
             name: signUp.name,
-            studentNumber: signUp.studentNumber,
+            studentNumber: signUp.stdNo,
           });
           setSubmitted(true);
         }

@@ -3,7 +3,7 @@ import { users } from './auth';
 
 export const students = pgTable('students', {
   id: integer('id').notNull().primaryKey(),
-  studentNumber: integer('student_number').notNull(),
+  stdNo: integer('std_no').notNull(),
   userId: text('user_id')
     .notNull()
     .unique()
@@ -19,7 +19,7 @@ export const signUps = pgTable('signups', {
     .notNull()
     .unique()
     .references(() => users.id, { onDelete: 'cascade' }),
-  studentNumber: text('student_number').notNull(),
+  stdNo: text('std_no').notNull(),
   name: text('name').notNull(),
   createdAt: timestamp('created_at').defaultNow(),
 });
