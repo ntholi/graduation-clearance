@@ -26,15 +26,11 @@ export default async function RegistrationPage() {
   }
 
   return (
-    <Gradient className='flex h-screen items-center justify-center p-4'>
-      <Logo
-        width={500}
-        height={500}
-        className='absolute left-1/2 top-0 mt-4 h-32 w-auto -translate-x-1/2 md:mt-10'
-      />
+    <Gradient className='flex h-screen flex-col items-center justify-center p-4'>
+      <Logo width={500} height={500} className='mx-auto block h-32 w-auto' />
       <Card className='w-full md:mt-10 md:w-[400px]'>
         <CardHeader>
-          <CardTitle>Signup</CardTitle>
+          <CardTitle>Sign Up</CardTitle>
         </CardHeader>
         <CardContent>
           <div className='grid w-full items-center gap-6'>

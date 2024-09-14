@@ -16,10 +16,14 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { signUpSchema } from './schema';
-import { Loader2 } from 'lucide-react';
-import { signUpStudent } from './actions';
+import { CheckCircle, Loader2 } from 'lucide-react';
+import { getSignUp, signUpStudent } from './actions';
+import { useEffect, useState } from 'react';
+import { Separator } from '@/components/ui/separator';
 
 export function SignUpForm() {
+  const [loading, setLoading] = useState(true);
+  const [submitted, setSubmitted] = useState(false);
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -28,14 +32,40 @@ export function SignUpForm() {
     },
   });
 
+  useEffect(() => {
+    getSignUp()
+      .then((signUp) => {
+        if (signUp && 'name' in signUp) {
+          form.reset({
+            name: signUp.name,
+            studentNumber: signUp.studentNumber,
+          });
+          setSubmitted(true);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
   async function onSubmit(values: z.infer<typeof signUpSchema>) {
     await signUpStudent(values);
+    setSubmitted(true);
   }
 
   return (
     <Form {...form}>
+      {submitted && (
+        <div className='flex items-center gap-2 rounded border p-2 text-green-400'>
+          <CheckCircle className='size-4' />
+          <p className='text-sm'>
+            Your request has been submitted, waiting approval
+          </p>
+        </div>
+      )}
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
         <FormField
+          disabled={loading}
           control={form.control}
           name='name'
           render={({ field }) => (
@@ -51,6 +81,7 @@ export function SignUpForm() {
         <FormField
           control={form.control}
           name='studentNumber'
+          disabled={loading}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Student Number</FormLabel>
@@ -64,12 +95,12 @@ export function SignUpForm() {
         <Button
           type='submit'
           className='w-full'
-          disabled={form.formState.isSubmitting}
+          disabled={form.formState.isSubmitting || loading}
         >
           {form.formState.isSubmitting && (
             <Loader2 className='mr-2 h-4 w-4 animate-spin' />
           )}
-          Sign Up
+          {submitted ? 'Update' : 'Submit'}
         </Button>
       </form>
     </Form>
