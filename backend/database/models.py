@@ -26,6 +26,10 @@ class Student(Base):
     email = Column(String, unique=True)
     created_at = Column(TIMESTAMP, server_default=func.now())
 
+    enrollments = relationship(
+        "Enrollment", back_populates="student", cascade="all, delete-orphan"
+    )
+
     def __repr__(self):
         return f"Student(std_no={self.std_no}, user_id={self.user_id}, name={self.name}, national_id={self.national_id}, program={self.program}, email={self.email}, created_at={self.created_at})"
 
@@ -55,7 +59,10 @@ class Enrollment(Base):
     cgpa = Column(DECIMAL(3, 2), nullable=False)
     credits = Column(Integer, nullable=False)
 
-    student = relationship("Student")
+    student = relationship("Student", back_populates="enrollments")
+    grades = relationship(
+        "Grade", back_populates="enrollment", cascade="all, delete-orphan"
+    )
 
     def __repr__(self):
         return f"Enrollment(id={self.id}, std_no={self.std_no}, term={self.term}, semester={self.semester}, gpa={self.gpa}, cgpa={self.cgpa}, credits={self.credits})"
@@ -72,7 +79,7 @@ class Grade(Base):
     grade = Column(String(2), nullable=False)
     credits = Column(Integer, nullable=False)
 
-    student = relationship("Student")
+    enrollment = relationship("Enrollment", back_populates="grades")
 
     def __repr__(self):
-        return f"Grade(id={self.id}, std_no={self.std_no}, course_code={self.course_code}, course_name={self.course_name}, grade={self.grade}, credits={self.credits})"
+        return f"Grade(id={self.id}, enrollment_id={self.enrollment_id}, course_code={self.course_code}, course_name={self.course_name}, grade={self.grade}, credits={self.credits})"

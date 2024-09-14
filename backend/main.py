@@ -14,10 +14,9 @@ def approve_signups():
     # for signup in signups:
     #     print(signup)
     scrapper = Scrapper()
-    student, enrollments, grades = scrapper.get_student_data(901013857)
+    student, enrollments = scrapper.get_student_data(901013857)
     print(student)
     print(enrollments)
-    print(grades)
 
 
 def main():
