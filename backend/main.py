@@ -1,5 +1,6 @@
 from database import db_session, init_db
 from database.models import SignUp
+from rich import print
 from scrapper import Scrapper
 
 

@@ -1,4 +1,5 @@
 import logging
+import re
 from decimal import Decimal, InvalidOperation
 
 from browser import BASE_URL, Browser
@@ -74,26 +75,33 @@ class Scrapper:
         current_gpa = None
         current_cgpa = None
         current_credits = Decimal("0")
+        current_grades = []
 
         for row in main_table.find_all("tr")[
-            5:
-        ]:  # Skip the first 5 rows (student info)
+            3:
+        ]:  # Skip the first 3 rows (student info)
             if "Term" in row.text:
-                # Start of a new term
-                if current_term:
-                    # Save the previous enrollment
-                    enrollments.append(
-                        Enrollment(
-                            std_no=std_no,
-                            term=current_term,
-                            semester=current_semester,
-                            gpa=current_gpa,
-                            cgpa=current_cgpa,
-                            credits=int(current_credits),
+                term_value = row.find_all("td")[1].text.strip()
+                if re.match(
+                    r"\d{4}-\d{2}", term_value
+                ):  # Check if term matches year-semester format
+                    # Start of a new valid term
+                    if current_term:
+                        # Save the previous enrollment
+                        enrollments.append(
+                            Enrollment(
+                                std_no=std_no,
+                                term=current_term,
+                                semester=current_semester,
+                                gpa=current_gpa,
+                                cgpa=current_cgpa,
+                                credits=int(current_credits),
+                            )
                         )
-                    )
-                current_term = row.find_all("td")[1].text.strip()
-                current_credits = Decimal("0")
+                        grades.extend(current_grades)
+                    current_term = term_value
+                    current_credits = Decimal("0")
+                    current_grades = []
             elif "Semester:" in row.text:
                 current_semester = (
                     row.find_all("td")[1].text.strip().split(",")[0].strip()
@@ -105,21 +113,23 @@ class Scrapper:
                 current_cgpa = self.clean_decimal(cgpa_text.split(":")[1])
             elif len(row.find_all("td")) == 10:  # Grade row
                 cols = row.find_all("td")
-                try:
-                    grade_credits = self.clean_decimal(cols[5].text)
-                    current_credits += grade_credits
-                    grade = Grade(
-                        std_no=std_no,
-                        course_code=cols[1].text.strip(),
-                        course_name=cols[2].text.strip(),
-                        grade=cols[4].text.strip(),
-                        credits=int(grade_credits),
-                    )
-                    grades.append(grade)
-                except (ValueError, IndexError) as e:
-                    logger.warning(f"Error processing grade row: {e}")
+                course_code = cols[1].text.strip()
+                if course_code and course_code != "Code":  # Valid grade row
+                    try:
+                        grade_credits = self.clean_decimal(cols[5].text)
+                        current_credits += grade_credits
+                        grade = Grade(
+                            std_no=std_no,
+                            course_code=course_code,
+                            course_name=cols[2].text.strip(),
+                            grade=cols[4].text.strip(),
+                            credits=int(grade_credits),
+                        )
+                        current_grades.append(grade)
+                    except (ValueError, IndexError) as e:
+                        logger.warning(f"Error processing grade row: {e}")
 
-        # Add the last enrollment
+        # Add the last enrollment and grades
         if current_term:
             enrollments.append(
                 Enrollment(
@@ -131,5 +141,6 @@ class Scrapper:
                     credits=int(current_credits),
                 )
             )
+            grades.extend(current_grades)
 
         return student, enrollments, grades
