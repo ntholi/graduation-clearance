@@ -1,4 +1,11 @@
-import { integer, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+import {
+  boolean,
+  integer,
+  pgTable,
+  serial,
+  text,
+  timestamp,
+} from 'drizzle-orm/pg-core';
 import { users } from './auth';
 
 export const students = pgTable('students', {
@@ -20,6 +27,7 @@ export const signUps = pgTable('signups', {
     .unique()
     .references(() => users.id, { onDelete: 'cascade' }),
   stdNo: text('std_no').notNull(),
+  approved: boolean('approved').default(false),
   name: text('name').notNull(),
   createdAt: timestamp('created_at').defaultNow(),
 });
