@@ -1,3 +1,23 @@
+CREATE TABLE IF NOT EXISTS "signups" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"user_id" text NOT NULL,
+	"student_number" text NOT NULL,
+	"name" text NOT NULL,
+	"created_at" timestamp DEFAULT now(),
+	CONSTRAINT "signups_user_id_unique" UNIQUE("user_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "students" (
+	"id" integer PRIMARY KEY NOT NULL,
+	"student_number" integer NOT NULL,
+	"user_id" text NOT NULL,
+	"name" text,
+	"email" text,
+	"created_at" timestamp DEFAULT now(),
+	CONSTRAINT "students_user_id_unique" UNIQUE("user_id"),
+	CONSTRAINT "students_email_unique" UNIQUE("email")
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "account" (
 	"userId" text NOT NULL,
 	"type" text NOT NULL,
@@ -47,6 +67,18 @@ CREATE TABLE IF NOT EXISTS "verificationToken" (
 	"expires" timestamp NOT NULL,
 	CONSTRAINT "verificationToken_identifier_token_pk" PRIMARY KEY("identifier","token")
 );
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "signups" ADD CONSTRAINT "signups_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "students" ADD CONSTRAINT "students_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "account" ADD CONSTRAINT "account_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;

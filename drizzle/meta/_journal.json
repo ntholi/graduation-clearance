@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1726294476657,
-      "tag": "0000_remarkable_firedrake",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1726294990685,
-      "tag": "0001_open_betty_ross",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1726295540668,
-      "tag": "0002_complex_maggott",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1726295627008,
-      "tag": "0003_unknown_ronan",
+      "when": 1726308193093,
+      "tag": "0000_freezing_chronomancer",
       "breakpoints": true
     }
   ]
