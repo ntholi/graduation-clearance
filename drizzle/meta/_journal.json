@@ -15,6 +15,20 @@
       "when": 1726294990685,
       "tag": "0001_open_betty_ross",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1726295540668,
+      "tag": "0002_complex_maggott",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1726295627008,
+      "tag": "0003_unknown_ronan",
+      "breakpoints": true
     }
   ]
 }

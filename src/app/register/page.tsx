@@ -19,7 +19,9 @@ export default function RegistrationPage() {
       <Card className='w-full md:w-[400px]'>
         <CardHeader>
           <CardTitle>Register</CardTitle>
-          <CardDescription>Register to access the platform.</CardDescription>
+          <CardDescription>
+            Register with your student number details access the platform.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form>

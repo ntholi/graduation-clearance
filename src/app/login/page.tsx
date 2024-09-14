@@ -40,7 +40,7 @@ export default async function LoginForm() {
         </CardHeader>
         <CardContent className='grid gap-4'></CardContent>
         <CardFooter>
-          <form action={handleSignIn}>
+          <form action={handleSignIn} className='w-full'>
             <Button className='w-full'>
               <GoogleIcon />
               Sign in with Google
