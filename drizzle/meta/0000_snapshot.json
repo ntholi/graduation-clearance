@@ -1,5 +1,5 @@
 {
-  "id": "5f63e1ca-2280-48d6-83bc-cdb9e35c5517",
+  "id": "3a9f4faf-6ce1-414f-aa59-431f845c29c9",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -80,8 +80,8 @@
           "primaryKey": true,
           "notNull": true
         },
-        "std_no": {
-          "name": "std_no",
+        "enrollment_id": {
+          "name": "enrollment_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -113,15 +113,15 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "grades_std_no_students_std_no_fk": {
-          "name": "grades_std_no_students_std_no_fk",
+        "grades_enrollment_id_enrollments_id_fk": {
+          "name": "grades_enrollment_id_enrollments_id_fk",
           "tableFrom": "grades",
-          "tableTo": "students",
+          "tableTo": "enrollments",
           "columnsFrom": [
-            "std_no"
+            "enrollment_id"
           ],
           "columnsTo": [
-            "std_no"
+            "id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"

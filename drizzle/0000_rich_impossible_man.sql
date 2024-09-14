@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS "enrollments" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "grades" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"std_no" integer NOT NULL,
+	"enrollment_id" integer NOT NULL,
 	"course_code" text NOT NULL,
 	"course_name" text NOT NULL,
 	"grade" char(2) NOT NULL,
@@ -96,7 +96,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "grades" ADD CONSTRAINT "grades_std_no_students_std_no_fk" FOREIGN KEY ("std_no") REFERENCES "public"."students"("std_no") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "grades" ADD CONSTRAINT "grades_enrollment_id_enrollments_id_fk" FOREIGN KEY ("enrollment_id") REFERENCES "public"."enrollments"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
