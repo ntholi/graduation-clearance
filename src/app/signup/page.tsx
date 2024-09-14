@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { redirect } from 'next/navigation';
 import Logo from '../(main)/base/Logo';
+import { SignUpForm } from './form';
 
 export default async function RegistrationPage() {
   const session = await auth();
@@ -33,7 +34,7 @@ export default async function RegistrationPage() {
       />
       <Card className='w-full md:mt-10 md:w-[400px]'>
         <CardHeader>
-          <CardTitle>Register</CardTitle>
+          <CardTitle>Signup</CardTitle>
         </CardHeader>
         <CardContent>
           <div className='grid w-full items-center gap-6'>
@@ -61,19 +62,9 @@ export default async function RegistrationPage() {
                 </Button>
               </form>
             </div>
-            <div className='flex flex-col space-y-1.5'>
-              <Label htmlFor='name'>Name</Label>
-              <Input id='name' placeholder='Full Names' />
-            </div>
-            <div className='flex flex-col space-y-1.5'>
-              <Label htmlFor='studentNumber'>Student Number</Label>
-              <Input id='studentNumber' placeholder='Student Number' />
-            </div>
+            <SignUpForm />
           </div>
         </CardContent>
-        <CardFooter>
-          <Button className='w-full'>Register</Button>
-        </CardFooter>
       </Card>
     </Gradient>
   );

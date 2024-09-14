@@ -24,7 +24,7 @@ export default function Navbar() {
   if (status === 'loading') return null;
   if (status === 'unauthenticated') return redirect('/login');
 
-  if (!student) return redirect('/register');
+  if (!student) return redirect('/signup');
 
   return (
     <nav className='border-b p-2'>
