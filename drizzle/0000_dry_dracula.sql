@@ -1,17 +1,38 @@
+CREATE TABLE IF NOT EXISTS "enrollments" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"std_no" integer NOT NULL,
+	"term" text NOT NULL,
+	"semester" text NOT NULL,
+	"gpa" numeric(3, 2) NOT NULL,
+	"cgpa" numeric(3, 2) NOT NULL,
+	"credits" integer NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "grades" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"std_no" integer NOT NULL,
+	"course_code" text NOT NULL,
+	"course_name" text NOT NULL,
+	"grade" char(2) NOT NULL,
+	"credits" integer NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "signups" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"user_id" text NOT NULL,
-	"student_number" text NOT NULL,
+	"std_no" integer NOT NULL,
+	"approved" boolean DEFAULT false,
 	"name" text NOT NULL,
 	"created_at" timestamp DEFAULT now(),
 	CONSTRAINT "signups_user_id_unique" UNIQUE("user_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "students" (
-	"id" integer PRIMARY KEY NOT NULL,
-	"student_number" integer NOT NULL,
+	"std_no" integer PRIMARY KEY NOT NULL,
 	"user_id" text NOT NULL,
 	"name" text,
+	"national_id" text NOT NULL,
+	"program" text NOT NULL,
 	"email" text,
 	"created_at" timestamp DEFAULT now(),
 	CONSTRAINT "students_user_id_unique" UNIQUE("user_id"),
@@ -67,6 +88,18 @@ CREATE TABLE IF NOT EXISTS "verificationToken" (
 	"expires" timestamp NOT NULL,
 	CONSTRAINT "verificationToken_identifier_token_pk" PRIMARY KEY("identifier","token")
 );
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "enrollments" ADD CONSTRAINT "enrollments_std_no_students_std_no_fk" FOREIGN KEY ("std_no") REFERENCES "public"."students"("std_no") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "grades" ADD CONSTRAINT "grades_std_no_students_std_no_fk" FOREIGN KEY ("std_no") REFERENCES "public"."students"("std_no") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "signups" ADD CONSTRAINT "signups_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;

@@ -1,6 +1,9 @@
 import {
   boolean,
+  char,
+  decimal,
   integer,
+  json,
   pgTable,
   serial,
   text,
@@ -9,13 +12,14 @@ import {
 import { users } from './auth';
 
 export const students = pgTable('students', {
-  id: integer('id').notNull().primaryKey(),
-  stdNo: integer('std_no').notNull(),
+  stdNo: integer('std_no').notNull().primaryKey(),
   userId: text('user_id')
     .notNull()
     .unique()
     .references(() => users.id, { onDelete: 'cascade' }),
   name: text('name'),
+  nationalId: text('national_id').notNull(),
+  program: text('program').notNull(),
   email: text('email').unique(),
   createdAt: timestamp('created_at').defaultNow(),
 });
@@ -26,8 +30,31 @@ export const signUps = pgTable('signups', {
     .notNull()
     .unique()
     .references(() => users.id, { onDelete: 'cascade' }),
-  stdNo: text('std_no').notNull(),
+  stdNo: integer('std_no').notNull(),
   approved: boolean('approved').default(false),
   name: text('name').notNull(),
   createdAt: timestamp('created_at').defaultNow(),
+});
+
+export const enrollments = pgTable('enrollments', {
+  id: serial('id').notNull().primaryKey(),
+  stdNo: integer('std_no')
+    .notNull()
+    .references(() => students.stdNo, { onDelete: 'cascade' }),
+  term: text('term').notNull(),
+  semester: text('semester').notNull(),
+  gpa: decimal('gpa', { precision: 3, scale: 2 }).notNull(),
+  cgpa: decimal('cgpa', { precision: 3, scale: 2 }).notNull(),
+  credits: integer('credits').notNull(),
+});
+
+export const grades = pgTable('grades', {
+  id: serial('id').notNull().primaryKey(),
+  stdNo: integer('std_no')
+    .notNull()
+    .references(() => students.stdNo, { onDelete: 'cascade' }),
+  courseCode: text('course_code').notNull(),
+  courseName: text('course_name').notNull(),
+  grade: char('grade', { length: 2 }).notNull(),
+  credits: integer('credits').notNull(),
 });

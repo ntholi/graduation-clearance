@@ -1,1 +1,0 @@
-ALTER TABLE "signups" ADD COLUMN "approved" boolean DEFAULT false;

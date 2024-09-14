@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1726308193093,
-      "tag": "0000_freezing_chronomancer",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1726311508372,
-      "tag": "0001_charming_aaron_stack",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1726311589350,
-      "tag": "0002_wealthy_snowbird",
+      "when": 1726315911843,
+      "tag": "0000_dry_dracula",
       "breakpoints": true
     }
   ]
