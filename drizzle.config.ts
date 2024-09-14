@@ -5,7 +5,7 @@ if (!process.env.AUTH_DRIZZLE_URL) {
 }
 
 export default {
-  schema: './src/db/schema.ts',
+  schema: ['./src/db/schema/index.ts', './src/db/schema/auth.ts'],
   out: './drizzle',
   dialect: 'postgresql',
   dbCredentials: {
