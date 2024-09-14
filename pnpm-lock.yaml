@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@auth/drizzle-adapter':
+        specifier: ^1.4.2
+        version: 1.4.2
       '@neondatabase/serverless':
         specifier: ^0.9.5
         version: 0.9.5
@@ -113,6 +116,9 @@ packages:
         optional: true
       nodemailer:
         optional: true
+
+  '@auth/drizzle-adapter@1.4.2':
+    resolution: {integrity: sha512-rqukaT9CeWB8VOt6g2bQ6uYMHVOQIYCBkzddZXWshi8aqwLABatpRWAc+pehpcMDn0RSW/uvKMs7tkON+Bho9Q==}
 
   '@drizzle-team/brocli@0.10.1':
     resolution: {integrity: sha512-AHy0vjc+n/4w/8Mif+w86qpppHuF3AyXbcWW+R/W7GNA3F5/p2nuhlkCJaTXSLZheB4l1rtHzOfr9A7NwoR/Zg==}
@@ -2619,6 +2625,14 @@ snapshots:
       oauth4webapi: 2.13.0
       preact: 10.11.3
       preact-render-to-string: 5.2.3(preact@10.11.3)
+
+  '@auth/drizzle-adapter@1.4.2':
+    dependencies:
+      '@auth/core': 0.34.2
+    transitivePeerDependencies:
+      - '@simplewebauthn/browser'
+      - '@simplewebauthn/server'
+      - nodemailer
 
   '@drizzle-team/brocli@0.10.1': {}
 
