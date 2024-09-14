@@ -50,9 +50,9 @@ export const enrollments = pgTable('enrollments', {
 
 export const grades = pgTable('grades', {
   id: serial('id').notNull().primaryKey(),
-  stdNo: integer('std_no')
+  enrollmentId: integer('enrollment_id')
     .notNull()
-    .references(() => students.stdNo, { onDelete: 'cascade' }),
+    .references(() => enrollments.id, { onDelete: 'cascade' }),
   courseCode: text('course_code').notNull(),
   courseName: text('course_name').notNull(),
   grade: char('grade', { length: 2 }).notNull(),

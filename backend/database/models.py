@@ -64,8 +64,8 @@ class Enrollment(Base):
 class Grade(Base):
     __tablename__ = "grades"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    std_no = Column(
-        Integer, ForeignKey("students.std_no", ondelete="CASCADE"), nullable=False
+    enrollment_id = Column(
+        Integer, ForeignKey("enrollments.id", ondelete="CASCADE"), nullable=False
     )
     course_code = Column(String, nullable=False)
     course_name = Column(String, nullable=False)
