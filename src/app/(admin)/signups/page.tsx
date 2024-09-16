@@ -13,6 +13,7 @@ import {
 import { eq } from 'drizzle-orm';
 import ApproveButton from './ApproveButton';
 import { users } from '@/db/schema/auth';
+import RecordsPage from '../core/RecordsPage';
 
 async function getSignups() {
   const data = await db
@@ -30,27 +31,29 @@ export default async function Signups() {
   const signups = await getSignups();
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Student No.</TableHead>
-          <TableHead>Name</TableHead>
-          <TableHead>Email</TableHead>
-          <TableHead>Status</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {signups.map((it) => (
-          <TableRow key={it.id}>
-            <TableCell>{it.stdNo}</TableCell>
-            <TableCell>{it.name}</TableCell>
-            <TableCell>{it.user.email}</TableCell>
-            <TableCell>
-              <ApproveButton id={it.id} />
-            </TableCell>
+    <RecordsPage title='Signups'>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Student No.</TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Email</TableHead>
+            <TableHead>Status</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {signups.map((it) => (
+            <TableRow key={it.id}>
+              <TableCell>{it.stdNo}</TableCell>
+              <TableCell>{it.name}</TableCell>
+              <TableCell>{it.user.email}</TableCell>
+              <TableCell>
+                <ApproveButton id={it.id} />
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </RecordsPage>
   );
 }
