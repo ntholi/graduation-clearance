@@ -8,18 +8,16 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { signUpSchema } from './schema';
 import { CheckCircle, Loader2 } from 'lucide-react';
-import { getSignUp, signUpStudent } from './actions';
 import { useEffect, useState } from 'react';
-import { Separator } from '@/components/ui/separator';
+import { getSignUp, signUpStudent } from './actions';
+import { signUpSchema } from './schema';
 
 export function SignUpForm() {
   const [loading, setLoading] = useState(true);
@@ -38,7 +36,7 @@ export function SignUpForm() {
         if (signUp && 'name' in signUp) {
           form.reset({
             name: signUp.name,
-            studentNumber: signUp.stdNo,
+            studentNumber: signUp.stdNo.toString(),
           });
           setSubmitted(true);
         }

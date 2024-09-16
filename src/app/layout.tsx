@@ -15,8 +15,20 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Limkokwing',
-  description: 'Limkokwing University of Creative Technology',
+  title: 'Limkokwing Registry',
+  description: 'Limkokwing Registry App, for Graduation Clearance',
+  icons: {
+    icon: '/logo.png',
+  },
+  openGraph: {
+    images: [
+      {
+        url: '/logo.png',
+        width: 1371,
+        height: 691,
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
