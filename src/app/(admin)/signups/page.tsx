@@ -1,25 +1,22 @@
-import db from '@/db';
-import { signUps } from '@/db/schema';
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { eq } from 'drizzle-orm';
-import ApproveButton from './ApproveButton';
+import db from '@/db';
+import { signUps } from '@/db/schema';
 import { users } from '@/db/schema/auth';
+import { eq } from 'drizzle-orm';
 import RecordsPage from '../core/RecordsPage';
+import ApproveButton from './ApproveButton';
 
 async function getSignups() {
   const data = await db
     .select()
     .from(signUps)
-    .where(eq(signUps.approved, false))
     .innerJoin(users, eq(signUps.userId, users.id));
   return data.map((it) => ({
     ...it.signups,
