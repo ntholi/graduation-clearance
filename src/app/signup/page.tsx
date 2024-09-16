@@ -1,24 +1,20 @@
 import { auth, signOut } from '@/auth';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Gradient from '@/components/ui/Gradient';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { redirect } from 'next/navigation';
+import { getStudentByUserId } from '../(admin)/students/student-service';
 import Logo from '../(main)/base/Logo';
 import { SignUpForm } from './form';
 
 export default async function RegistrationPage() {
   const session = await auth();
+  const student = await getStudentByUserId(session?.user?.id);
 
   if (!session) return redirect('/login');
+
+  if (student) return redirect('/');
 
   async function handleLogout() {
     'use server';

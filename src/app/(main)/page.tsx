@@ -1,3 +1,4 @@
+import { auth } from '@/auth';
 import {
   Card,
   CardDescription,
@@ -7,8 +8,12 @@ import {
 import Container from '@/components/ui/container';
 import { FileText, GraduationCap, User } from 'lucide-react';
 import Link from 'next/link';
+import { getStudentByUserId } from '../(admin)/students/student-service';
 
 export default async function Home() {
+  const session = await auth();
+  const student = await getStudentByUserId(session?.user?.id);
+
   const links = [
     {
       title: 'Clearance',
@@ -31,9 +36,9 @@ export default async function Home() {
           <div className='rounded-full bg-white p-4'>
             <User className='size-16 text-foreground/60 dark:text-secondary' />
           </div>
-          <h1 className='text-2xl sm:text-5xl'>{'Student Name'}</h1>
-          <p className=''>901013847</p>
-          <p className='text-sm'>BSc Hons in Business Information Technology</p>
+          <h1 className='text-2xl sm:text-5xl'>{student?.name}</h1>
+          <p className=''>{student?.stdNo}</p>
+          <p className='text-sm'>{student?.program}</p>
         </div>
       </div>
       <h2 className='mb-6 text-center text-2xl font-semibold'>Actions</h2>
