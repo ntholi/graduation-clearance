@@ -1,10 +1,19 @@
+import React from 'react';
 import { getStudentByUserId } from '@/app/(admin)/students/student-service';
 import { auth } from '@/auth';
 import Container from '@/components/ui/container';
-import React from 'react';
-import { enrollments, grades } from '@/db/schema';
-import { eq } from 'drizzle-orm';
 import db from '@/db';
+import { enrollments } from '@/db/schema';
+import { eq } from 'drizzle-orm';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 
 async function getTranscriptData(stdNo: number) {
   const data = await db.query.enrollments.findMany({
@@ -12,6 +21,7 @@ async function getTranscriptData(stdNo: number) {
       grades: true,
     },
     where: eq(enrollments.stdNo, stdNo),
+    orderBy: (enrollments, { desc }) => [desc(enrollments.term)],
   });
 
   return data;
@@ -23,7 +33,7 @@ export default async function TranscriptPage() {
 
   if (!student) {
     return (
-      <Container className='mx-auto mt-10 max-w-4xl'>
+      <Container width='md'>
         <h1 className='mb-4 text-2xl font-bold'>Transcript not available</h1>
         <p>Unable to find student information.</p>
       </Container>
@@ -33,63 +43,77 @@ export default async function TranscriptPage() {
   const data = await getTranscriptData(student.stdNo);
 
   return (
-    <Container className='mx-auto mt-10 max-w-4xl'>
-      <h1 className='mb-4 text-2xl font-bold'>Academic Transcript</h1>
-      <div className='mb-4'>
-        <p>
-          <strong>Student Name:</strong> {student.name}
-        </p>
-        <p>
-          <strong>Student Number:</strong> {student.stdNo}
-        </p>
-        <p>
-          <strong>Program:</strong> {student.program}
-        </p>
-      </div>
+    <Container className='mx-auto mt-10' width='md'>
+      <Card className='mb-4'>
+        <CardHeader>
+          <CardTitle>Transcript</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p>
+            <strong>Name:</strong> {student.name}
+          </p>
+          <p>
+            <strong>Student Number:</strong> {student.stdNo}
+          </p>
+          <p>
+            <strong>Program:</strong> {student.program}
+          </p>
+        </CardContent>
+      </Card>
 
       {data.map((enrollment) => (
-        <div key={enrollment.id} className='mb-6'>
-          <h2 className='mb-2 text-xl font-semibold'>
-            {enrollment.term} - {enrollment.semester}
-          </h2>
-          <table className='w-full border-collapse border border-gray-300'>
-            <thead>
-              <tr className='bg-gray-100'>
-                <th className='border border-gray-300 p-2'>Course Code</th>
-                <th className='border border-gray-300 p-2'>Course Name</th>
-                <th className='border border-gray-300 p-2'>Grade</th>
-                <th className='border border-gray-300 p-2'>Credits</th>
-              </tr>
-            </thead>
-            <tbody>
-              {enrollment.grades.map((grade) => (
-                <tr key={grade.id}>
-                  <td className='border border-gray-300 p-2'>
-                    {grade.courseCode}
-                  </td>
-                  <td className='border border-gray-300 p-2'>
-                    {grade.courseName}
-                  </td>
-                  <td className='border border-gray-300 p-2'>{grade.grade}</td>
-                  <td className='border border-gray-300 p-2'>
-                    {grade.credits}
-                  </td>
+        <Card key={enrollment.id} className='mb-4'>
+          <CardHeader>
+            <CardTitle className='text-base font-normal'>
+              <table>
+                <tr>
+                  <td className='min-w-28 font-bold'>Term:</td>
+                  <td>{enrollment.term}</td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className='mt-2'>
-            <p>
-              <strong>GPA:</strong> {enrollment.gpa}
-            </p>
-            <p>
-              <strong>CGPA:</strong> {enrollment.cgpa}
-            </p>
-            <p>
-              <strong>Credits:</strong> {enrollment.credits}
-            </p>
-          </div>
-        </div>
+                <tr>
+                  <td className='min-w-28 font-bold'>Semester:</td>
+                  <td>{enrollment.semester}</td>
+                </tr>
+              </table>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Code</TableHead>
+                  <TableHead className='min-w-64'>Course Name</TableHead>
+                  <TableHead>Grade</TableHead>
+                  <TableHead>Credits</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {enrollment.grades.map((grade) => (
+                  <TableRow key={grade.id}>
+                    <TableCell>{grade.courseCode}</TableCell>
+                    <TableCell>{grade.courseName}</TableCell>
+                    <TableCell>{grade.grade}</TableCell>
+                    <TableCell>{grade.credits}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <div className='mt-4 flex justify-between'>
+              <div>
+                <p>
+                  <strong>GPA:</strong> {enrollment.gpa} / <strong>GPA:</strong>{' '}
+                  {enrollment.cgpa}
+                </p>
+              </div>
+              <p>
+                <strong>
+                  <span className='hidden md:inline'>Earned</span> Credits:
+                </strong>{' '}
+                {enrollment.credits}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
       ))}
     </Container>
   );
