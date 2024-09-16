@@ -23,5 +23,6 @@ Base = declarative_base()
 
 
 def init_db():
-    Base.metadata.create_all(bind=engine)
+    # verify that the schema is up to date, don't create tables at all
+    Base.metadata.reflect(bind=engine)
     print("Database initialized")
