@@ -20,7 +20,7 @@ const links = [
   {
     title: 'Transcripts',
     description: 'View Your Transcripts',
-    href: '/transcripts',
+    href: '/transcript',
     icon: FileText,
   },
 ];

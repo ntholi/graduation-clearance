@@ -10,6 +10,7 @@ import {
   timestamp,
 } from 'drizzle-orm/pg-core';
 import { users } from './auth';
+import { relations } from 'drizzle-orm';
 
 export const students = pgTable('students', {
   stdNo: integer('std_no').notNull().primaryKey(),
@@ -48,6 +49,10 @@ export const enrollments = pgTable('enrollments', {
   credits: integer('credits').notNull(),
 });
 
+export const enrollmentRelations = relations(enrollments, ({ many }) => ({
+  grades: many(grades),
+}));
+
 export const grades = pgTable('grades', {
   id: serial('id').notNull().primaryKey(),
   enrollmentId: integer('enrollment_id')
@@ -58,3 +63,10 @@ export const grades = pgTable('grades', {
   grade: char('grade', { length: 2 }).notNull(),
   credits: integer('credits').notNull(),
 });
+
+export const gradeRelations = relations(grades, ({ one }) => ({
+  enrollment: one(enrollments, {
+    fields: [grades.enrollmentId],
+    references: [enrollments.id],
+  }),
+}));
