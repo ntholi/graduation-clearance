@@ -10,24 +10,26 @@ import { FileText, GraduationCap, User } from 'lucide-react';
 import Link from 'next/link';
 import { getStudentByUserId } from '../(admin)/students/student-service';
 
+const links = [
+  {
+    title: 'Clearance',
+    description: 'Graduation Clearance',
+    href: '/graduation/clearance',
+    icon: GraduationCap,
+  },
+  {
+    title: 'Transcripts',
+    description: 'View Your Transcripts',
+    href: '/transcripts',
+    icon: FileText,
+  },
+];
+
 export default async function Home() {
   const session = await auth();
   const student = await getStudentByUserId(session?.user?.id);
 
-  const links = [
-    {
-      title: 'Clearance',
-      description: 'Graduation Clearance',
-      href: '/graduation/clearance',
-      icon: GraduationCap,
-    },
-    {
-      title: 'Transcripts',
-      description: 'View Your Transcripts',
-      href: '/transcripts',
-      icon: FileText,
-    },
-  ];
+  await new Promise((resolve) => setTimeout(resolve, 1000 * 30));
 
   return (
     <Container className='mx-auto mt-10 max-w-4xl'>
