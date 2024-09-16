@@ -21,7 +21,7 @@ async function getTranscriptData(stdNo: number) {
       grades: true,
     },
     where: eq(enrollments.stdNo, stdNo),
-    orderBy: (enrollments, { desc }) => [desc(enrollments.term)],
+    orderBy: (enrollments, { asc }) => [asc(enrollments.term)],
   });
 
   return data;
