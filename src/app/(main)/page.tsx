@@ -29,8 +29,6 @@ export default async function Home() {
   const session = await auth();
   const student = await getStudentByUserId(session?.user?.id);
 
-  await new Promise((resolve) => setTimeout(resolve, 1000 * 30));
-
   return (
     <Container className='mx-auto mt-10 max-w-4xl'>
       <div className='mb-10 rounded-lg bg-gradient-to-r from-blue-950/60 to-purple-950/30 p-8 text-white shadow dark:from-blue-500/5 dark:to-purple-600/5'>
