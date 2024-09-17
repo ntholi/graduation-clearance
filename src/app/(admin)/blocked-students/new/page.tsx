@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
-import RecordsPage from '../../core/RecordsPage';
+import RecordsPage, { RecordsTitle } from '../../core/RecordsPage';
 
 const formSchema = z.object({
   stdNo: z.number().int().positive(),
@@ -59,7 +59,8 @@ export default function NewBlockedStudentPage() {
   }
 
   return (
-    <RecordsPage title='Add Blocked Student'>
+    <RecordsPage>
+      <RecordsTitle>New Blocked Student</RecordsTitle>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

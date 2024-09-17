@@ -9,7 +9,7 @@ import {
 import db from '@/db';
 import { blockedStudents, students } from '@/db/schema';
 import { eq } from 'drizzle-orm';
-import RecordsPage from '../core/RecordsPage';
+import RecordsPage, { RecordsTitle } from '../core/RecordsPage';
 import RecordsToolbar from '../core/RecordsToolbar';
 import { Button } from '@/components/ui/button';
 import { FileSpreadsheet } from 'lucide-react';
@@ -28,11 +28,12 @@ async function getBlockedStudents() {
   }));
 }
 
-export default async function SignupRequestsPage() {
+export default async function BlockedStudentsPage() {
   const data = await getBlockedStudents();
 
   return (
-    <RecordsPage title='Blocked Students'>
+    <RecordsPage>
+      <RecordsTitle>Blocked Students</RecordsTitle>
       <RecordsToolbar className='justify-between'>
         <div className='flex gap-2'>
           <Button variant='outline' size='sm' asChild>
