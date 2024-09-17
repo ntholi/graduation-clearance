@@ -1,20 +1,26 @@
 'use client';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import React, { useTransition } from 'react';
+import { signupRequests } from '@/db/schema';
+import { useTransition } from 'react';
 import { approveSignUp } from './actions';
-import { Loader2 } from 'lucide-react';
 
-export default function ApproveButton({ id }: { id: number }) {
+type Props = {
+  value: typeof signupRequests.$inferSelect;
+};
+
+export default function ApproveButton({ value }: Props) {
   const [isPending, startTransition] = useTransition();
   function handleApprove() {
     startTransition(async () => {
-      await approveSignUp(id);
+      await approveSignUp(value.id);
     });
   }
 
-  return (
-    <Button onClick={handleApprove}>
-      {isPending && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+  return value.approved ? (
+    <Badge>Approved</Badge>
+  ) : (
+    <Button onClick={handleApprove} size={'sm'} disabled={isPending}>
       Approve
     </Button>
   );

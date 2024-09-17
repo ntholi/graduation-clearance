@@ -45,7 +45,7 @@ export default async function SignupRequestsPage() {
               <TableCell>{it.name}</TableCell>
               <TableCell>{it.user.email}</TableCell>
               <TableCell>
-                <ApproveButton id={it.id} />
+                <ApproveButton value={it} />
               </TableCell>
             </TableRow>
           ))}
