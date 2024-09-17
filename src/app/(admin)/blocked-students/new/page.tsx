@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
-import { RecordsPage, RecordsTitle } from '../../core/RecordsPage';
+import { Page, PageTitle } from '../../core/RecordsPage';
 
 const formSchema = z.object({
   stdNo: z.number().int().positive(),
@@ -59,8 +59,8 @@ export default function NewBlockedStudentPage() {
   }
 
   return (
-    <RecordsPage>
-      <RecordsTitle>New Blocked Student</RecordsTitle>
+    <Page>
+      <PageTitle>New Blocked Student</PageTitle>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -134,6 +134,6 @@ export default function NewBlockedStudentPage() {
           </Button>
         </form>
       </Form>
-    </RecordsPage>
+    </Page>
   );
 }

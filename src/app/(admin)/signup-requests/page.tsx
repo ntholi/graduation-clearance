@@ -10,7 +10,7 @@ import db from '@/db';
 import { signupRequests } from '@/db/schema';
 import { users } from '@/db/schema/auth';
 import { eq } from 'drizzle-orm';
-import RecordsPage from '../core/RecordsPage';
+import { Page, PageTitle } from '../core/RecordsPage';
 import ApproveButton from './ApproveButton';
 
 export const revalidate = 0;
@@ -30,7 +30,8 @@ export default async function SignupRequestsPage() {
   const signupRequests = await getSignupRequests();
 
   return (
-    <RecordsPage title='Sign Up Requests'>
+    <Page>
+      <PageTitle>Sign Up Requests</PageTitle>
       <Table>
         <TableHeader>
           <TableRow>
@@ -55,6 +56,6 @@ export default async function SignupRequestsPage() {
           ))}
         </TableBody>
       </Table>
-    </RecordsPage>
+    </Page>
   );
 }

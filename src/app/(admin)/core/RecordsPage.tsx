@@ -6,17 +6,17 @@ type Props = {
   className?: string;
 };
 
-export function RecordsPage({ children, className }: Props) {
+export function Page({ children, className }: Props) {
   const title = React.Children.toArray(children).find(
-    (child) => React.isValidElement(child) && child.type === RecordsTitle,
+    (child) => React.isValidElement(child) && child.type === PageTitle,
   );
   const toolbar = React.Children.toArray(children).find(
-    (child) => React.isValidElement(child) && child.type === RecordsToolbar,
+    (child) => React.isValidElement(child) && child.type === PageToolbar,
   );
   const otherChildren = React.Children.toArray(children).filter(
     (child) =>
       !React.isValidElement(child) ||
-      (child.type !== RecordsToolbar && child.type !== RecordsTitle),
+      (child.type !== PageToolbar && child.type !== PageTitle),
   );
 
   return (
@@ -30,11 +30,11 @@ export function RecordsPage({ children, className }: Props) {
   );
 }
 
-export function RecordsTitle({ children, className }: Props) {
+export function PageTitle({ children, className }: Props) {
   return <h1 className={cn('text-lg md:text-2xl', className)}>{children}</h1>;
 }
 
-export function RecordsToolbar({ children, className }: Props) {
+export function PageToolbar({ children, className }: Props) {
   return (
     <div
       className={cn(
