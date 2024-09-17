@@ -4,6 +4,7 @@ import {
   decimal,
   integer,
   json,
+  pgEnum,
   pgTable,
   serial,
   text,
@@ -70,3 +71,20 @@ export const gradeRelations = relations(grades, ({ one }) => ({
     references: [enrollments.id],
   }),
 }));
+
+export const blockedByEnum = pgEnum('blocked_by', [
+  'finance',
+  'library',
+  'resource',
+  'it',
+]);
+
+export const blockedStudents = pgTable('blocked_students', {
+  id: serial('id').notNull().primaryKey(),
+  stdNo: integer('std_no')
+    .notNull()
+    .references(() => students.stdNo, { onDelete: 'no action' }),
+  blockedBy: blockedByEnum('blocked_by').notNull(),
+  reason: text('reason').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+});
