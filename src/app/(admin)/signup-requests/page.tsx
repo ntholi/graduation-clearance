@@ -32,8 +32,9 @@ export default async function SignupRequestsPage() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Student No.</TableHead>
-            <TableHead>Name</TableHead>
+            <TableHead>Student No</TableHead>
+            <TableHead>Student Name</TableHead>
+            <TableHead>Email Owner</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Status</TableHead>
           </TableRow>
@@ -43,6 +44,7 @@ export default async function SignupRequestsPage() {
             <TableRow key={it.id}>
               <TableCell>{it.stdNo}</TableCell>
               <TableCell>{it.name}</TableCell>
+              <TableCell>{it.user.name}</TableCell>
               <TableCell>{it.user.email}</TableCell>
               <TableCell>
                 <ApproveButton value={it} />

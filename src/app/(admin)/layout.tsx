@@ -20,16 +20,14 @@ type Props = {
 const links: NavLinkProps[] = [
   { href: '/admin', label: 'Dashboard', icon: <Home /> },
   {
-    href: '/admin',
-    label: 'Finance',
-    icon: <ShoppingCart />,
-    badge: 1,
-  },
-  {
     href: '/signup-requests',
     label: 'Sign Up Requests',
     icon: <UserPlus />,
-    badge: 2,
+  },
+  {
+    href: '/admin',
+    label: 'Finance',
+    icon: <ShoppingCart />,
   },
 ];
 
