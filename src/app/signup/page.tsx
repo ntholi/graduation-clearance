@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Gradient from '@/components/ui/Gradient';
 import { redirect } from 'next/navigation';
 import { getStudentByUserId } from '../(admin)/students/student-service';
-import Logo from '../(main)/base/Logo';
+import Logo from '../(student)/base/Logo';
 import { SignUpForm } from './form';
 
 export default async function RegistrationPage() {

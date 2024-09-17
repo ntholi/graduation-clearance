@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import Logo from './(main)/base/Logo';
+import Logo from './(student)/base/Logo';
 import Container from '@/components/ui/container';
 
 export default function ComingSoonPage() {
