@@ -1,5 +1,4 @@
 import { ModeToggle } from '@/components/theme/mode-toggle';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -9,44 +8,29 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import {
-  Home,
-  LucideIcon,
-  Menu,
-  Package,
-  ShoppingCart,
-  UserPlus,
-} from 'lucide-react';
+import { Home, Menu, ShoppingCart, UserPlus } from 'lucide-react';
 import Link from 'next/link';
 import Logo from '../(main)/base/Logo';
-
-export const description =
-  'A products dashboard with a sidebar navigation and a main content area. The dashboard has a header with a search input and a user menu. The sidebar has a logo, navigation links, and a card with a call to action. The main content area shows an empty state with a call to action.';
+import NavLink, { NavLinkProps } from './core/NavLink';
 
 type Props = {
   children: React.ReactNode;
 };
-type LinkItem = {
-  href: string;
-  label: string;
-  icon: LucideIcon;
-  badge?: number;
-};
-const links: LinkItem[] = [
-  { href: '/admin', label: 'Dashboard', icon: Home },
+
+const links: NavLinkProps[] = [
+  { href: '/admin', label: 'Dashboard', icon: <Home /> },
   {
     href: '/admin',
     label: 'Finance',
-    icon: ShoppingCart,
+    icon: <ShoppingCart />,
     badge: 1,
   },
   {
     href: '/signup-requests',
     label: 'Sign Up Requests',
-    icon: UserPlus,
+    icon: <UserPlus />,
     badge: 2,
   },
-  { href: '/admin', label: 'Courses', icon: Package },
 ];
 
 export default function AdminLayout({ children }: Props) {
@@ -62,19 +46,7 @@ export default function AdminLayout({ children }: Props) {
           <div className='flex-1'>
             <nav className='grid items-start px-2 text-sm font-medium lg:px-4'>
               {links.map((link) => (
-                <Link
-                  href={link.href}
-                  key={link.href}
-                  className='flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary'
-                >
-                  <link.icon className='h-5 w-5' />
-                  {link.label}
-                  {link.badge && (
-                    <Badge className='ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full'>
-                      {link.badge}
-                    </Badge>
-                  )}
-                </Link>
+                <NavLink key={link.href} {...link} />
               ))}
             </nav>
           </div>
@@ -105,19 +77,7 @@ export default function AdminLayout({ children }: Props) {
                   <Logo className='h-20' />
                 </Link>
                 {links.map((link) => (
-                  <Link
-                    href={link.href}
-                    key={link.href}
-                    className='mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-base text-muted-foreground hover:text-foreground'
-                  >
-                    <link.icon className='h-5 w-5' />
-                    {link.label}
-                    {link.badge && (
-                      <Badge className='ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full'>
-                        {link.badge}
-                      </Badge>
-                    )}
-                  </Link>
+                  <NavLink key={link.href} {...link} />
                 ))}
               </nav>
               <div className='mt-auto'>
