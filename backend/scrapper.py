@@ -1,6 +1,7 @@
 import logging
 import re
 from decimal import Decimal, InvalidOperation
+from os import name
 from typing import List, Tuple
 
 from browser import BASE_URL, Browser
@@ -52,9 +53,10 @@ class Scrapper:
             cells = row.find_all("td")
             if len(cells) >= 2:
                 label = cells[0].text.strip().lower()
-                value = cells[1].text.strip()
+                value: str = cells[1].text.strip()
                 if "student:" in label:
-                    student_data["name"] = value
+                    name_value = " ".join(value.split()[1:])
+                    student_data["name"] = name_value
                 elif "ic/passport:" in label:
                     student_data["national_id"] = value
                 elif "program:" in label:
