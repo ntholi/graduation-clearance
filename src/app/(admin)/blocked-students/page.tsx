@@ -12,6 +12,7 @@ import { eq } from 'drizzle-orm';
 import RecordsPage from '../core/RecordsPage';
 import RecordsToolbar from '../core/RecordsToolbar';
 import { Button } from '@/components/ui/button';
+import { FileSpreadsheet } from 'lucide-react';
 
 export const revalidate = 0;
 
@@ -31,12 +32,16 @@ export default async function SignupRequestsPage() {
 
   return (
     <RecordsPage title='Blocked Students'>
-      <RecordsToolbar>
-        <Button variant='outline'>Export CSV</Button>
+      <RecordsToolbar className='justify-between'>
         <div className='flex gap-2'>
-          <Button variant='outline'>Filter</Button>
-          <Button variant='outline'>Sort</Button>
+          <Button variant='outline' size='sm'>
+            New
+          </Button>
         </div>
+        <Button variant='outline' size='sm'>
+          <FileSpreadsheet className='mr-2 h-4 w-4' />
+          Import
+        </Button>
       </RecordsToolbar>
       <Table>
         <TableHeader>

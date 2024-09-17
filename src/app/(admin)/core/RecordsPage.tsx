@@ -15,10 +15,10 @@ export default function RecordsPage({ children, title }: Props) {
   );
 
   return (
-    <main className='flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-10'>
+    <main className='flex flex-1 flex-col gap-2 p-4 lg:p-10'>
       <div className='flex flex-col gap-4'>
-        <h1 className='text-lg font-semibold md:text-2xl'>{title}</h1>
-        {toolbar && <div className='mt-2'>{toolbar}</div>}
+        <h1 className='text-lg md:text-2xl'>{title}</h1>
+        {toolbar && <div>{toolbar}</div>}
       </div>
       <div className='flex flex-1 rounded-lg border border-dashed shadow-sm'>
         {otherChildren}

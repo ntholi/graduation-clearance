@@ -25,8 +25,8 @@ const links: NavLinkProps[] = [
     icon: <UserPlus />,
   },
   {
-    href: '/admin',
-    label: 'Finance',
+    href: '/blocked-students',
+    label: 'Blocked Students',
     icon: <ShoppingCart />,
   },
 ];
