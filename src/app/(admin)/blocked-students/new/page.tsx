@@ -61,18 +61,22 @@ export default function NewBlockedStudentPage() {
   return (
     <RecordsPage title='Add Blocked Student'>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className='w-full space-y-8'
+        >
           <FormField
             control={form.control}
             name='stdNo'
             render={({ field }) => (
-              <FormItem>
+              <FormItem className='w-full'>
                 <FormLabel>Student Number</FormLabel>
                 <FormControl>
                   <Input
                     type='number'
                     {...field}
                     onChange={(e) => field.onChange(parseInt(e.target.value))}
+                    className='w-full'
                   />
                 </FormControl>
                 <FormMessage />
@@ -83,14 +87,14 @@ export default function NewBlockedStudentPage() {
             control={form.control}
             name='blockedBy'
             render={({ field }) => (
-              <FormItem>
+              <FormItem className='w-full'>
                 <FormLabel>Blocked By</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger className='w-full'>
                       <SelectValue placeholder='Select department' />
                     </SelectTrigger>
                   </FormControl>
@@ -111,16 +115,20 @@ export default function NewBlockedStudentPage() {
             control={form.control}
             name='reason'
             render={({ field }) => (
-              <FormItem>
+              <FormItem className='w-full'>
                 <FormLabel>Reason</FormLabel>
                 <FormControl>
-                  <Textarea {...field} />
+                  <Textarea {...field} className='w-full' />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type='submit' disabled={form.formState.isSubmitting}>
+          <Button
+            type='submit'
+            disabled={form.formState.isSubmitting}
+            className='w-full'
+          >
             {form.formState.isSubmitting ? 'Saving...' : 'Save'}
           </Button>
         </form>

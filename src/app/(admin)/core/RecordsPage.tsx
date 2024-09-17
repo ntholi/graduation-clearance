@@ -18,10 +18,8 @@ export default function RecordsPage({ children, title, className }: Props) {
 
   return (
     <main className={cn('flex flex-1 flex-col gap-2 p-4 lg:p-10', className)}>
-      <div className='flex flex-col gap-4'>
-        <h1 className='text-lg md:text-2xl'>{title}</h1>
-        {toolbar && <div>{toolbar}</div>}
-      </div>
+      <h1 className='text-lg md:text-2xl'>{title}</h1>
+      {toolbar && <div>{toolbar}</div>}
       <div className='flex flex-1 rounded-lg border border-dashed shadow-sm'>
         {otherChildren}
       </div>
