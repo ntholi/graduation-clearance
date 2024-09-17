@@ -5,6 +5,7 @@ import '@mantine/dropzone/styles.css';
 import { ColorSchemeScript } from '@mantine/core';
 import type { Metadata } from 'next';
 import Providers from './providers';
+import AdminShell from '@admin/base/AdminShell';
 
 export const metadata: Metadata = {
   title: 'Lehakoe Admin',
@@ -17,12 +18,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang='en'>
       <head>
         <ColorSchemeScript />
       </head>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <AdminShell>{children}</AdminShell>;
+        </Providers>
       </body>
     </html>
   );
