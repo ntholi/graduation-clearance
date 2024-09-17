@@ -1,5 +1,4 @@
 import React from 'react';
-import RecordsToolbar from './RecordsToolbar';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -7,7 +6,7 @@ type Props = {
   className?: string;
 };
 
-export default function RecordsPage({ children, className }: Props) {
+export function RecordsPage({ children, className }: Props) {
   const title = React.Children.toArray(children).find(
     (child) => React.isValidElement(child) && child.type === RecordsTitle,
   );
@@ -31,6 +30,19 @@ export default function RecordsPage({ children, className }: Props) {
   );
 }
 
-export function RecordsTitle({ children }: Props) {
-  return <h1 className='text-lg md:text-2xl'>{children}</h1>;
+export function RecordsTitle({ children, className }: Props) {
+  return <h1 className={cn('text-lg md:text-2xl', className)}>{children}</h1>;
+}
+
+export function RecordsToolbar({ children, className }: Props) {
+  return (
+    <div
+      className={cn(
+        'flex items-center gap-2 rounded-md border bg-muted/40 p-2',
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
 }

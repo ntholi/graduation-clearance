@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
-import RecordsPage, { RecordsTitle } from '../../core/RecordsPage';
+import { RecordsPage, RecordsTitle } from '../../core/RecordsPage';
 
 const formSchema = z.object({
   stdNo: z.number().int().positive(),

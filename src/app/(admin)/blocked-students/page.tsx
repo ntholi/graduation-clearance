@@ -9,8 +9,7 @@ import {
 import db from '@/db';
 import { blockedStudents, students } from '@/db/schema';
 import { eq } from 'drizzle-orm';
-import RecordsPage, { RecordsTitle } from '../core/RecordsPage';
-import RecordsToolbar from '../core/RecordsToolbar';
+import { RecordsPage, RecordsTitle, RecordsToolbar } from '../core/RecordsPage';
 import { Button } from '@/components/ui/button';
 import { FileSpreadsheet } from 'lucide-react';
 import Link from 'next/link';
