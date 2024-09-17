@@ -10,6 +10,10 @@ import db from '@/db';
 import { blockedStudents, students } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import RecordsPage from '../core/RecordsPage';
+import RecordsToolbar from '../core/RecordsToolbar';
+import { Button } from '@/components/ui/button';
+
+export const revalidate = 0;
 
 async function getBlockedStudents() {
   const data = await db
@@ -27,6 +31,13 @@ export default async function SignupRequestsPage() {
 
   return (
     <RecordsPage title='Blocked Students'>
+      <RecordsToolbar>
+        <Button variant='outline'>Export CSV</Button>
+        <div className='flex gap-2'>
+          <Button variant='outline'>Filter</Button>
+          <Button variant='outline'>Sort</Button>
+        </div>
+      </RecordsToolbar>
       <Table>
         <TableHeader>
           <TableRow>
