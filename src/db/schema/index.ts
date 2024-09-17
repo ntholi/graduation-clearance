@@ -85,6 +85,6 @@ export const blockedStudents = pgTable('blocked_students', {
     .notNull()
     .references(() => students.stdNo, { onDelete: 'no action' }),
   blockedBy: blockedByEnum('blocked_by').notNull(),
-  reason: text('reason').notNull(),
+  reason: text('reason'),
   createdAt: timestamp('created_at').defaultNow(),
 });

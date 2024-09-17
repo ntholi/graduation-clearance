@@ -13,6 +13,7 @@ import RecordsPage from '../core/RecordsPage';
 import RecordsToolbar from '../core/RecordsToolbar';
 import { Button } from '@/components/ui/button';
 import { FileSpreadsheet } from 'lucide-react';
+import Link from 'next/link';
 
 export const revalidate = 0;
 
@@ -34,8 +35,8 @@ export default async function SignupRequestsPage() {
     <RecordsPage title='Blocked Students'>
       <RecordsToolbar className='justify-between'>
         <div className='flex gap-2'>
-          <Button variant='outline' size='sm'>
-            New
+          <Button variant='outline' size='sm' asChild>
+            <Link href='/blocked-students/new'>New</Link>
           </Button>
         </div>
         <Button variant='outline' size='sm'>
