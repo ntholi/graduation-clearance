@@ -7,11 +7,8 @@ type Props = {
 };
 
 export function Page({ children, className }: Props) {
-  const title = React.Children.toArray(children).find(
-    (child) => React.isValidElement(child) && child.type === PageTitle,
-  );
-  const toolbar = React.Children.toArray(children).find(
-    (child) => React.isValidElement(child) && child.type === PageToolbar,
+  const header = React.Children.toArray(children).find(
+    (child) => React.isValidElement(child) && child.type === PageHeader,
   );
   const body = React.Children.toArray(children).find(
     (child) => React.isValidElement(child) && child.type === PageBody,
@@ -24,10 +21,25 @@ export function Page({ children, className }: Props) {
         className,
       )}
     >
-      {title}
-      {toolbar && <div>{toolbar}</div>}
+      {header}
       {body}
     </main>
+  );
+}
+
+export function PageHeader({ children, className }: Props) {
+  const title = React.Children.toArray(children).find(
+    (child) => React.isValidElement(child) && child.type === PageTitle,
+  );
+  const toolbar = React.Children.toArray(children).find(
+    (child) => React.isValidElement(child) && child.type === PageToolbar,
+  );
+
+  return (
+    <div className={cn('flex flex-col gap-2', className)}>
+      {title}
+      {toolbar}
+    </div>
   );
 }
 

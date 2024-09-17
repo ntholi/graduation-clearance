@@ -1,6 +1,11 @@
 'use client';
 
-import { Page, PageBody, PageTitle } from '@/app/(admin)/core/AdminPage';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { useRouter } from 'next/navigation';
+import { addBlockedStudent } from '../actions';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -19,12 +24,13 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import * as z from 'zod';
-import { addBlockedStudent } from '../actions';
+import {
+  Page,
+  PageHeader,
+  PageTitle,
+  PageBody,
+} from '@/app/(admin)/core/AdminPage';
 
 const formSchema = z.object({
   stdNo: z.number().int().positive(),
@@ -59,7 +65,9 @@ export default function NewBlockedStudentPage() {
 
   return (
     <Page>
-      <PageTitle>New Blocked Student</PageTitle>
+      <PageHeader>
+        <PageTitle>New Blocked Student</PageTitle>
+      </PageHeader>
       <PageBody className='p-4'>
         <Form {...form}>
           <form

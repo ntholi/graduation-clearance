@@ -9,7 +9,13 @@ import {
 import db from '@/db';
 import { blockedStudents, students } from '@/db/schema';
 import { eq } from 'drizzle-orm';
-import { Page, PageBody, PageTitle, PageToolbar } from '../core/AdminPage';
+import {
+  Page,
+  PageHeader,
+  PageTitle,
+  PageToolbar,
+  PageBody,
+} from '../core/AdminPage';
 import { Button } from '@/components/ui/button';
 import { FileSpreadsheet } from 'lucide-react';
 import Link from 'next/link';
@@ -32,18 +38,20 @@ export default async function BlockedStudentsPage() {
 
   return (
     <Page>
-      <PageTitle>Blocked Students</PageTitle>
-      <PageToolbar className='justify-between'>
-        <div className='flex gap-2'>
-          <Button variant='outline' size='sm' asChild>
-            <Link href='/blocked-students/new'>New</Link>
+      <PageHeader>
+        <PageTitle>Blocked Students</PageTitle>
+        <PageToolbar className='justify-between'>
+          <div className='flex gap-2'>
+            <Button variant='outline' size='sm' asChild>
+              <Link href='/blocked-students/new'>New</Link>
+            </Button>
+          </div>
+          <Button variant='outline' size='sm'>
+            <FileSpreadsheet className='mr-2 h-4 w-4' />
+            Import
           </Button>
-        </div>
-        <Button variant='outline' size='sm'>
-          <FileSpreadsheet className='mr-2 h-4 w-4' />
-          Import
-        </Button>
-      </PageToolbar>
+        </PageToolbar>
+      </PageHeader>
       <PageBody>
         <Table>
           <TableHeader>
