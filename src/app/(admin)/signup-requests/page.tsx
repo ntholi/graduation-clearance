@@ -10,7 +10,7 @@ import db from '@/db';
 import { signupRequests } from '@/db/schema';
 import { users } from '@/db/schema/auth';
 import { eq } from 'drizzle-orm';
-import { Page, PageBody, PageTitle } from '../core/RecordsPage';
+import { Page, PageBody, PageTitle } from '../core/AdminPage';
 import ApproveButton from './ApproveButton';
 
 export const revalidate = 0;

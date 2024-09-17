@@ -9,7 +9,7 @@ import {
 import db from '@/db';
 import { blockedStudents, students } from '@/db/schema';
 import { eq } from 'drizzle-orm';
-import { Page, PageBody, PageTitle, PageToolbar } from '../core/RecordsPage';
+import { Page, PageBody, PageTitle, PageToolbar } from '../core/AdminPage';
 import { Button } from '@/components/ui/button';
 import { FileSpreadsheet } from 'lucide-react';
 import Link from 'next/link';

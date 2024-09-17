@@ -1,11 +1,6 @@
 'use client';
 
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { useRouter } from 'next/navigation';
-import { addBlockedStudent } from '../actions';
+import { Page, PageBody, PageTitle } from '@/app/(admin)/core/AdminPage';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -24,13 +19,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import {
-  Page,
-  PageTitle,
-  PageToolbar,
-  PageBody,
-} from '@/app/(admin)/core/RecordsPage';
+import * as z from 'zod';
+import { addBlockedStudent } from '../actions';
 
 const formSchema = z.object({
   stdNo: z.number().int().positive(),
@@ -66,7 +60,7 @@ export default function NewBlockedStudentPage() {
   return (
     <Page>
       <PageTitle>New Blocked Student</PageTitle>
-      <PageBody>
+      <PageBody className='p-4'>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -134,7 +128,7 @@ export default function NewBlockedStudentPage() {
             <Button
               type='submit'
               disabled={form.formState.isSubmitting}
-              className='w-full md:w-auto'
+              className='w-full md:w-40'
             >
               {form.formState.isSubmitting ? 'Saving...' : 'Save'}
             </Button>
