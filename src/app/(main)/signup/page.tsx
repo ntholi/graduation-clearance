@@ -4,9 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Gradient from '@/components/ui/Gradient';
 import { redirect } from 'next/navigation';
-import { getStudentByUserId } from '../(admin)/students/student-service';
-import Logo from '../(student)/base/Logo';
+import Logo from '../student/base/Logo';
 import { SignUpForm } from './form';
+import { getStudentByUserId } from '@/app/(admin)/staff/students/actions';
 
 export default async function RegistrationPage() {
   const session = await auth();

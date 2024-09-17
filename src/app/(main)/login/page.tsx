@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import Logo from '../(student)/base/Logo';
+import Logo from '../student/base/Logo';
 import Gradient from '@/components/ui/Gradient';
 import { auth, signIn } from '@/auth';
 import { redirect } from 'next/navigation';

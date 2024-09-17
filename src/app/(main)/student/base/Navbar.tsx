@@ -1,10 +1,10 @@
-import { getStudentByUserId } from '@/app/(admin)/students/student-service';
 import { auth } from '@/auth';
 import Container from '@/components/ui/container';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import Logo from './Logo';
 import UserButton from './UserButton';
+import { getStudentByUserId } from '@/app/(admin)/staff/students/actions';
 
 export default async function Navbar() {
   const session = await auth();

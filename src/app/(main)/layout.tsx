@@ -1,19 +1,9 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
-import './globals.css';
+import { SessionProvider } from 'next-auth/react';
 import Providers from './providers';
+import Footer from './student/base/Footer';
 import { Toaster } from '@/components/ui/sonner';
-
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
-});
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900',
-});
+import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Limkokwing Registry',
@@ -39,14 +29,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        suppressHydrationWarning
-      >
-        <Providers>
-          {children}
-          <Toaster />
-        </Providers>
+      <body suppressHydrationWarning>
+        <SessionProvider>
+          <Providers>
+            {children}
+            <Footer />
+            <Toaster />
+          </Providers>
+        </SessionProvider>
       </body>
     </html>
   );
