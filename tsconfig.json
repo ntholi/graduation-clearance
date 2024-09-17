@@ -19,8 +19,8 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@staff/*": ["src/app/(admin)/staff/*"],
-      "@student/*": ["src/app/(main)/student/*"]
+      "@staff/*": ["./src/app/(admin)/staff/*"],
+      "@student/*": ["./src/app/(main)/student/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

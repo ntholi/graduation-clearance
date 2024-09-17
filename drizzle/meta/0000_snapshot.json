@@ -1,9 +1,65 @@
 {
-  "id": "91c162b4-a202-460a-b999-5cbbae6c2bd7",
+  "id": "b345ddf7-89e0-4747-8bc9-87c132980faa",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "public.blocked_students": {
+      "name": "blocked_students",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "std_no": {
+          "name": "std_no",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "blocked_by": {
+          "name": "blocked_by",
+          "type": "blocked_by",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reason": {
+          "name": "reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "blocked_students_std_no_students_std_no_fk": {
+          "name": "blocked_students_std_no_students_std_no_fk",
+          "tableFrom": "blocked_students",
+          "tableTo": "students",
+          "columnsFrom": [
+            "std_no"
+          ],
+          "columnsTo": [
+            "std_no"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.enrollments": {
       "name": "enrollments",
       "schema": "",
@@ -130,8 +186,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.signups": {
-      "name": "signups",
+    "public.signup_requests": {
+      "name": "signup_requests",
       "schema": "",
       "columns": {
         "id": {
@@ -175,10 +231,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "signups_user_id_user_id_fk": {
-          "name": "signups_user_id_user_id_fk",
-          "tableFrom": "signups",
-          "tableTo": "user",
+        "signup_requests_user_id_users_id_fk": {
+          "name": "signup_requests_user_id_users_id_fk",
+          "tableFrom": "signup_requests",
+          "tableTo": "users",
           "columnsFrom": [
             "user_id"
           ],
@@ -191,8 +247,8 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "signups_user_id_unique": {
-          "name": "signups_user_id_unique",
+        "signup_requests_user_id_unique": {
+          "name": "signup_requests_user_id_unique",
           "nullsNotDistinct": false,
           "columns": [
             "user_id"
@@ -250,10 +306,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "students_user_id_user_id_fk": {
-          "name": "students_user_id_user_id_fk",
+        "students_user_id_users_id_fk": {
+          "name": "students_user_id_users_id_fk",
           "tableFrom": "students",
-          "tableTo": "user",
+          "tableTo": "users",
           "columnsFrom": [
             "user_id"
           ],
@@ -282,8 +338,8 @@
         }
       }
     },
-    "public.account": {
-      "name": "account",
+    "public.accounts": {
+      "name": "accounts",
       "schema": "",
       "columns": {
         "userId": {
@@ -355,10 +411,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "account_userId_user_id_fk": {
-          "name": "account_userId_user_id_fk",
-          "tableFrom": "account",
-          "tableTo": "user",
+        "accounts_userId_users_id_fk": {
+          "name": "accounts_userId_users_id_fk",
+          "tableFrom": "accounts",
+          "tableTo": "users",
           "columnsFrom": [
             "userId"
           ],
@@ -370,8 +426,8 @@
         }
       },
       "compositePrimaryKeys": {
-        "account_provider_providerAccountId_pk": {
-          "name": "account_provider_providerAccountId_pk",
+        "accounts_provider_providerAccountId_pk": {
+          "name": "accounts_provider_providerAccountId_pk",
           "columns": [
             "provider",
             "providerAccountId"
@@ -435,10 +491,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "authenticator_userId_user_id_fk": {
-          "name": "authenticator_userId_user_id_fk",
+        "authenticator_userId_users_id_fk": {
+          "name": "authenticator_userId_users_id_fk",
           "tableFrom": "authenticator",
-          "tableTo": "user",
+          "tableTo": "users",
           "columnsFrom": [
             "userId"
           ],
@@ -468,8 +524,8 @@
         }
       }
     },
-    "public.session": {
-      "name": "session",
+    "public.sessions": {
+      "name": "sessions",
       "schema": "",
       "columns": {
         "sessionToken": {
@@ -493,10 +549,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "session_userId_user_id_fk": {
-          "name": "session_userId_user_id_fk",
-          "tableFrom": "session",
-          "tableTo": "user",
+        "sessions_userId_users_id_fk": {
+          "name": "sessions_userId_users_id_fk",
+          "tableFrom": "sessions",
+          "tableTo": "users",
           "columnsFrom": [
             "userId"
           ],
@@ -510,8 +566,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.user": {
-      "name": "user",
+    "public.users": {
+      "name": "users",
       "schema": "",
       "columns": {
         "id": {
@@ -532,6 +588,13 @@
           "primaryKey": false,
           "notNull": false
         },
+        "role": {
+          "name": "role",
+          "type": "role",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
         "emailVerified": {
           "name": "emailVerified",
           "type": "timestamp",
@@ -549,8 +612,8 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "user_email_unique": {
-          "name": "user_email_unique",
+        "users_email_unique": {
+          "name": "users_email_unique",
           "nullsNotDistinct": false,
           "columns": [
             "email"
@@ -558,8 +621,8 @@
         }
       }
     },
-    "public.verificationToken": {
-      "name": "verificationToken",
+    "public.verification_tokens": {
+      "name": "verification_tokens",
       "schema": "",
       "columns": {
         "identifier": {
@@ -584,8 +647,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "verificationToken_identifier_token_pk": {
-          "name": "verificationToken_identifier_token_pk",
+        "verification_tokens_identifier_token_pk": {
+          "name": "verification_tokens_identifier_token_pk",
           "columns": [
             "identifier",
             "token"
@@ -595,7 +658,29 @@
       "uniqueConstraints": {}
     }
   },
-  "enums": {},
+  "enums": {
+    "public.blocked_by": {
+      "name": "blocked_by",
+      "schema": "public",
+      "values": [
+        "finance",
+        "library",
+        "resource",
+        "it"
+      ]
+    },
+    "public.role": {
+      "name": "role",
+      "schema": "public",
+      "values": [
+        "student",
+        "registry",
+        "finance",
+        "faculty",
+        "admin"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "_meta": {

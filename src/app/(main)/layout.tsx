@@ -4,6 +4,7 @@ import Providers from './providers';
 import Footer from './student/base/Footer';
 import { Toaster } from '@/components/ui/sonner';
 import './globals.css';
+import Gradient from '@/components/ui/Gradient';
 
 export const metadata: Metadata = {
   title: 'Limkokwing Registry',
@@ -32,7 +33,7 @@ export default function RootLayout({
       <body suppressHydrationWarning>
         <SessionProvider>
           <Providers>
-            {children}
+            <Gradient>{children}</Gradient>
             <Footer />
             <Toaster />
           </Providers>
