@@ -10,7 +10,7 @@ import db from '@/db';
 import { signupRequests } from '@/db/schema';
 import { users } from '@/db/schema/auth';
 import { eq } from 'drizzle-orm';
-import { Page, PageTitle } from '../core/RecordsPage';
+import { Page, PageBody, PageTitle } from '../core/RecordsPage';
 import ApproveButton from './ApproveButton';
 
 export const revalidate = 0;
@@ -32,30 +32,32 @@ export default async function SignupRequestsPage() {
   return (
     <Page>
       <PageTitle>Sign Up Requests</PageTitle>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Student No</TableHead>
-            <TableHead>Student Name</TableHead>
-            <TableHead>Email Owner</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Status</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {signupRequests.map((it) => (
-            <TableRow key={it.id}>
-              <TableCell>{it.stdNo}</TableCell>
-              <TableCell>{it.name}</TableCell>
-              <TableCell>{it.user.name}</TableCell>
-              <TableCell>{it.user.email}</TableCell>
-              <TableCell>
-                <ApproveButton value={it} />
-              </TableCell>
+      <PageBody>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Student No</TableHead>
+              <TableHead>Student Name</TableHead>
+              <TableHead>Email Owner</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Status</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {signupRequests.map((it) => (
+              <TableRow key={it.id}>
+                <TableCell>{it.stdNo}</TableCell>
+                <TableCell>{it.name}</TableCell>
+                <TableCell>{it.user.name}</TableCell>
+                <TableCell>{it.user.email}</TableCell>
+                <TableCell>
+                  <ApproveButton value={it} />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </PageBody>
     </Page>
   );
 }

@@ -13,19 +13,20 @@ export function Page({ children, className }: Props) {
   const toolbar = React.Children.toArray(children).find(
     (child) => React.isValidElement(child) && child.type === PageToolbar,
   );
-  const otherChildren = React.Children.toArray(children).filter(
-    (child) =>
-      !React.isValidElement(child) ||
-      (child.type !== PageToolbar && child.type !== PageTitle),
+  const body = React.Children.toArray(children).find(
+    (child) => React.isValidElement(child) && child.type === PageBody,
   );
 
   return (
-    <main className={cn('flex flex-1 flex-col gap-2 p-4 lg:p-10', className)}>
+    <main
+      className={cn(
+        'flex flex-1 flex-col gap-2 p-4 md:gap-4 lg:p-10',
+        className,
+      )}
+    >
       {title}
       {toolbar && <div>{toolbar}</div>}
-      <div className='flex flex-1 rounded-lg border border-dashed shadow-sm'>
-        {otherChildren}
-      </div>
+      {body}
     </main>
   );
 }
@@ -39,6 +40,19 @@ export function PageToolbar({ children, className }: Props) {
     <div
       className={cn(
         'flex items-center gap-2 rounded-md border bg-muted/40 p-2',
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
+export function PageBody({ children, className }: Props) {
+  return (
+    <div
+      className={cn(
+        'flex flex-1 rounded-lg border border-dashed shadow-sm',
         className,
       )}
     >

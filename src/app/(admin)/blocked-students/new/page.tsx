@@ -25,12 +25,17 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
-import { Page, PageTitle } from '../../core/RecordsPage';
+import {
+  Page,
+  PageTitle,
+  PageToolbar,
+  PageBody,
+} from '@/app/(admin)/core/RecordsPage';
 
 const formSchema = z.object({
   stdNo: z.number().int().positive(),
   blockedBy: z.enum(['finance', 'library', 'resource', 'it']),
-  reason: z.string().min(1).max(500),
+  reason: z.string().optional(),
 });
 
 export default function NewBlockedStudentPage() {
@@ -61,79 +66,81 @@ export default function NewBlockedStudentPage() {
   return (
     <Page>
       <PageTitle>New Blocked Student</PageTitle>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className='w-full space-y-8'
-        >
-          <FormField
-            control={form.control}
-            name='stdNo'
-            render={({ field }) => (
-              <FormItem className='w-full'>
-                <FormLabel>Student Number</FormLabel>
-                <FormControl>
-                  <Input
-                    type='number'
-                    {...field}
-                    onChange={(e) => field.onChange(parseInt(e.target.value))}
-                    className='w-full'
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='blockedBy'
-            render={({ field }) => (
-              <FormItem className='w-full'>
-                <FormLabel>Blocked By</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className='w-full'>
-                      <SelectValue placeholder='Select department' />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value='finance'>Finance</SelectItem>
-                    <SelectItem value='library'>Library</SelectItem>
-                    <SelectItem value='resource'>
-                      Resource Department
-                    </SelectItem>
-                    <SelectItem value='it'>IT Department</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='reason'
-            render={({ field }) => (
-              <FormItem className='w-full'>
-                <FormLabel>Reason</FormLabel>
-                <FormControl>
-                  <Textarea {...field} className='w-full' />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button
-            type='submit'
-            disabled={form.formState.isSubmitting}
-            className='w-full'
+      <PageBody>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className='w-full space-y-8'
           >
-            {form.formState.isSubmitting ? 'Saving...' : 'Save'}
-          </Button>
-        </form>
-      </Form>
+            <FormField
+              control={form.control}
+              name='stdNo'
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabel>Student Number</FormLabel>
+                  <FormControl>
+                    <Input
+                      type='number'
+                      {...field}
+                      onChange={(e) => field.onChange(parseInt(e.target.value))}
+                      className='w-full'
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='blockedBy'
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabel>Blocked By</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className='w-full'>
+                        <SelectValue placeholder='Select department' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value='finance'>Finance</SelectItem>
+                      <SelectItem value='library'>Library</SelectItem>
+                      <SelectItem value='resource'>
+                        Resource Department
+                      </SelectItem>
+                      <SelectItem value='it'>IT Department</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='reason'
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabel>Reason</FormLabel>
+                  <FormControl>
+                    <Textarea {...field} className='w-full' />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              type='submit'
+              disabled={form.formState.isSubmitting}
+              className='w-full md:w-auto'
+            >
+              {form.formState.isSubmitting ? 'Saving...' : 'Save'}
+            </Button>
+          </form>
+        </Form>
+      </PageBody>
     </Page>
   );
 }

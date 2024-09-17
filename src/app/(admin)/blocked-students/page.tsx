@@ -9,7 +9,7 @@ import {
 import db from '@/db';
 import { blockedStudents, students } from '@/db/schema';
 import { eq } from 'drizzle-orm';
-import { Page, PageTitle, PageToolbar } from '../core/RecordsPage';
+import { Page, PageBody, PageTitle, PageToolbar } from '../core/RecordsPage';
 import { Button } from '@/components/ui/button';
 import { FileSpreadsheet } from 'lucide-react';
 import Link from 'next/link';
@@ -44,27 +44,29 @@ export default async function BlockedStudentsPage() {
           Import
         </Button>
       </PageToolbar>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Student No</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Blocked By</TableHead>
-            <TableHead>Reason</TableHead>
-            <TableHead>Status</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {data.map((it) => (
-            <TableRow key={it.id}>
-              <TableCell>{it.stdNo}</TableCell>
-              <TableCell>{it.student?.name}</TableCell>
-              <TableCell>{it.blockedBy}</TableCell>
-              <TableCell>{it.reason}</TableCell>
+      <PageBody>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Student No</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Blocked By</TableHead>
+              <TableHead>Reason</TableHead>
+              <TableHead>Status</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {data.map((it) => (
+              <TableRow key={it.id}>
+                <TableCell>{it.stdNo}</TableCell>
+                <TableCell>{it.student?.name}</TableCell>
+                <TableCell>{it.blockedBy}</TableCell>
+                <TableCell>{it.reason}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </PageBody>
     </Page>
   );
 }
