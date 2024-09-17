@@ -25,7 +25,7 @@ export const students = pgTable('students', {
   createdAt: timestamp('created_at').defaultNow(),
 });
 
-export const signUps = pgTable('signups', {
+export const signupRequests = pgTable('signup_requests', {
   id: serial('id').notNull().primaryKey(),
   userId: text('user_id')
     .notNull()

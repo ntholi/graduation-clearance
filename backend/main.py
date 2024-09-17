@@ -1,7 +1,7 @@
 from ast import Tuple
 
 from database import db_session, init_db
-from database.models import Enrollment, Grade, SignUp, Student
+from database.models import Enrollment, Grade, SignUpRequest, Student
 from rich import print
 from scrapper import Scrapper
 
@@ -28,10 +28,13 @@ def save_enrollment(data: tuple[Enrollment, list[Grade]]):
     print(f"Enrollment {enrollment.id} saved")
 
 
-def approve_signups():
-    signups = db_session.query(SignUp).filter(SignUp.approved == True).all()
+def approve_signup_requests():
+    requests = (
+        db_session.query(SignUpRequest).filter(SignUpRequest.approved == True).all()
+    )
+    print(f"Found {len(requests)} requests to approve")
     scrapper = Scrapper()
-    for signup in signups:
+    for signup in requests:
         student, enrollments = scrapper.get_student_data(signup.std_no)
         student.user_id = signup.user_id
         save_student(student)
@@ -41,7 +44,7 @@ def approve_signups():
 
 def main():
     init_db()
-    approve_signups()
+    approve_signup_requests()
 
 
 if __name__ == "__main__":

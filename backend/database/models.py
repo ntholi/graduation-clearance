@@ -29,8 +29,8 @@ class Student(Base):
         return f"Student(std_no={self.std_no}, user_id={self.user_id}, name={self.name}, national_id={self.national_id}, program={self.program}, email={self.email}, created_at={self.created_at})"
 
 
-class SignUp(Base):
-    __tablename__ = "signups"
+class SignUpRequest(Base):
+    __tablename__ = "signup_requests"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     user_id: Mapped[Optional[str]] = mapped_column(String)

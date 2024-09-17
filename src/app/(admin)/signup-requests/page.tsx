@@ -7,28 +7,28 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import db from '@/db';
-import { signUps } from '@/db/schema';
+import { signupRequests } from '@/db/schema';
 import { users } from '@/db/schema/auth';
 import { eq } from 'drizzle-orm';
 import RecordsPage from '../core/RecordsPage';
 import ApproveButton from './ApproveButton';
 
-async function getSignups() {
+async function getSignupRequests() {
   const data = await db
     .select()
-    .from(signUps)
-    .innerJoin(users, eq(signUps.userId, users.id));
+    .from(signupRequests)
+    .innerJoin(users, eq(signupRequests.userId, users.id));
   return data.map((it) => ({
-    ...it.signups,
+    ...it.signup_requests,
     user: it.user,
   }));
 }
 
-export default async function Signups() {
-  const signups = await getSignups();
+export default async function SignupRequestsPage() {
+  const signupRequests = await getSignupRequests();
 
   return (
-    <RecordsPage title='Signups'>
+    <RecordsPage title='Sign Up Requests'>
       <Table>
         <TableHeader>
           <TableRow>
@@ -39,7 +39,7 @@ export default async function Signups() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {signups.map((it) => (
+          {signupRequests.map((it) => (
             <TableRow key={it.id}>
               <TableCell>{it.stdNo}</TableCell>
               <TableCell>{it.name}</TableCell>
