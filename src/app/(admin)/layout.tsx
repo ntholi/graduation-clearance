@@ -1,13 +1,4 @@
-import {
-  Bell,
-  CircleUser,
-  Home,
-  Menu,
-  Package,
-  Search,
-  ShoppingCart,
-  UserPlus,
-} from 'lucide-react';
+import { ModeToggle } from '@/components/theme/mode-toggle';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,17 +8,15 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { ModeToggle } from '@/components/theme/mode-toggle';
+import {
+  Home,
+  LucideIcon,
+  Menu,
+  Package,
+  ShoppingCart,
+  UserPlus,
+} from 'lucide-react';
 import Link from 'next/link';
 import Logo from '../(main)/base/Logo';
 
@@ -37,6 +26,28 @@ export const description =
 type Props = {
   children: React.ReactNode;
 };
+type LinkItem = {
+  href: string;
+  label: string;
+  icon: LucideIcon;
+  badge?: number;
+};
+const links: LinkItem[] = [
+  { href: '/admin', label: 'Dashboard', icon: Home },
+  {
+    href: '/admin',
+    label: 'Finance',
+    icon: ShoppingCart,
+    badge: 1,
+  },
+  {
+    href: '/signup-requests',
+    label: 'Sign Up Requests',
+    icon: UserPlus,
+    badge: 2,
+  },
+  { href: '/admin', label: 'Courses', icon: Package },
+];
 
 export default function AdminLayout({ children }: Props) {
   return (
@@ -50,54 +61,25 @@ export default function AdminLayout({ children }: Props) {
           </div>
           <div className='flex-1'>
             <nav className='grid items-start px-2 text-sm font-medium lg:px-4'>
-              <Link
-                href='/admin'
-                className='flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary'
-              >
-                <Home className='h-4 w-4' />
-                Dashboard
-              </Link>
-              <Link
-                href='/admin/applications'
-                className='flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary'
-              >
-                <ShoppingCart className='h-4 w-4' />
-                Finance
-                <Badge className='ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full'>
-                  6
-                </Badge>
-              </Link>
-              <Link
-                href='/signup-requests'
-                className='flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary'
-              >
-                <UserPlus className='h-4 w-4' />
-                Sign Up Requests
-                <Badge className='ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full'>
-                  6
-                </Badge>
-              </Link>
-              <Link
-                href='/admin/courses'
-                className='flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary'
-              >
-                <Package className='h-4 w-4' />
-                Products{' '}
-              </Link>
+              {links.map((link) => (
+                <Link
+                  href={link.href}
+                  key={link.href}
+                  className='flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary'
+                >
+                  <link.icon className='h-5 w-5' />
+                  {link.label}
+                  {link.badge && (
+                    <Badge className='ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full'>
+                      {link.badge}
+                    </Badge>
+                  )}
+                </Link>
+              ))}
             </nav>
           </div>
           <div className='mt-auto p-4'>
-            <Card x-chunk='dashboard-02-chunk-0'>
-              <CardHeader className='p-2 pt-0 md:p-4'>
-                <CardTitle>Account</CardTitle>
-                <CardDescription>Your Account Info</CardDescription>
-              </CardHeader>
-              <CardContent className='p-2 pt-0 md:p-4 md:pt-0'>
-                <Button size='sm' className='w-full'>
-                  Logout
-                </Button>
-              </CardContent>
-            </Card>
+            <AccountSection />
           </div>
         </div>
       </div>
@@ -122,46 +104,24 @@ export default function AdminLayout({ children }: Props) {
                 >
                   <Logo className='h-20' />
                 </Link>
-                <Link
-                  href='/admin'
-                  className='mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground'
-                >
-                  <Home className='h-5 w-5' />
-                  Dashboard
-                </Link>
-                <Link
-                  href='/admin/applications'
-                  className='mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground'
-                >
-                  <ShoppingCart className='h-5 w-5' />
-                  Applications
-                  <Badge className='ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full'>
-                    6
-                  </Badge>
-                </Link>
-                <Link
-                  href='/admin/courses'
-                  className='mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground'
-                >
-                  <Package className='h-5 w-5' />
-                  Courses
-                </Link>
+                {links.map((link) => (
+                  <Link
+                    href={link.href}
+                    key={link.href}
+                    className='mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-base text-muted-foreground hover:text-foreground'
+                  >
+                    <link.icon className='h-5 w-5' />
+                    {link.label}
+                    {link.badge && (
+                      <Badge className='ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full'>
+                        {link.badge}
+                      </Badge>
+                    )}
+                  </Link>
+                ))}
               </nav>
               <div className='mt-auto'>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Upgrade to Pro</CardTitle>
-                    <CardDescription>
-                      Unlock all features and get unlimited access to our
-                      support team.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Button size='sm' className='w-full'>
-                      Upgrade
-                    </Button>
-                  </CardContent>
-                </Card>
+                <AccountSection />
               </div>
             </SheetContent>
           </Sheet>
@@ -172,5 +132,21 @@ export default function AdminLayout({ children }: Props) {
         <ModeToggle />
       </div>
     </div>
+  );
+}
+
+function AccountSection() {
+  return (
+    <Card x-chunk='dashboard-02-chunk-0'>
+      <CardHeader className='p-4'>
+        <CardTitle>Account</CardTitle>
+        <CardDescription>Your Account Info</CardDescription>
+      </CardHeader>
+      <CardContent className='p-2 pt-0 md:p-4 md:pt-0'>
+        <Button size='sm' className='w-full'>
+          Logout
+        </Button>
+      </CardContent>
+    </Card>
   );
 }
