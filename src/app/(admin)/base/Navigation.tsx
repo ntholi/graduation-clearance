@@ -30,65 +30,15 @@ import { usePathname } from 'next/navigation';
 export default function Navigation() {
   const pathname = usePathname();
   return (
-    <AppShell.Navbar p="xs">
+    <AppShell.Navbar p='xs'>
       <AppShell.Section grow component={ScrollArea}>
         <NavLink
-          label="Landing Page"
+          label='Students'
           component={Link}
-          active={pathname.startsWith('/admin/landing-page')}
-          href={'/admin/landing-page'}
-          leftSection={<IconHome size="1.1rem" />}
-          rightSection={<IconChevronRight size="0.8rem" stroke={1.5} />}
-        />
-        <NavLink
-          label="Photos"
-          component={Link}
-          active={pathname.startsWith('/admin/photos')}
-          href={'/admin/photos'}
-          leftSection={<IconPhoto size="1.1rem" />}
-          rightSection={<IconChevronRight size="0.8rem" stroke={1.5} />}
-        />
-        <NavLink
-          label="Locations"
-          component={Link}
-          active={pathname.startsWith('/admin/locations')}
-          href={'/admin/locations'}
-          leftSection={<IconMap2 size="1.1rem" />}
-          rightSection={<IconChevronRight size="0.8rem" stroke={1.5} />}
-        />
-        <NavLink
-          label="Tags"
-          component={Link}
-          active={pathname.startsWith('/admin/tags')}
-          href={'/admin/tags'}
-          leftSection={<IconFileDescription size="1.1rem" />}
-          rightSection={<IconChevronRight size="0.8rem" stroke={1.5} />}
-        />
-        <NavLink label="Users" leftSection={<IconUsers size={'1rem'} />} opened>
-          <NavLink
-            label="Users"
-            component={Link}
-            active={pathname.startsWith('/admin/users')}
-            href={'/admin/users'}
-            leftSection={<IconUser size="1.1rem" />}
-            rightSection={<IconChevronRight size="0.8rem" stroke={1.5} />}
-          />
-          <NavLink
-            label="Applications"
-            component={Link}
-            active={pathname.startsWith('/admin/contributor-applications')}
-            href={'/admin/contributor-applications'}
-            leftSection={<IconNote size="1.1rem" />}
-            rightSection={<IconChevronRight size="0.8rem" stroke={1.5} />}
-          />
-        </NavLink>
-        <NavLink
-          label="Updates"
-          component={Link}
-          active={pathname.startsWith('/admin/updates')}
-          href={'/admin/updates'}
-          leftSection={<IconSquaresFilled size="1.1rem" />}
-          rightSection={<IconChevronRight size="0.8rem" stroke={1.5} />}
+          active={pathname.startsWith('/registry/students')}
+          href={'/registry/students'}
+          leftSection={<IconUser size='1.1rem' />}
+          rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
         />
       </AppShell.Section>
       <AppShell.Section>
@@ -113,18 +63,18 @@ function UserButton() {
     });
 
   return (
-    <Flex mt={'md'} mb={'sm'} justify="space-between" align={'center'}>
+    <Flex mt={'md'} mb={'sm'} justify='space-between' align={'center'}>
       <Group>
         <Avatar src={session?.user?.image} />
         <Stack gap={5}>
-          <Text size="0.9rem">{session?.user?.name}</Text>
-          <Text size="0.7rem" c={'dimmed'}>
+          <Text size='0.9rem'>{session?.user?.name}</Text>
+          <Text size='0.7rem' c={'dimmed'}>
             {session?.user?.email}
           </Text>
         </Stack>
       </Group>
-      <ActionIcon variant="default" size={'lg'}>
-        <IconLogout2 size="1rem" onClick={openModal} />
+      <ActionIcon variant='default' size={'lg'}>
+        <IconLogout2 size='1rem' onClick={openModal} />
       </ActionIcon>
     </Flex>
   );
