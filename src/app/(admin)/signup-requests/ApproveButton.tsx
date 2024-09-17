@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { signupRequests } from '@/db/schema';
 import { useTransition } from 'react';
 import { approveSignUp } from './actions';
+import { Loader2 } from 'lucide-react';
 
 type Props = {
   value: typeof signupRequests.$inferSelect;

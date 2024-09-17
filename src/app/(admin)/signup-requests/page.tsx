@@ -13,6 +13,8 @@ import { eq } from 'drizzle-orm';
 import RecordsPage from '../core/RecordsPage';
 import ApproveButton from './ApproveButton';
 
+export const revalidate = 0;
+
 async function getSignupRequests() {
   const data = await db
     .select()
