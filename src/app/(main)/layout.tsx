@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { SessionProvider } from 'next-auth/react';
 import Providers from './providers';
+import './globals.css';
 import Footer from './student/base/Footer';
 import { Toaster } from '@/components/ui/sonner';
-import './globals.css';
 import Gradient from '@/components/ui/Gradient';
 
 export const metadata: Metadata = {

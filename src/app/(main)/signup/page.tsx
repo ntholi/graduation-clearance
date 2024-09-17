@@ -6,7 +6,7 @@ import Gradient from '@/components/ui/Gradient';
 import { redirect } from 'next/navigation';
 import Logo from '../student/base/Logo';
 import { SignUpForm } from './form';
-import { getStudentByUserId } from '@/app/(admin)/staff/students/actions';
+import { getStudentByUserId } from '@/app/(admin)/registry/students/actions';
 
 export default async function RegistrationPage() {
   const session = await auth();

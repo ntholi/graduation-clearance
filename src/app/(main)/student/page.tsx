@@ -8,7 +8,7 @@ import {
 import Container from '@/components/ui/container';
 import { FileText, GraduationCap, User } from 'lucide-react';
 import Link from 'next/link';
-import { getStudentByUserId } from '@/app/(admin)/staff/students/actions';
+import { getStudentByUserId } from '@/app/(admin)/registry/students/actions';
 
 const links = [
   {

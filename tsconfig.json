@@ -19,7 +19,7 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@staff/*": ["./src/app/(admin)/staff/*"],
+      "@admin/*": ["./src/app/(admin)/*"],
       "@student/*": ["./src/app/(main)/student/*"]
     }
   },

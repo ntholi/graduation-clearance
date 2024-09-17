@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import Logo from './Logo';
 import UserButton from './UserButton';
-import { getStudentByUserId } from '@/app/(admin)/staff/students/actions';
+import { getStudentByUserId } from '@/app/(admin)/registry/students/actions';
 
 export default async function Navbar() {
   const session = await auth();
