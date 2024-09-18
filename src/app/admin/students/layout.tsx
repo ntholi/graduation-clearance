@@ -12,7 +12,7 @@ export default async function Layout({ children }: PropsWithChildren) {
 
   return (
     <ListPage
-      path='registry/students'
+      path='admin/students'
       nav={list.map((item) => ({
         label: item.name,
         href: `/admin/students/${item.stdNo}`,
