@@ -2,7 +2,6 @@
 
 import db from '@/db';
 import { blockedStudents } from '@/db/schema';
-import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 type Student = typeof blockedStudents.$inferInsert;
@@ -14,7 +13,8 @@ export async function createBlockedStudent(values: Student) {
       ...values,
       blockedBy: 'finance',
     })
-    .returning();
+    .returning()
+    .then((it) => it[0]);
   revalidatePath('/finance/blocked-students/finance');
-  return res[0];
+  return res;
 }

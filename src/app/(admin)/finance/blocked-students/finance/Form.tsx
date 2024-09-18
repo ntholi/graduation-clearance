@@ -1,7 +1,7 @@
 'use client';
 import FormHeader from '@/app/(admin)/components/FormHeader';
 import { blockedStudents } from '@/db/schema';
-import { NumberInput, Stack } from '@mantine/core';
+import { NumberInput, Stack, Textarea } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
@@ -16,6 +16,7 @@ type Props = {
 
 const UserSchema = z.object({
   stdNo: z.number().min(901000000),
+  reason: z.string().min(3),
 });
 
 export default function Form({ onSubmit, value }: Props) {
@@ -39,6 +40,12 @@ export default function Form({ onSubmit, value }: Props) {
       <FormHeader title='Blocked Student' isLoading={pending} />
       <Stack p={'xl'}>
         <NumberInput label='Student Number' {...form.getInputProps('stdNo')} />
+        <Textarea
+          rows={4}
+          label='Reason'
+          description='Reason for blocking this student (optional)'
+          {...form.getInputProps('reason')}
+        />
       </Stack>
     </form>
   );

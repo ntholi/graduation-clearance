@@ -8,8 +8,8 @@ import Providers from './providers';
 import AdminShell from '@admin/base/AdminShell';
 
 export const metadata: Metadata = {
-  title: 'Lehakoe Admin',
-  description: 'Admin panel for Lehakoe Photobank',
+  title: 'Limkokwing Registry',
+  description: 'Limkokwing Registry',
 };
 
 export default function RootLayout({

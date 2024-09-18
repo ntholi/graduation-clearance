@@ -11,7 +11,7 @@ type Student = typeof students.$inferSelect;
 
 type Props = {
   value?: Student;
-  onSubmit: (values: Student) => Promise<number>;
+  onSubmit: (values: Student) => Promise<Student>;
 };
 
 const UserSchema = z.object({
@@ -34,8 +34,8 @@ export default function Form({ onSubmit, value }: Props) {
 
   async function handleSubmit(values: Student) {
     startTransition(async () => {
-      const id = await onSubmit(values);
-      router.push(`/registry/students/${id}`);
+      const { stdNo } = await onSubmit(values);
+      router.push(`/registry/students/${stdNo}`);
     });
   }
 

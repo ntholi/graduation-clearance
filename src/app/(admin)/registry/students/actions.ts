@@ -31,8 +31,15 @@ export async function deleteStudent(id: number) {
   revalidatePath('/registry/students');
 }
 
-export async function updateStudent(id: number, values: Student) {
-  await db.update(students).set(values).where(eq(students.stdNo, id));
+export async function updateStudent(
+  id: number,
+  values: Student,
+): Promise<Student> {
+  const res = await db
+    .update(students)
+    .set(values)
+    .where(eq(students.stdNo, id))
+    .returning();
   revalidatePath(`/registry/students/${id}`);
-  return id;
+  return res[0];
 }
