@@ -1,3 +1,5 @@
+'use server';
+
 import db from '@/db';
 import { blockedStudents, students } from '@/db/schema';
 import { and, desc, eq } from 'drizzle-orm';
@@ -37,5 +39,5 @@ export async function getBlockedStudent(id: string, blockedBy: BlockedBy) {
 
 export async function deleteBlockedStudent(id: string) {
   await db.delete(blockedStudents).where(eq(blockedStudents.id, id));
-  revalidatePath('/admin/finance/blocked-students/finance');
+  revalidatePath('/finance/blocked-students/finance');
 }

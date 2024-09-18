@@ -1,11 +1,11 @@
-import { Anchor, Box, Fieldset, List, ListItem, Stack } from '@mantine/core';
-import { notFound } from 'next/navigation';
-import HeaderDisplay from '@admin/components/HeaderDisplay';
+import { dateTime } from '@/lib/format';
 import DeleteIconButton from '@admin/components/DeleteIconButton';
 import FieldView from '@admin/components/FieldView';
-import { deleteStudent, getStudent } from '../actions';
-import { dateTime } from '@/lib/format';
+import HeaderDisplay from '@admin/components/HeaderDisplay';
+import { Anchor, Box, Stack } from '@mantine/core';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { deleteStudent, getStudent } from '../actions';
 
 type Props = {
   params: {

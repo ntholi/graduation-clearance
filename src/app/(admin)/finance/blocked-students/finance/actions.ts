@@ -15,6 +15,6 @@ export async function createBlockedStudent(values: Student) {
       blockedBy: 'finance',
     })
     .returning();
-  revalidatePath('/admin/finance/blocked-students/finance');
+  revalidatePath('/finance/blocked-students/finance');
   return res[0];
 }
