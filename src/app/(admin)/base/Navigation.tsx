@@ -11,7 +11,16 @@ import {
   Text,
 } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import { ChevronRight, LogOutIcon, UserIcon, Landmark } from 'lucide-react';
+import {
+  ChevronRight,
+  LogOutIcon,
+  UserIcon,
+  Landmark,
+  Construction,
+  LibraryBig,
+  Computer,
+  Cctv,
+} from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -31,7 +40,7 @@ export default function Navigation() {
         />
         <NavLink
           label='Blocked Students'
-          leftSection={<Landmark size={'1rem'} />}
+          leftSection={<Construction size={'1rem'} />}
           opened
         >
           <NavLink
@@ -39,7 +48,31 @@ export default function Navigation() {
             component={Link}
             active={pathname.startsWith('/finance/blocked-students/finance')}
             href={'/finance/blocked-students/finance'}
-            leftSection={<UserIcon size='1.1rem' />}
+            leftSection={<Landmark size='1.1rem' />}
+            rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
+          />
+          <NavLink
+            label='Library'
+            component={Link}
+            active={pathname.startsWith('/finance/blocked-students/library')}
+            href={'/finance/blocked-students/library'}
+            leftSection={<LibraryBig size='1.1rem' />}
+            rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
+          />
+          <NavLink
+            label='IT'
+            component={Link}
+            active={pathname.startsWith('/finance/blocked-students/it')}
+            href={'/finance/blocked-students/it'}
+            leftSection={<Computer size='1.1rem' />}
+            rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
+          />
+          <NavLink
+            label='Resource'
+            component={Link}
+            active={pathname.startsWith('/finance/blocked-students/resource')}
+            href={'/finance/blocked-students/resource'}
+            leftSection={<Cctv size='1.1rem' />}
             rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
           />
         </NavLink>
