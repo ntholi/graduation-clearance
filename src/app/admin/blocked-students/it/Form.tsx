@@ -6,6 +6,7 @@ import { useForm, zodResolver } from '@mantine/form';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 import { z } from 'zod';
+import { withErrorHandling } from '@admin/utils/errorHandling';
 
 type Student = typeof blockedStudents.$inferSelect;
 
@@ -30,8 +31,10 @@ export default function Form({ onSubmit, value }: Props) {
 
   async function handleSubmit(values: Student) {
     startTransition(async () => {
-      const { id } = await onSubmit(values);
-      router.push(`/admin/blocked-students/it/${id}`);
+      await withErrorHandling(async () => {
+        const { id } = await onSubmit(values);
+        router.push(`/admin/blocked-students/it/${id}`);
+      });
     });
   }
 
