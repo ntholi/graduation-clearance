@@ -1,6 +1,6 @@
 'use client';
 import { Box, BoxProps, CloseButton, TextInput } from '@mantine/core';
-import { IconSearch } from '@tabler/icons-react';
+import { Search } from 'lucide-react';
 import React from 'react';
 
 export default function SearchField(props: BoxProps) {
@@ -14,7 +14,7 @@ export default function SearchField(props: BoxProps) {
       }}
     />
   ) : (
-    <IconSearch size={20} />
+    <Search size={20} />
   );
 
   return (

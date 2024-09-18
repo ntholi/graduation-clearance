@@ -16,7 +16,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 import SearchField from './SearchField';
-import { IconPlus } from '@tabler/icons-react';
+import { PlusIcon } from 'lucide-react';
 
 type NavItem = {
   href: string;
@@ -35,19 +35,19 @@ export default function ListPage({ children, path, nav }: Props) {
       <GridCol span={{ base: 13, sm: 4 }} pr={{ base: 7, sm: 0 }}>
         <Paper withBorder>
           <Stack gap={0} w={'100%'}>
-            <Flex p={'md'} justify="space-between" align={'center'}>
+            <Flex p={'md'} justify='space-between' align={'center'}>
               <SearchField w={'85%'} />
               <ActionIcon
-                variant="default"
+                variant='default'
                 component={Link}
                 size={'lg'}
                 href={`/${path}/new`}
               >
-                <IconPlus size={'1rem'} />
+                <PlusIcon size={'1rem'} />
               </ActionIcon>
             </Flex>
             <Divider />
-            <ScrollArea h={{ base: 150, sm: '80vh' }} type="always" p={'sm'}>
+            <ScrollArea h={{ base: 150, sm: '80vh' }} type='always' p={'sm'}>
               {nav.map((item) => (
                 <NavLink
                   key={item.href}
@@ -62,7 +62,7 @@ export default function ListPage({ children, path, nav }: Props) {
       </GridCol>
       <GridCol span={{ base: 13, sm: 10 }}>
         <Paper withBorder>
-          <ScrollArea h="88.5vh" type="always">
+          <ScrollArea h='88.5vh' type='always'>
             {children}
           </ScrollArea>
         </Paper>

@@ -1,7 +1,7 @@
 'use client';
 import { ActionIcon, ActionIconProps, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import { IconTrashFilled } from '@tabler/icons-react';
+import { TrashIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useTransition } from 'react';
 
@@ -18,7 +18,7 @@ export default function DeleteIconButton({ action, id, ...props }: Props) {
     modals.openConfirmModal({
       title: 'Confirm Delete',
       children: (
-        <Text size="sm">Are you sure you want to delete this photo?</Text>
+        <Text size='sm'>Are you sure you want to delete this photo?</Text>
       ),
       labels: { confirm: 'Delete', cancel: 'Cancel' },
       confirmProps: { color: 'red' },
@@ -33,8 +33,8 @@ export default function DeleteIconButton({ action, id, ...props }: Props) {
     });
   }
   return (
-    <ActionIcon color="red" loading={isPending} onClick={openModal} {...props}>
-      <IconTrashFilled size={'1rem'} />
+    <ActionIcon color='red' loading={isPending} onClick={openModal} {...props}>
+      <TrashIcon size={'1rem'} />
     </ActionIcon>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 import { ActionIcon, Divider, Flex, Group, Title } from '@mantine/core';
-import { IconEdit } from '@tabler/icons-react';
+import { EditIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
@@ -25,7 +25,7 @@ export default function HeaderDisplay({ title, actionButtons }: props) {
             href={`${pathname}/edit`}
             variant='default'
           >
-            <IconEdit size={'1.1rem'} />
+            <EditIcon size={'1.1rem'} />
           </ActionIcon>
         </Group>
       </Flex>

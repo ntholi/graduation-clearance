@@ -1,7 +1,7 @@
 'use client';
 import { Button, Divider, Flex, Title } from '@mantine/core';
 import React from 'react';
-import { IconDeviceFloppy } from '@tabler/icons-react';
+import { SaveIcon } from 'lucide-react';
 import { useFormStatus } from 'react-dom';
 
 type Props = {
@@ -19,7 +19,7 @@ export default function FormHeader({ title, isLoading }: Props) {
         <Button
           type='submit'
           loading={isLoading}
-          leftSection={<IconDeviceFloppy size={'1.2rem'} />}
+          leftSection={<SaveIcon size={'1.2rem'} />}
         >
           Save
         </Button>

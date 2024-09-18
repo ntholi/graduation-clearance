@@ -11,18 +11,7 @@ import {
   Text,
 } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import {
-  IconChevronRight,
-  IconFileDescription,
-  IconHome,
-  IconLogout2,
-  IconMap2,
-  IconNote,
-  IconPhoto,
-  IconSquaresFilled,
-  IconUser,
-  IconUsers,
-} from '@tabler/icons-react';
+import { ChevronRight, LogOutIcon, UserIcon } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -37,8 +26,8 @@ export default function Navigation() {
           component={Link}
           active={pathname.startsWith('/registry/students')}
           href={'/registry/students'}
-          leftSection={<IconUser size='1.1rem' />}
-          rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
+          leftSection={<UserIcon size='1.1rem' />}
+          rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
         />
       </AppShell.Section>
       <AppShell.Section>
@@ -74,7 +63,7 @@ function UserButton() {
         </Stack>
       </Group>
       <ActionIcon variant='default' size={'lg'}>
-        <IconLogout2 size='1rem' onClick={openModal} />
+        <LogOutIcon size='1rem' onClick={openModal} />
       </ActionIcon>
     </Flex>
   );

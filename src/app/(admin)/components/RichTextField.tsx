@@ -2,7 +2,7 @@ import { ActionIcon, Box, Group, Modal, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Link, RichTextEditor } from '@mantine/tiptap';
 import '@mantine/tiptap/styles.css';
-import { IconMaximize, IconMinimize } from '@tabler/icons-react';
+import { Maximize, Minimize } from 'lucide-react';
 import Highlight from '@tiptap/extension-highlight';
 import SubScript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
@@ -43,10 +43,10 @@ export default function RichTextField(props: Props) {
       <Modal
         opened={opened}
         onClose={close}
-        size="100%"
+        size='100%'
         title={props.label}
         closeButtonProps={{
-          icon: <IconMinimize />,
+          icon: <Minimize />,
         }}
       >
         <RichTextComponent
@@ -56,10 +56,10 @@ export default function RichTextField(props: Props) {
           height={window.innerHeight - 160}
         />
       </Modal>
-      <Group justify="space-between" align="end">
-        <Text fw="bold">{props.label}</Text>
-        <ActionIcon variant="default" onClick={open}>
-          <IconMaximize size={'1rem'} />
+      <Group justify='space-between' align='end'>
+        <Text fw='bold'>{props.label}</Text>
+        <ActionIcon variant='default' onClick={open}>
+          <Maximize size={'1rem'} />
         </ActionIcon>
       </Group>
       <RichTextComponent

@@ -9,7 +9,7 @@ import {
   TextInput,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconCloudUpload } from '@tabler/icons-react';
+import { CloudUploadIcon } from 'lucide-react';
 import axios from 'axios';
 import React, { useTransition } from 'react';
 
@@ -57,7 +57,7 @@ export default function FileUploader({ onComplete }: Props) {
       </Modal>
       <ActionIcon onClick={open} variant='default' h={200} w={'100%'}>
         <Stack align='center' gap={10}>
-          <IconCloudUpload size={'2rem'} />
+          <CloudUploadIcon size={'2rem'} />
           <Text size='0.9rem' c='gray'>
             Upload
           </Text>
