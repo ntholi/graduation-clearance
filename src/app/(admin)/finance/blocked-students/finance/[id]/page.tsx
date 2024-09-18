@@ -3,7 +3,8 @@ import FieldView from '@admin/components/FieldView';
 import HeaderDisplay from '@admin/components/HeaderDisplay';
 import { Box, Stack } from '@mantine/core';
 import { notFound } from 'next/navigation';
-import { getBlockedStudent } from '../../actions';
+import { deleteBlockedStudent, getBlockedStudent } from '../../actions';
+import DeleteIconButton from '@/app/(admin)/components/DeleteIconButton';
 
 type Props = {
   params: {
@@ -11,7 +12,7 @@ type Props = {
   };
 };
 export default async function Page({ params: { id } }: Props) {
-  const item = await getBlockedStudent(Number(id), 'finance');
+  const item = await getBlockedStudent(id, 'finance');
   if (!item) {
     return notFound();
   }
@@ -20,7 +21,9 @@ export default async function Page({ params: { id } }: Props) {
     <Box p={'lg'}>
       <HeaderDisplay
         title={item.student?.name || item.stdNo.toString()}
-        // actionButtons={[<DeleteIconButton action={deleteStudent} id={id} />]}
+        actionButtons={[
+          <DeleteIconButton action={deleteBlockedStudent} id={id} />,
+        ]}
       />
 
       <Stack p={'xl'}>

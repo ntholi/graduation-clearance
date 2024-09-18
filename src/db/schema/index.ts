@@ -1,17 +1,18 @@
+import { relations } from 'drizzle-orm';
 import {
   boolean,
   char,
   decimal,
   integer,
-  json,
   pgEnum,
   pgTable,
   serial,
   text,
   timestamp,
+  varchar,
 } from 'drizzle-orm/pg-core';
+import { nanoid } from 'nanoid';
 import { users } from './auth';
-import { relations } from 'drizzle-orm';
 
 export const students = pgTable('students', {
   stdNo: integer('std_no').notNull().primaryKey(),
@@ -80,7 +81,9 @@ export const blockedByEnum = pgEnum('blocked_by', [
 ]);
 
 export const blockedStudents = pgTable('blocked_students', {
-  id: serial('id').notNull().primaryKey(),
+  id: varchar('id', { length: 21 })
+    .$defaultFn(() => nanoid())
+    .primaryKey(),
   stdNo: integer('std_no')
     .notNull()
     .references(() => students.stdNo, { onDelete: 'no action' }),

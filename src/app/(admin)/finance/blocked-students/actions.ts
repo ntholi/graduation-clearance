@@ -1,6 +1,7 @@
 import db from '@/db';
 import { blockedStudents, students } from '@/db/schema';
 import { and, desc, eq } from 'drizzle-orm';
+import { revalidatePath } from 'next/cache';
 
 type BlockedBy = (typeof blockedStudents.$inferSelect)['blockedBy'];
 
@@ -19,7 +20,7 @@ export async function getBlockedStudents(blockedBy: BlockedBy) {
     .orderBy(desc(blockedStudents.createdAt));
 }
 
-export async function getBlockedStudent(id: number, blockedBy: BlockedBy) {
+export async function getBlockedStudent(id: string, blockedBy: BlockedBy) {
   const data = await db
     .select()
     .from(blockedStudents)
@@ -32,4 +33,9 @@ export async function getBlockedStudent(id: number, blockedBy: BlockedBy) {
     ...data.blocked_students,
     student: data?.students || null,
   };
+}
+
+export async function deleteBlockedStudent(id: string) {
+  await db.delete(blockedStudents).where(eq(blockedStudents.id, id));
+  revalidatePath('/admin/finance/blocked-students/finance');
 }

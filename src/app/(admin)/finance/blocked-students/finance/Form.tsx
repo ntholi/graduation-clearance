@@ -29,8 +29,8 @@ export default function Form({ onSubmit, value }: Props) {
 
   async function handleSubmit(values: Student) {
     startTransition(async () => {
-      const { stdNo } = await onSubmit(values);
-      router.push(`/finance/blocked-students/finance/${stdNo}`);
+      const { id } = await onSubmit(values);
+      router.push(`/finance/blocked-students/finance/${id}`);
     });
   }
 
