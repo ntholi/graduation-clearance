@@ -6,7 +6,7 @@ import { useForm, zodResolver } from '@mantine/form';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 import { z } from 'zod';
-import { withErrorHandling } from '@admin/utils/errorHandling';
+import useFormAction from '../../hooks/useFormAction';
 
 type Student = typeof blockedStudents.$inferSelect;
 
@@ -22,7 +22,7 @@ const UserSchema = z.object({
 
 export default function Form({ onSubmit, value }: Props) {
   const router = useRouter();
-  const [pending, startTransition] = useTransition();
+  const [submitting, submitForm] = useFormAction();
 
   const { setValues, ...form } = useForm<Student>({
     initialValues: value,
@@ -30,17 +30,15 @@ export default function Form({ onSubmit, value }: Props) {
   });
 
   async function handleSubmit(values: Student) {
-    startTransition(async () => {
-      await withErrorHandling(async () => {
-        const { id } = await onSubmit(values);
-        router.push(`/admin/blocked-students/it/${id}`);
-      });
+    submitForm(async () => {
+      const { id } = await onSubmit(values);
+      router.push(`/admin/blocked-students/it/${id}`);
     });
   }
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
-      <FormHeader title='Blocked Student' isLoading={pending} />
+      <FormHeader title='Blocked Student' isLoading={submitting} />
       <Stack p={'xl'}>
         <NumberInput label='Student Number' {...form.getInputProps('stdNo')} />
         <Textarea
