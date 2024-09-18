@@ -11,7 +11,7 @@ import {
   Text,
 } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import { ChevronRight, LogOutIcon, UserIcon } from 'lucide-react';
+import { ChevronRight, LogOutIcon, UserIcon, Landmark } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -29,6 +29,20 @@ export default function Navigation() {
           leftSection={<UserIcon size='1.1rem' />}
           rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
         />
+        <NavLink
+          label='Blocked Students'
+          leftSection={<Landmark size={'1rem'} />}
+          opened
+        >
+          <NavLink
+            label='Finance'
+            component={Link}
+            active={pathname.startsWith('/finance/blocked-students/finance')}
+            href={'/finance/blocked-students/finance'}
+            leftSection={<UserIcon size='1.1rem' />}
+            rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
+          />
+        </NavLink>
       </AppShell.Section>
       <AppShell.Section>
         <Divider />
