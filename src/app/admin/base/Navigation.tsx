@@ -41,7 +41,6 @@ export default function Navigation() {
         <NavLink
           label='Blocked Students'
           leftSection={<Construction size={'1rem'} />}
-          opened
         >
           <NavLink
             label='Finance'

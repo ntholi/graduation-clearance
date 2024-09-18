@@ -6,6 +6,7 @@ import { useForm, zodResolver } from '@mantine/form';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import useFormAction from '../../hooks/useFormAction';
+import StudentNumInput from '../../base/StudentNumInput';
 
 type Student = typeof blockedStudents.$inferSelect;
 
@@ -39,7 +40,7 @@ export default function Form({ onSubmit, value }: Props) {
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <FormHeader title='Blocked Student' isLoading={pending} />
       <Stack p={'xl'}>
-        <NumberInput label='Student Number' {...form.getInputProps('stdNo')} />
+        <StudentNumInput {...form.getInputProps('stdNo')} />
         <Textarea
           rows={4}
           label='Reason'
