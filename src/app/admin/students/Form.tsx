@@ -1,10 +1,10 @@
 'use client';
-import FormHeader from '@admin/components/FormHeader';
 import { students } from '@/db/schema';
+import FormHeader from '@admin/components/FormHeader';
+import useFormAction from '@admin/hooks/useFormAction';
 import { NumberInput, Stack, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useRouter } from 'next/navigation';
-import { useTransition } from 'react';
 import { z } from 'zod';
 
 type Student = typeof students.$inferSelect;
@@ -25,7 +25,7 @@ const UserSchema = z.object({
 
 export default function Form({ onSubmit, value }: Props) {
   const router = useRouter();
-  const [pending, startTransition] = useTransition();
+  const [pending, submitForm] = useFormAction();
 
   const { setValues, ...form } = useForm<Student>({
     initialValues: value,
@@ -33,7 +33,7 @@ export default function Form({ onSubmit, value }: Props) {
   });
 
   async function handleSubmit(values: Student) {
-    startTransition(async () => {
+    submitForm(async () => {
       const { stdNo } = await onSubmit(values);
       router.push(`/admin/students/${stdNo}`);
     });

@@ -1,11 +1,10 @@
 import { notifications } from '@mantine/notifications';
 import { useTransition } from 'react';
 
-export default function useFormAction(): [
-  boolean,
-  (action: () => Promise<void>) => void,
-] {
-  const [submitting, startTransition] = useTransition();
+type ReturnType = [boolean, (action: () => Promise<void>) => void];
+
+export default function useFormAction(): ReturnType {
+  const [pending, startTransition] = useTransition();
 
   function submitForm(action: () => Promise<void>) {
     startTransition(async () => {
@@ -23,5 +22,5 @@ export default function useFormAction(): [
     });
   }
 
-  return [submitting, submitForm];
+  return [pending, submitForm];
 }

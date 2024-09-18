@@ -1,11 +1,11 @@
 'use client';
-import FormHeader from '@admin/components/FormHeader';
 import { blockedStudents } from '@/db/schema';
+import FormHeader from '@admin/components/FormHeader';
 import { NumberInput, Stack, Textarea } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useRouter } from 'next/navigation';
-import { useTransition } from 'react';
 import { z } from 'zod';
+import useFormAction from '../../hooks/useFormAction';
 
 type Student = typeof blockedStudents.$inferSelect;
 
@@ -21,7 +21,7 @@ const UserSchema = z.object({
 
 export default function Form({ onSubmit, value }: Props) {
   const router = useRouter();
-  const [pending, startTransition] = useTransition();
+  const [pending, submitForm] = useFormAction();
 
   const { setValues, ...form } = useForm<Student>({
     initialValues: value,
@@ -29,7 +29,7 @@ export default function Form({ onSubmit, value }: Props) {
   });
 
   async function handleSubmit(values: Student) {
-    startTransition(async () => {
+    submitForm(async () => {
       const { id } = await onSubmit(values);
       router.push(`/admin/blocked-students/resource/${id}`);
     });

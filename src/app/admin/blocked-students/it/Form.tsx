@@ -1,10 +1,9 @@
 'use client';
-import FormHeader from '@admin/components/FormHeader';
 import { blockedStudents } from '@/db/schema';
+import FormHeader from '@admin/components/FormHeader';
 import { NumberInput, Stack, Textarea } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useRouter } from 'next/navigation';
-import { useTransition } from 'react';
 import { z } from 'zod';
 import useFormAction from '../../hooks/useFormAction';
 
@@ -22,7 +21,7 @@ const UserSchema = z.object({
 
 export default function Form({ onSubmit, value }: Props) {
   const router = useRouter();
-  const [submitting, submitForm] = useFormAction();
+  const [pending, submitForm] = useFormAction();
 
   const { setValues, ...form } = useForm<Student>({
     initialValues: value,
@@ -38,7 +37,7 @@ export default function Form({ onSubmit, value }: Props) {
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
-      <FormHeader title='Blocked Student' isLoading={submitting} />
+      <FormHeader title='Blocked Student' isLoading={pending} />
       <Stack p={'xl'}>
         <NumberInput label='Student Number' {...form.getInputProps('stdNo')} />
         <Textarea
