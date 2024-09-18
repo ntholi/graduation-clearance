@@ -6,6 +6,7 @@ import { and, desc, eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 type BlockedBy = (typeof blockedStudents.$inferSelect)['blockedBy'];
+type Student = typeof blockedStudents.$inferInsert;
 
 export async function getBlockedStudents(blockedBy: BlockedBy) {
   return await db
@@ -40,4 +41,15 @@ export async function getBlockedStudent(id: string, blockedBy: BlockedBy) {
 export async function deleteBlockedStudent(id: string) {
   await db.delete(blockedStudents).where(eq(blockedStudents.id, id));
   revalidatePath('/finance/blocked-students/finance');
+}
+
+export async function updateBlockedStudent(id: string, values: Student) {
+  const res = await db
+    .update(blockedStudents)
+    .set(values)
+    .where(eq(blockedStudents.id, id))
+    .returning()
+    .then((it) => it[0]);
+  revalidatePath(`/finance/blocked-students/finance/${id}`);
+  return res;
 }
