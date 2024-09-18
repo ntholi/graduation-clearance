@@ -11,11 +11,11 @@ export async function createBlockedStudent(values: Student) {
     .insert(blockedStudents)
     .values({
       ...values,
-      blockedBy: 'resource',
+      blockedBy: 'library',
     })
     .returning()
     .then((it) => it[0]);
-  revalidatePath('/admin/blocked-students/resource');
-  revalidatePath(`/admin/blocked-students/resource/${res.id}`);
+  revalidatePath('/admin/blocked-students/library');
+  revalidatePath(`/admin/blocked-students/library/${res.id}`);
   return res;
 }

@@ -16,5 +16,6 @@ export async function createBlockedStudent(values: Student) {
     .returning()
     .then((it) => it[0]);
   revalidatePath('/admin/blocked-students/finance');
+  revalidatePath(`/admin/blocked-students/finance/${res.id}`);
   return res;
 }

@@ -39,8 +39,12 @@ export async function getBlockedStudent(id: string, blockedBy: BlockedBy) {
 }
 
 export async function deleteBlockedStudent(id: string) {
-  await db.delete(blockedStudents).where(eq(blockedStudents.id, id));
-  revalidatePath('/admin/blocked-students/finance');
+  const res = await db
+    .delete(blockedStudents)
+    .where(eq(blockedStudents.id, id))
+    .returning()
+    .then((it) => it[0]);
+  revalidatePath(`/admin/blocked-students/${res.blockedBy}`);
 }
 
 export async function updateBlockedStudent(id: string, values: Student) {
@@ -50,6 +54,7 @@ export async function updateBlockedStudent(id: string, values: Student) {
     .where(eq(blockedStudents.id, id))
     .returning()
     .then((it) => it[0]);
-  revalidatePath(`/admin/blocked-students/finance/${id}`);
+  revalidatePath(`/admin/blocked-students/${res.blockedBy}`);
+  revalidatePath(`/admin/blocked-students/${res.blockedBy}/${id}`);
   return res;
 }
