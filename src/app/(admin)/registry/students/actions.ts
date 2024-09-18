@@ -34,5 +34,5 @@ export async function deleteStudent(id: number) {
 export async function updateStudent(id: number, values: Student) {
   await db.update(students).set(values).where(eq(students.stdNo, id));
   revalidatePath(`/registry/students/${id}`);
-  return values;
+  return id;
 }

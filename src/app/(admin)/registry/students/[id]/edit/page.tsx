@@ -19,8 +19,7 @@ export default async function EditPage({ params: { id } }: Props) {
         value={item}
         onSubmit={async (value) => {
           'use server';
-          const res = await updateStudent(Number(id), value);
-          return res;
+          return await updateStudent(Number(id), value);
         }}
       />
     </Box>
