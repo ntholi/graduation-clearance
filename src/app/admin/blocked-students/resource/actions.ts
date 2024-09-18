@@ -11,10 +11,10 @@ export async function createBlockedStudent(values: Student) {
     .insert(blockedStudents)
     .values({
       ...values,
-      blockedBy: 'finance',
+      blockedBy: 'resource',
     })
     .returning()
     .then((it) => it[0]);
-  revalidatePath('/finance/blocked-students/finance');
+  revalidatePath('/admin/blocked-students/resource');
   return res;
 }

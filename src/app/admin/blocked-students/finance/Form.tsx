@@ -1,13 +1,13 @@
 'use client';
-import FormHeader from '@/app/(admin)/components/FormHeader';
-import { students } from '@/db/schema';
-import { NumberInput, Stack, TextInput } from '@mantine/core';
+import FormHeader from '@admin/components/FormHeader';
+import { blockedStudents } from '@/db/schema';
+import { NumberInput, Stack, Textarea } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 import { z } from 'zod';
 
-type Student = typeof students.$inferSelect;
+type Student = typeof blockedStudents.$inferSelect;
 
 type Props = {
   value?: Student;
@@ -16,11 +16,7 @@ type Props = {
 
 const UserSchema = z.object({
   stdNo: z.number().min(901000000),
-  name: z.string().min(3),
-  email: z.string().email(),
-  nationalId: z.string(),
-  program: z.string(),
-  userId: z.string(),
+  reason: z.string().min(3),
 });
 
 export default function Form({ onSubmit, value }: Props) {
@@ -34,21 +30,22 @@ export default function Form({ onSubmit, value }: Props) {
 
   async function handleSubmit(values: Student) {
     startTransition(async () => {
-      const { stdNo } = await onSubmit(values);
-      router.push(`/registry/students/${stdNo}`);
+      const { id } = await onSubmit(values);
+      router.push(`/admin/blocked-students/finance/${id}`);
     });
   }
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
-      <FormHeader title='Student' isLoading={pending} />
+      <FormHeader title='Blocked Student' isLoading={pending} />
       <Stack p={'xl'}>
         <NumberInput label='Student Number' {...form.getInputProps('stdNo')} />
-        <TextInput label='Name' {...form.getInputProps('name')} />
-        <TextInput label='Email' {...form.getInputProps('email')} />
-        <TextInput label='National ID' {...form.getInputProps('nationalId')} />
-        <TextInput label='Program' {...form.getInputProps('program')} />
-        <TextInput label='User ID' {...form.getInputProps('userId')} />
+        <Textarea
+          rows={4}
+          label='Reason'
+          description='Reason for blocking this student (optional)'
+          {...form.getInputProps('reason')}
+        />
       </Stack>
     </form>
   );

@@ -32,7 +32,7 @@ export default async function Page({ params: { id } }: Props) {
         <FieldView label='National ID'>{item.nationalId}</FieldView>
         <FieldView label='Program'>{item.program}</FieldView>
         <FieldView label='User'>
-          <Anchor component={Link} href={`/registry/users/${item.userId}`}>
+          <Anchor component={Link} href={`/admin/users/${item.userId}`}>
             {item.userId}
           </Anchor>
         </FieldView>

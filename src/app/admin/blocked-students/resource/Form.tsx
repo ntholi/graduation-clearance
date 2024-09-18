@@ -1,5 +1,5 @@
 'use client';
-import FormHeader from '@/app/(admin)/components/FormHeader';
+import FormHeader from '@admin/components/FormHeader';
 import { blockedStudents } from '@/db/schema';
 import { NumberInput, Stack, Textarea } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
@@ -31,7 +31,7 @@ export default function Form({ onSubmit, value }: Props) {
   async function handleSubmit(values: Student) {
     startTransition(async () => {
       const { id } = await onSubmit(values);
-      router.push(`/finance/blocked-students/resource/${id}`);
+      router.push(`/admin/blocked-students/resource/${id}`);
     });
   }
 

@@ -33,8 +33,8 @@ export default function Navigation() {
         <NavLink
           label='Students'
           component={Link}
-          active={pathname.startsWith('/registry/students')}
-          href={'/registry/students'}
+          active={pathname.startsWith('/admin/students')}
+          href={'/admin/students'}
           leftSection={<UserIcon size='1.1rem' />}
           rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
         />
@@ -46,32 +46,32 @@ export default function Navigation() {
           <NavLink
             label='Finance'
             component={Link}
-            active={pathname.startsWith('/finance/blocked-students/finance')}
-            href={'/finance/blocked-students/finance'}
+            active={pathname.startsWith('/admin/blocked-students/finance')}
+            href={'/admin/blocked-students/finance'}
             leftSection={<Landmark size='1.1rem' />}
             rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
           />
           <NavLink
             label='Library'
             component={Link}
-            active={pathname.startsWith('/finance/blocked-students/library')}
-            href={'/finance/blocked-students/library'}
+            active={pathname.startsWith('/admin/blocked-students/library')}
+            href={'/admin/blocked-students/library'}
             leftSection={<LibraryBig size='1.1rem' />}
             rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
           />
           <NavLink
             label='IT'
             component={Link}
-            active={pathname.startsWith('/finance/blocked-students/it')}
-            href={'/finance/blocked-students/it'}
+            active={pathname.startsWith('/admin/blocked-students/it')}
+            href={'/admin/blocked-students/it'}
             leftSection={<Computer size='1.1rem' />}
             rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
           />
           <NavLink
             label='Resource'
             component={Link}
-            active={pathname.startsWith('/finance/blocked-students/resource')}
-            href={'/finance/blocked-students/resource'}
+            active={pathname.startsWith('/admin/blocked-students/resource')}
+            href={'/admin/blocked-students/resource'}
             leftSection={<Cctv size='1.1rem' />}
             rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
           />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { getStudentByUserId } from '@admin/registry/students/actions';
+import { getStudentByUserId } from '@admin/students/actions';
 import { auth } from '@/auth';
 import Container from '@/components/ui/container';
 import db from '@/db';

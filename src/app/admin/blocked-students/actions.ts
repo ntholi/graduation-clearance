@@ -40,7 +40,7 @@ export async function getBlockedStudent(id: string, blockedBy: BlockedBy) {
 
 export async function deleteBlockedStudent(id: string) {
   await db.delete(blockedStudents).where(eq(blockedStudents.id, id));
-  revalidatePath('/finance/blocked-students/finance');
+  revalidatePath('/admin/blocked-students/finance');
 }
 
 export async function updateBlockedStudent(id: string, values: Student) {
@@ -50,6 +50,6 @@ export async function updateBlockedStudent(id: string, values: Student) {
     .where(eq(blockedStudents.id, id))
     .returning()
     .then((it) => it[0]);
-  revalidatePath(`/finance/blocked-students/finance/${id}`);
+  revalidatePath(`/admin/blocked-students/finance/${id}`);
   return res;
 }

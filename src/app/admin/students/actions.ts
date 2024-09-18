@@ -28,7 +28,7 @@ export async function getStudent(id: number) {
 
 export async function deleteStudent(id: number) {
   await db.delete(students).where(eq(students.stdNo, id));
-  revalidatePath('/registry/students');
+  revalidatePath('/admin/students');
 }
 
 export async function updateStudent(
@@ -40,6 +40,6 @@ export async function updateStudent(
     .set(values)
     .where(eq(students.stdNo, id))
     .returning();
-  revalidatePath(`/registry/students/${id}`);
+  revalidatePath(`/admin/students/${id}`);
   return res[0];
 }

@@ -4,7 +4,7 @@ import HeaderDisplay from '@admin/components/HeaderDisplay';
 import { Box, Stack, Text } from '@mantine/core';
 import { notFound } from 'next/navigation';
 import { deleteBlockedStudent, getBlockedStudent } from '../../actions';
-import DeleteIconButton from '@/app/(admin)/components/DeleteIconButton';
+import DeleteIconButton from '@admin/components/DeleteIconButton';
 
 type Props = {
   params: {
@@ -12,7 +12,7 @@ type Props = {
   };
 };
 export default async function Page({ params: { id } }: Props) {
-  const item = await getBlockedStudent(id, 'finance');
+  const item = await getBlockedStudent(id, 'resource');
   if (!item) {
     return notFound();
   }

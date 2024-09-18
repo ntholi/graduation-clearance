@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import ListPage from '../../components/ListPage';
+import ListPage from '@admin/components/ListPage';
 import db from '@/db';
 import { students } from '@/db/schema';
 import { desc } from 'drizzle-orm';
@@ -15,7 +15,7 @@ export default async function Layout({ children }: PropsWithChildren) {
       path='registry/students'
       nav={list.map((item) => ({
         label: item.name,
-        href: `/registry/students/${item.stdNo}`,
+        href: `/admin/students/${item.stdNo}`,
       }))}
     >
       {children}
