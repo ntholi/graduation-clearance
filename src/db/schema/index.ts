@@ -91,3 +91,22 @@ export const blockedStudents = pgTable('blocked_students', {
   reason: text('reason'),
   createdAt: timestamp('created_at').defaultNow(),
 });
+
+export const financeClearanceStatusEnum = pgEnum('finance_clearance_status', [
+  'pending',
+  'cleared',
+  'blocked',
+]);
+
+export const financeClearance = pgTable('finance_clearance', {
+  id: serial('id').notNull().primaryKey(),
+  stdNo: integer('std_no')
+    .notNull()
+    .references(() => students.stdNo, { onDelete: 'cascade' }),
+  status: financeClearanceStatusEnum('status').notNull().default('pending'),
+  blockedStudentId: varchar('blocked_student_id', { length: 21 }).references(
+    () => blockedStudents.id,
+    { onDelete: 'set null' },
+  ),
+  createdAt: timestamp('cleared_at').defaultNow(),
+});

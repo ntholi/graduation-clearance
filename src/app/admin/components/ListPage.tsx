@@ -25,10 +25,16 @@ type NavItem = {
 type Props = {
   path: string;
   nav: NavItem[];
+  includeNewLink?: boolean;
   children: React.ReactNode;
 };
 
-export default function ListPage({ children, path, nav }: Props) {
+export default function ListPage({
+  children,
+  path,
+  nav,
+  includeNewLink = true,
+}: Props) {
   const pathname = usePathname();
   return (
     <Grid columns={14} gutter={'xl'}>
@@ -36,15 +42,17 @@ export default function ListPage({ children, path, nav }: Props) {
         <Paper withBorder>
           <Stack gap={0} w={'100%'}>
             <Flex p={'md'} justify='space-between' align={'center'}>
-              <SearchField w={'85%'} />
-              <ActionIcon
-                variant='default'
-                component={Link}
-                size={'lg'}
-                href={`/${path}/new`}
-              >
-                <PlusIcon size={'1rem'} />
-              </ActionIcon>
+              <SearchField w={includeNewLink ? '85%' : '100%'} />
+              {includeNewLink && (
+                <ActionIcon
+                  variant='default'
+                  component={Link}
+                  size={'lg'}
+                  href={`/${path}/new`}
+                >
+                  <PlusIcon size={'1rem'} />
+                </ActionIcon>
+              )}
             </Flex>
             <Divider />
             <ScrollArea h={{ base: 150, sm: '80vh' }} type='always' p={'sm'}>

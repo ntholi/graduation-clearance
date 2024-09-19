@@ -20,6 +20,7 @@ import {
   LibraryBig,
   Computer,
   Cctv,
+  Coins,
 } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -36,6 +37,14 @@ export default function Navigation() {
           active={pathname.startsWith('/admin/students')}
           href={'/admin/students'}
           leftSection={<UserIcon size='1.1rem' />}
+          rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
+        />
+        <NavLink
+          label='Clearance'
+          component={Link}
+          active={pathname.startsWith('/admin/clearance/finance')}
+          href={'/admin/clearance/finance'}
+          leftSection={<Landmark size='1.1rem' />}
           rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
         />
         <NavLink
