@@ -2,7 +2,7 @@
 
 import db from '@/db';
 import { graduatingStudents, students } from '@/db/schema';
-import { eq, inArray } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 export type Clearance = typeof graduatingStudents.$inferSelect;
@@ -17,16 +17,22 @@ export async function getStudent(stdNo: number) {
 }
 
 export async function saveGraduationList(stdNumbers: number[]) {
-  await db.insert(students).values(
-    stdNumbers.map((stdNo) => ({
-      stdNo,
-    })),
-  );
-  await db.insert(graduatingStudents).values(
-    stdNumbers.map((stdNo) => ({
-      stdNo,
-    })),
-  );
+  await db
+    .insert(students)
+    .values(
+      stdNumbers.map((stdNo) => ({
+        stdNo,
+      })),
+    )
+    .onConflictDoNothing();
+  await db
+    .insert(graduatingStudents)
+    .values(
+      stdNumbers.map((stdNo) => ({
+        stdNo,
+      })),
+    )
+    .onConflictDoNothing();
   revalidatePath('/admin/graduating-students');
 }
 
