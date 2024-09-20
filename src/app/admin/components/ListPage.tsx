@@ -6,6 +6,7 @@ import {
   Flex,
   Grid,
   GridCol,
+  Group,
   NavLink,
   NavLinkProps,
   Paper,
@@ -42,7 +43,9 @@ export default function ListPage({
         <Paper withBorder>
           <Stack gap={0} w={'100%'}>
             <Flex p={'md'} justify='space-between' align={'center'}>
-              <SearchField w={includeNewLink ? '85%' : '100%'} />
+              <Group grow>
+                <SearchField style={{ width: '100%' }} />
+              </Group>
               {includeNewLink && (
                 <ActionIcon
                   variant='default'
