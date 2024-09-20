@@ -39,11 +39,6 @@ export default function Form({ onSubmit, value }: Props) {
       <FormHeader title='Graduating Student' isLoading={pending} />
       <Stack p={'xl'}>
         <NumberInput label='Student Number' {...form.getInputProps('stdNo')} />
-        <Select
-          label='Faculty'
-          {...form.getInputProps('faculty')}
-          data={['FICT', 'FBMG', 'FCTH', 'FCMB', 'FDI', 'FABE']}
-        />
       </Stack>
     </form>
   );

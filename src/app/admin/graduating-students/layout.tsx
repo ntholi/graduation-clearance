@@ -1,8 +1,9 @@
-import { PropsWithChildren } from 'react';
-import ListPage from '@admin/components/ListPage';
 import db from '@/db';
 import { graduatingStudents, students } from '@/db/schema';
+import ListPage from '@admin/components/ListPage';
 import { desc, eq } from 'drizzle-orm';
+import { PropsWithChildren } from 'react';
+import SheetReader from './SheetReader';
 
 async function getClearanceList() {
   const list = await db
@@ -18,6 +19,7 @@ async function getClearanceList() {
 
 export default async function Layout({ children }: PropsWithChildren) {
   const list = await getClearanceList();
+
   return (
     <ListPage
       path='admin/graduating-students'
@@ -25,6 +27,7 @@ export default async function Layout({ children }: PropsWithChildren) {
         label: item.stdNo,
         href: `/admin/graduating-students/${item.stdNo}`,
       }))}
+      actionIcons={[<SheetReader />]}
     >
       {children}
     </ListPage>

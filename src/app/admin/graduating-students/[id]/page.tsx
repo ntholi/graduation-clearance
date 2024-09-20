@@ -28,7 +28,6 @@ export default async function Page({ params: { id } }: Props) {
       />
       <Stack p={'xl'}>
         <FieldView label='Student Number'>{item.stdNo}</FieldView>
-        <FieldView label='Faculty'>{item.faculty}</FieldView>
         <FieldView label='Created At'>{dateTime(item.createdAt)}</FieldView>
       </Stack>
     </Box>

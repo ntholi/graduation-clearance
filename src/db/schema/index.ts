@@ -115,6 +115,5 @@ export const graduatingStudents = pgTable('graduating_students', {
     .primaryKey()
     .notNull()
     .references(() => students.stdNo, { onDelete: 'cascade' }),
-  faculty: text('faculty').notNull(),
   createdAt: timestamp('created_at').defaultNow(),
 });

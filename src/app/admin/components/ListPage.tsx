@@ -28,6 +28,7 @@ type Props = {
   nav: NavItem[];
   includeNewLink?: boolean;
   children: React.ReactNode;
+  actionIcons?: React.ReactNode[];
 };
 
 export default function ListPage({
@@ -35,6 +36,7 @@ export default function ListPage({
   path,
   nav,
   includeNewLink = true,
+  actionIcons,
 }: Props) {
   const pathname = usePathname();
   return (
@@ -42,7 +44,7 @@ export default function ListPage({
       <GridCol span={{ base: 13, sm: 4 }} pr={{ base: 7, sm: 0 }}>
         <Paper withBorder>
           <Stack gap={0} w={'100%'}>
-            <Flex p={'md'} justify='space-between' align={'center'}>
+            <Flex p={'md'} justify='space-between' align={'center'} gap={'xs'}>
               <Group grow>
                 <SearchField style={{ width: '100%' }} />
               </Group>
@@ -56,6 +58,7 @@ export default function ListPage({
                   <PlusIcon size={'1rem'} />
                 </ActionIcon>
               )}
+              {actionIcons}
             </Flex>
             <Divider />
             <ScrollArea h={{ base: 150, sm: '80vh' }} type='always' p={'sm'}>

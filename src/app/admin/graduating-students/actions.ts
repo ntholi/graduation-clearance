@@ -2,7 +2,7 @@
 
 import db from '@/db';
 import { graduatingStudents, students } from '@/db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 export type Clearance = typeof graduatingStudents.$inferSelect;
@@ -16,24 +16,30 @@ export async function getStudent(stdNo: number) {
   return student;
 }
 
+export async function saveGraduationList(stdNumbers: number[]) {
+  await db.insert(students).values(
+    stdNumbers.map((stdNo) => ({
+      stdNo,
+    })),
+  );
+  await db.insert(graduatingStudents).values(
+    stdNumbers.map((stdNo) => ({
+      stdNo,
+    })),
+  );
+  revalidatePath('/admin/graduating-students');
+}
+
 export async function createGraduatingStudent(
   values: Clearance,
 ): Promise<Clearance> {
-  let student = await db
-    .select()
-    .from(students)
-    .where(eq(students.stdNo, values.stdNo))
-    .then((it) => it[0]);
-  if (!student) {
-    student = await db
-      .insert(students)
-      .values({
-        stdNo: values.stdNo,
-      })
-      .onConflictDoNothing()
-      .returning()
-      .then((it) => it[0]);
-  }
+  await db
+    .insert(students)
+    .values({
+      stdNo: values.stdNo,
+    })
+    .onConflictDoNothing();
+
   const res = await db
     .insert(graduatingStudents)
     .values(values)
