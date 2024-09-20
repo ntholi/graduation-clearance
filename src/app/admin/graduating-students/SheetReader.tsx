@@ -1,7 +1,7 @@
 'use client';
 import { ActionIcon, FileButton } from '@mantine/core';
 import { Upload } from 'lucide-react';
-import { useTransition } from 'react';
+import { useTransition, useState } from 'react';
 import * as XLSX from 'xlsx';
 import { saveGraduationList } from './actions';
 
@@ -39,12 +39,14 @@ async function writeFileContents(file: File): Promise<void> {
 
 export default function SheetReader() {
   const [pending, startTransition] = useTransition();
+  const [key, setKey] = useState(0);
 
   const handleFileChange = (file: File | null) => {
     if (!file) return;
     startTransition(async () => {
       try {
         await writeFileContents(file);
+        setKey((prevKey) => prevKey + 1);
       } catch (error) {
         console.error('Error processing file:', error);
         // Handle error (e.g., show error message to user)
@@ -57,6 +59,7 @@ export default function SheetReader() {
       onChange={handleFileChange}
       accept='.xls,.xlsx'
       disabled={pending}
+      key={key}
     >
       {(props) => (
         <ActionIcon {...props} loading={pending}>
