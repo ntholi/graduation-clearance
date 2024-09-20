@@ -17,13 +17,11 @@ import { users } from './auth';
 export const students = pgTable('students', {
   stdNo: integer('std_no').notNull().primaryKey(),
   userId: text('user_id')
-    .notNull()
     .unique()
     .references(() => users.id, { onDelete: 'cascade' }),
   name: text('name'),
-  nationalId: text('national_id').notNull(),
-  program: text('program').notNull(),
-  email: text('email').unique(),
+  nationalId: text('national_id'),
+  program: text('program'),
   createdAt: timestamp('created_at').defaultNow(),
 });
 
@@ -109,4 +107,11 @@ export const financeClearance = pgTable('finance_clearance', {
     { onDelete: 'set null' },
   ),
   createdAt: timestamp('cleared_at').defaultNow(),
+});
+
+export const clearedFacultyStudents = pgTable('cleared_faculty_students', {
+  stdNo: integer('std_no')
+    .notNull()
+    .references(() => students.stdNo, { onDelete: 'cascade' }),
+  clearedAt: timestamp('cleared_at').defaultNow(),
 });

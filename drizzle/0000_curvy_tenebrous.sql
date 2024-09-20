@@ -5,17 +5,28 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ CREATE TYPE "public"."finance_clearance_status" AS ENUM('pending', 'cleared', 'blocked');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  CREATE TYPE "public"."role" AS ENUM('student', 'registry', 'finance', 'faculty', 'admin');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "blocked_students" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" varchar(21) PRIMARY KEY NOT NULL,
 	"std_no" integer NOT NULL,
 	"blocked_by" "blocked_by" NOT NULL,
 	"reason" text,
 	"created_at" timestamp DEFAULT now()
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "cleared_faculty_students" (
+	"std_no" integer NOT NULL,
+	"cleared_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "enrollments" (
@@ -26,6 +37,14 @@ CREATE TABLE IF NOT EXISTS "enrollments" (
 	"gpa" numeric(3, 2) NOT NULL,
 	"cgpa" numeric(3, 2) NOT NULL,
 	"credits" integer NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "finance_clearance" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"std_no" integer NOT NULL,
+	"status" "finance_clearance_status" DEFAULT 'pending' NOT NULL,
+	"blocked_student_id" varchar(21),
+	"cleared_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "grades" (
@@ -49,14 +68,12 @@ CREATE TABLE IF NOT EXISTS "signup_requests" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "students" (
 	"std_no" integer PRIMARY KEY NOT NULL,
-	"user_id" text NOT NULL,
+	"user_id" text,
 	"name" text,
-	"national_id" text NOT NULL,
-	"program" text NOT NULL,
-	"email" text,
+	"national_id" text,
+	"program" text,
 	"created_at" timestamp DEFAULT now(),
-	CONSTRAINT "students_user_id_unique" UNIQUE("user_id"),
-	CONSTRAINT "students_email_unique" UNIQUE("email")
+	CONSTRAINT "students_user_id_unique" UNIQUE("user_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "accounts" (
@@ -117,7 +134,25 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "cleared_faculty_students" ADD CONSTRAINT "cleared_faculty_students_std_no_students_std_no_fk" FOREIGN KEY ("std_no") REFERENCES "public"."students"("std_no") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "enrollments" ADD CONSTRAINT "enrollments_std_no_students_std_no_fk" FOREIGN KEY ("std_no") REFERENCES "public"."students"("std_no") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "finance_clearance" ADD CONSTRAINT "finance_clearance_std_no_students_std_no_fk" FOREIGN KEY ("std_no") REFERENCES "public"."students"("std_no") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "finance_clearance" ADD CONSTRAINT "finance_clearance_blocked_student_id_blocked_students_id_fk" FOREIGN KEY ("blocked_student_id") REFERENCES "public"."blocked_students"("id") ON DELETE set null ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

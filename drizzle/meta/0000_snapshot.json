@@ -1,5 +1,5 @@
 {
-  "id": "b345ddf7-89e0-4747-8bc9-87c132980faa",
+  "id": "3042017a-4966-43b2-a8c7-3c64c2af76f8",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -10,7 +10,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "varchar(21)",
           "primaryKey": true,
           "notNull": true
         },
@@ -54,6 +54,43 @@
             "std_no"
           ],
           "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.cleared_faculty_students": {
+      "name": "cleared_faculty_students",
+      "schema": "",
+      "columns": {
+        "std_no": {
+          "name": "std_no",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cleared_at": {
+          "name": "cleared_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "cleared_faculty_students_std_no_students_std_no_fk": {
+          "name": "cleared_faculty_students_std_no_students_std_no_fk",
+          "tableFrom": "cleared_faculty_students",
+          "tableTo": "students",
+          "columnsFrom": [
+            "std_no"
+          ],
+          "columnsTo": [
+            "std_no"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -120,6 +157,76 @@
             "std_no"
           ],
           "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.finance_clearance": {
+      "name": "finance_clearance",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "std_no": {
+          "name": "std_no",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "finance_clearance_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pending'"
+        },
+        "blocked_student_id": {
+          "name": "blocked_student_id",
+          "type": "varchar(21)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cleared_at": {
+          "name": "cleared_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "finance_clearance_std_no_students_std_no_fk": {
+          "name": "finance_clearance_std_no_students_std_no_fk",
+          "tableFrom": "finance_clearance",
+          "tableTo": "students",
+          "columnsFrom": [
+            "std_no"
+          ],
+          "columnsTo": [
+            "std_no"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "finance_clearance_blocked_student_id_blocked_students_id_fk": {
+          "name": "finance_clearance_blocked_student_id_blocked_students_id_fk",
+          "tableFrom": "finance_clearance",
+          "tableTo": "blocked_students",
+          "columnsFrom": [
+            "blocked_student_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
@@ -270,7 +377,7 @@
           "name": "user_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "name": {
           "name": "name",
@@ -282,16 +389,10 @@
           "name": "national_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "program": {
           "name": "program",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "email": {
-          "name": "email",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -327,13 +428,6 @@
           "nullsNotDistinct": false,
           "columns": [
             "user_id"
-          ]
-        },
-        "students_email_unique": {
-          "name": "students_email_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "email"
           ]
         }
       }
@@ -667,6 +761,15 @@
         "library",
         "resource",
         "it"
+      ]
+    },
+    "public.finance_clearance_status": {
+      "name": "finance_clearance_status",
+      "schema": "public",
+      "values": [
+        "pending",
+        "cleared",
+        "blocked"
       ]
     },
     "public.role": {

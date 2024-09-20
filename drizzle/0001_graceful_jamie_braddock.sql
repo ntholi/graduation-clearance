@@ -1,1 +1,0 @@
-ALTER TABLE "blocked_students" ALTER COLUMN "id" SET DATA TYPE varchar(21);
