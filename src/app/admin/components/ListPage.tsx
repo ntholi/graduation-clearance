@@ -43,7 +43,7 @@ export default function ListPage({
     <Grid columns={14} gutter={'xl'}>
       <GridCol span={4} pr={7}>
         <Paper withBorder h={'88vh'}>
-          <Stack gap={0} w={'100%'}>
+          <Flex direction='column' h='100%'>
             <Flex p={'md'} justify='space-between' align={'center'} gap={'xs'}>
               <Group grow>
                 <SearchField style={{ width: '100%' }} />
@@ -61,7 +61,7 @@ export default function ListPage({
               {actionIcons}
             </Flex>
             <Divider />
-            <ScrollArea type='always' h='100%' p={'sm'}>
+            <ScrollArea type='always' style={{ flex: 1 }} p={'sm'}>
               {nav.map((item) => (
                 <NavLink
                   key={item.href}
@@ -71,8 +71,9 @@ export default function ListPage({
                 />
               ))}
             </ScrollArea>
-            <Pagination total={3} size={'xs'} />;
-          </Stack>
+            <Divider />
+            <Pagination total={3} size={'xs'} m={'sm'} />
+          </Flex>
         </Paper>
       </GridCol>
       <GridCol span={10}>
