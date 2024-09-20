@@ -21,6 +21,7 @@ export const students = pgTable('students', {
     .references(() => users.id, { onDelete: 'cascade' }),
   name: text('name'),
   nationalId: text('national_id'),
+  // phoneNumber: text('phone_number'),
   program: text('program'),
   createdAt: timestamp('created_at').defaultNow(),
 });
@@ -106,12 +107,14 @@ export const financeClearance = pgTable('finance_clearance', {
     () => blockedStudents.id,
     { onDelete: 'set null' },
   ),
-  createdAt: timestamp('cleared_at').defaultNow(),
+  createdAt: timestamp('created_at').defaultNow(),
 });
 
-export const clearedFacultyStudents = pgTable('cleared_faculty_students', {
+export const graduatingStudents = pgTable('graduating_students', {
   stdNo: integer('std_no')
+    .primaryKey()
     .notNull()
     .references(() => students.stdNo, { onDelete: 'cascade' }),
-  clearedAt: timestamp('cleared_at').defaultNow(),
+  faculty: text('faculty').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
 });

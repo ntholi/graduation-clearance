@@ -21,6 +21,7 @@ import {
   Computer,
   Cctv,
   Coins,
+  GraduationCap,
 } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -40,7 +41,15 @@ export default function Navigation() {
           rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
         />
         <NavLink
-          label='Clearance'
+          label='Graduating Students'
+          component={Link}
+          active={pathname.startsWith('/admin/graduating-students')}
+          href={'/admin/graduating-students'}
+          leftSection={<GraduationCap size='1.1rem' />}
+          rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
+        />
+        <NavLink
+          label='Finance Clearance'
           component={Link}
           active={pathname.startsWith('/admin/clearance/finance')}
           href={'/admin/clearance/finance'}
