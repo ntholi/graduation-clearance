@@ -1,7 +1,6 @@
 'use client';
 import {
   ActionIcon,
-  Button,
   Divider,
   Flex,
   Grid,
@@ -9,15 +8,16 @@ import {
   Group,
   NavLink,
   NavLinkProps,
+  Pagination,
   Paper,
   ScrollArea,
   Stack,
 } from '@mantine/core';
+import { PlusIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 import SearchField from './SearchField';
-import { PlusIcon } from 'lucide-react';
 
 type NavItem = {
   href: string;
@@ -41,8 +41,8 @@ export default function ListPage({
   const pathname = usePathname();
   return (
     <Grid columns={14} gutter={'xl'}>
-      <GridCol span={{ base: 13, sm: 4 }} pr={{ base: 7, sm: 0 }}>
-        <Paper withBorder>
+      <GridCol span={4} pr={7}>
+        <Paper withBorder h={'88vh'}>
           <Stack gap={0} w={'100%'}>
             <Flex p={'md'} justify='space-between' align={'center'} gap={'xs'}>
               <Group grow>
@@ -61,7 +61,7 @@ export default function ListPage({
               {actionIcons}
             </Flex>
             <Divider />
-            <ScrollArea h={{ base: 150, sm: '80vh' }} type='always' p={'sm'}>
+            <ScrollArea type='always' h='100%' p={'sm'}>
               {nav.map((item) => (
                 <NavLink
                   key={item.href}
@@ -71,12 +71,13 @@ export default function ListPage({
                 />
               ))}
             </ScrollArea>
+            <Pagination total={3} size={'xs'} />;
           </Stack>
         </Paper>
       </GridCol>
-      <GridCol span={{ base: 13, sm: 10 }}>
+      <GridCol span={10}>
         <Paper withBorder>
-          <ScrollArea h='88.5vh' type='always'>
+          <ScrollArea h='88vh' type='always'>
             {children}
           </ScrollArea>
         </Paper>
