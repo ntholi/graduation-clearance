@@ -2,7 +2,7 @@
 import { graduatingStudents } from '@/db/schema';
 import FormHeader from '@admin/components/FormHeader';
 import useFormAction from '@admin/hooks/useFormAction';
-import { NumberInput, Select, Stack, TextInput } from '@mantine/core';
+import { NumberInput, Stack } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
