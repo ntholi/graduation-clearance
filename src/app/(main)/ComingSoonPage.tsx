@@ -9,7 +9,7 @@ export default function ComingSoonPage() {
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
-  const target = new Date('2024-09-20T10:00:00'); // Set your target date here
+  const target = new Date('2024-09-24T10:00:00'); // Set your target date here
 
   useEffect(() => {
     const interval = setInterval(() => {

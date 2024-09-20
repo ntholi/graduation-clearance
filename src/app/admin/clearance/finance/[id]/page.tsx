@@ -1,3 +1,4 @@
+import { deleteStudent, getStudent } from '@/app/admin/students/actions';
 import { dateTime } from '@/lib/format';
 import DeleteIconButton from '@admin/components/DeleteIconButton';
 import FieldView from '@admin/components/FieldView';
@@ -5,7 +6,6 @@ import HeaderDisplay from '@admin/components/HeaderDisplay';
 import { Anchor, Box, Stack } from '@mantine/core';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { deleteStudent, getStudent } from '../actions';
 
 type Props = {
   params: {
@@ -28,7 +28,6 @@ export default async function Page({ params: { id } }: Props) {
       <Stack p={'xl'}>
         <FieldView label='Student Number'>{item.stdNo}</FieldView>
         <FieldView label='Name'>{item.name}</FieldView>
-        <FieldView label='Email'>{item.email}</FieldView>
         <FieldView label='National ID'>{item.nationalId}</FieldView>
         <FieldView label='Program'>{item.program}</FieldView>
         <FieldView label='User'>

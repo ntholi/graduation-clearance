@@ -28,7 +28,6 @@ export default async function Page({ params: { id } }: Props) {
       <Stack p={'xl'}>
         <FieldView label='Student Number'>{item.stdNo}</FieldView>
         <FieldView label='Name'>{item.name}</FieldView>
-        <FieldView label='Email'>{item.email}</FieldView>
         <FieldView label='National ID'>{item.nationalId}</FieldView>
         <FieldView label='Program'>{item.program}</FieldView>
         <FieldView label='User'>
