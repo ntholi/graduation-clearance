@@ -4,8 +4,9 @@ import { Upload } from 'lucide-react';
 import { useTransition, useState } from 'react';
 import * as XLSX from 'xlsx';
 import { saveGraduationList } from './actions';
+import { notifications } from '@mantine/notifications';
 
-async function writeFileContents(file: File): Promise<void> {
+async function writeFileContents(file: File): Promise<number> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = async (event: ProgressEvent<FileReader>) => {
@@ -27,7 +28,7 @@ async function writeFileContents(file: File): Promise<void> {
           .flatMap((row) => row.map((cell) => cell.toString()))
           .filter((cell) => cell.startsWith('9010'));
         await saveGraduationList(stdNumbers.map(Number));
-        resolve();
+        resolve(stdNumbers.length);
       } catch (error) {
         reject(error);
       }
@@ -44,12 +45,19 @@ export default function SheetReader() {
   const handleFileChange = (file: File | null) => {
     if (!file) return;
     startTransition(async () => {
+      setKey((prevKey) => prevKey + 1);
       try {
-        await writeFileContents(file);
-        setKey((prevKey) => prevKey + 1);
+        const count = await writeFileContents(file);
+        notifications.show({
+          title: 'Success',
+          message: `${count} students added`,
+        });
       } catch (error) {
-        console.error('Error processing file:', error);
-        // Handle error (e.g., show error message to user)
+        notifications.show({
+          color: 'red',
+          title: 'Error adding students',
+          message: error instanceof Error ? error.message : 'Unexpected error',
+        });
       }
     });
   };
