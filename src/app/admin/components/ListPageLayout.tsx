@@ -1,23 +1,6 @@
 'use client';
-import {
-  ActionIcon,
-  Divider,
-  Flex,
-  Grid,
-  GridCol,
-  Group,
-  NavLink,
-  NavLinkProps,
-  Pagination,
-  Paper,
-  ScrollArea,
-  Stack,
-} from '@mantine/core';
-import { PlusIcon } from 'lucide-react';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { Grid, GridCol, Paper, ScrollArea } from '@mantine/core';
 import React from 'react';
-import SearchField from './SearchField';
 
 type Props = {
   children: React.ReactNode;
