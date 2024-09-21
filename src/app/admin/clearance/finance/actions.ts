@@ -1,13 +1,25 @@
 'use server';
 
 import db from '@/db';
-import { financeClearance } from '@/db/schema';
-import { eq } from 'drizzle-orm';
+import { financeClearance, students } from '@/db/schema';
+import { eq, desc } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 export type Clearance = typeof financeClearance.$inferSelect;
 
-export async function getClearance(stdNo: number) {
+export async function getClearanceList() {
+  const list = await db
+    .select()
+    .from(financeClearance)
+    .leftJoin(students, eq(students.stdNo, financeClearance.stdNo))
+    .orderBy(desc(financeClearance.createdAt));
+  return list.map((it) => ({
+    ...it.finance_clearance,
+    student: it.students,
+  }));
+}
+
+export async function getClearance(stdNo: string) {
   const student = await db
     .select()
     .from(financeClearance)
@@ -16,13 +28,13 @@ export async function getClearance(stdNo: number) {
   return student;
 }
 
-export async function deleteClearance(stdNo: number) {
+export async function deleteClearance(stdNo: string) {
   await db.delete(financeClearance).where(eq(financeClearance.stdNo, stdNo));
   revalidatePath('/admin/finance/clearance');
 }
 
 export async function updateClearance(
-  id: number,
+  id: string,
   values: Clearance,
 ): Promise<Clearance> {
   const res = await db

@@ -2,14 +2,23 @@
 
 import db from '@/db';
 import { blockedStudents, students } from '@/db/schema';
-import { and, desc, eq } from 'drizzle-orm';
+import { and, count, desc, eq, like } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 type BlockedBy = (typeof blockedStudents.$inferSelect)['blockedBy'];
 type Student = typeof blockedStudents.$inferInsert;
 
-export async function getBlockedStudents(blockedBy: BlockedBy) {
-  return await db
+const ITEMS_PER_PAGE = 15;
+
+export async function getBlockedStudents(
+  blockedBy: BlockedBy,
+  page = 1,
+
+  search = '',
+) {
+  const offset = (page - 1) * ITEMS_PER_PAGE;
+
+  const list = await db
     .select({
       id: blockedStudents.id,
       stdNo: blockedStudents.stdNo,
@@ -18,9 +27,28 @@ export async function getBlockedStudents(blockedBy: BlockedBy) {
       },
     })
     .from(blockedStudents)
-    .where(eq(blockedStudents.blockedBy, blockedBy))
+    .where(
+      and(
+        eq(blockedStudents.blockedBy, blockedBy),
+        like(students.name, `%${search}%`),
+      ),
+    )
     .leftJoin(students, eq(students.stdNo, blockedStudents.stdNo))
-    .orderBy(desc(blockedStudents.createdAt));
+    .orderBy(desc(blockedStudents.createdAt))
+    .limit(ITEMS_PER_PAGE)
+    .offset(offset);
+
+  const totalCount = await db
+    .select({ count: count() })
+    .from(blockedStudents)
+    .then((it) => it[0].count);
+
+  return {
+    items: list.map((it) => ({
+      ...it,
+    })),
+    pages: Math.ceil(totalCount / ITEMS_PER_PAGE),
+  };
 }
 
 export async function getBlockedStudent(id: string, blockedBy: BlockedBy) {
