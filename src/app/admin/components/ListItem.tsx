@@ -6,18 +6,18 @@ import { usePathname } from 'next/navigation';
 import React from 'react';
 
 type Props = {
-  key: string | number;
+  href: string;
   path: string;
 } & NavLinkProps;
 
-export default function ListItem({ key, path, ...props }: Props) {
+export default function ListItem({ href, path, ...props }: Props) {
   const pathname = usePathname();
   return (
     <NavLink
-      href={`${path}/${key}`}
+      href={href}
       component={Link}
       {...props}
-      active={pathname === `${path}/${key}`}
+      active={pathname === href}
     />
   );
 }

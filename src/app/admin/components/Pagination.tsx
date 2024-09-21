@@ -6,9 +6,10 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 type Props = {
   total: number;
+  path: string;
 };
 
-export default function Pagination({ total }: Props) {
+export default function Pagination({ total, path }: Props) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const page = Number(searchParams.get('page'));
@@ -16,7 +17,7 @@ export default function Pagination({ total }: Props) {
   const handleChange = (page: number) => {
     const params = new URLSearchParams(searchParams);
     params.set('page', page.toString());
-    router.push(`?${params.toString()}`);
+    router.push(`${path}?${params.toString()}`);
   };
 
   return (
