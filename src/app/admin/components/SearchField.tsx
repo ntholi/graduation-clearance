@@ -12,7 +12,6 @@ export default function SearchField({ path, ...props }: Props) {
 
   function handleSearch(value: string) {
     setValue(value);
-    console.log('Search value:', value);
     router.push(`${path}?search=${value}`);
   }
 
@@ -20,6 +19,7 @@ export default function SearchField({ path, ...props }: Props) {
     <CloseButton
       onClick={() => {
         setValue('');
+        router.push(path);
       }}
     />
   ) : (
