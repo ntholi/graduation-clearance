@@ -1,4 +1,4 @@
-import ListContainer from '../../components/ListContainer';
+import ItemsList from '../../components/ItemsList';
 import ListItem from '../../components/ListItem';
 import { getStudents } from '../actions';
 
@@ -7,13 +7,11 @@ type Props = {
 };
 
 export default async function ItemsPage({ searchParams }: Props) {
-  const { items, pages } = await getStudents(
-    Number(searchParams?.page),
-    searchParams?.search as string,
-  );
   return (
-    <ListContainer items={items} path='/admin/students' total={pages}>
-      {({ item, path }) => (
+    <ItemsList
+      getItems={getStudents}
+      path='/admin/students'
+      renderItem={(item, path) => (
         <ListItem
           label={item.stdNo}
           description={item.name}
@@ -21,6 +19,7 @@ export default async function ItemsPage({ searchParams }: Props) {
           path={path}
         />
       )}
-    </ListContainer>
+      searchParams={searchParams}
+    />
   );
 }

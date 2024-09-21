@@ -10,7 +10,7 @@ type Props = {
 };
 
 export default async function EditPage({ params: { id } }: Props) {
-  const item = await getStudent(Number(id));
+  const item = await getStudent(id);
   if (!item) return notFound();
 
   return (
@@ -19,7 +19,7 @@ export default async function EditPage({ params: { id } }: Props) {
         value={item}
         onSubmit={async (value) => {
           'use server';
-          return await updateStudent(Number(id), value);
+          return await updateStudent(id, value);
         }}
       />
     </Box>

@@ -13,7 +13,7 @@ type Props = {
   };
 };
 export default async function Page({ params: { id } }: Props) {
-  const item = await getStudent(Number(id));
+  const item = await getStudent(id);
   if (!item) {
     return notFound();
   }

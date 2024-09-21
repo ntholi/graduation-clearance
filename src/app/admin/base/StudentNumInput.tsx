@@ -20,7 +20,7 @@ export default function StudentNumInput(props: NumberInputProps) {
     } else if (str.length > 9) {
       setError('Student number too long');
     } else if (str.length === 9) {
-      getStudent(Number(str)).then((student) => {
+      getStudent(str).then((student) => {
         if (student) {
           setDescription(student.name);
         } else {

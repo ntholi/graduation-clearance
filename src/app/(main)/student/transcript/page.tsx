@@ -15,7 +15,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-async function getTranscriptData(stdNo: number) {
+async function getTranscriptData(stdNo: string) {
   const data = await db.query.enrollments.findMany({
     with: {
       grades: true,

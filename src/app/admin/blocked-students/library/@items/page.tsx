@@ -1,4 +1,4 @@
-import ListContainer from '@admin/components/ListContainer';
+import ItemsList from '@/app/admin/components/ItemsList';
 import ListItem from '@admin/components/ListItem';
 import { getBlockedStudents } from '../../actions';
 
@@ -7,20 +7,19 @@ type Props = {
 };
 
 export default async function ItemsPage({ searchParams }: Props) {
-  const { items, pages } = await getBlockedStudents(
-    'library',
-    Number(searchParams?.page),
-    searchParams?.search as string,
-  );
   return (
-    <ListContainer
-      items={items}
+    <ItemsList
+      getItems={(page, search) => getBlockedStudents('library', page, search)}
       path='/admin/blocked-students/library'
-      total={pages}
-    >
-      {({ item, path }) => (
-        <ListItem label={item.stdNo} id={item.stdNo} path={path} />
+      renderItem={(item, path) => (
+        <ListItem
+          label={item.stdNo}
+          description={item.student?.name}
+          id={item.id}
+          path={path}
+        />
       )}
-    </ListContainer>
+      searchParams={searchParams}
+    />
   );
 }

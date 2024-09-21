@@ -1,4 +1,4 @@
-import ListContainer from '../../components/ListContainer';
+import ItemsList from '../../components/ItemsList';
 import ListItem from '../../components/ListItem';
 import { getGraduatingStudents } from '../actions';
 
@@ -7,19 +7,14 @@ type Props = {
 };
 
 export default async function ItemsPage({ searchParams }: Props) {
-  const { items, pages } = await getGraduatingStudents(
-    Number(searchParams?.page),
-    searchParams?.search as string,
-  );
   return (
-    <ListContainer
-      items={items}
+    <ItemsList
+      getItems={getGraduatingStudents}
       path='/admin/graduating-students'
-      total={pages}
-    >
-      {({ item, path }) => (
+      renderItem={(item, path) => (
         <ListItem label={item.stdNo} id={item.stdNo} path={path} />
       )}
-    </ListContainer>
+      searchParams={searchParams}
+    />
   );
 }
