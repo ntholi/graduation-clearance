@@ -14,7 +14,7 @@ export async function getGraduatingStudents(page: number = 1, search?: string) {
   const list = await db
     .select()
     .from(graduatingStudents)
-    .where(like(graduatingStudents.stdNo, `%${search}%`))
+    // .where(like(graduatingStudents.stdNo, `%${search}%`))
     .leftJoin(students, eq(students.stdNo, graduatingStudents.stdNo))
     .orderBy(desc(graduatingStudents.createdAt))
     .limit(ITEMS_PER_PAGE)

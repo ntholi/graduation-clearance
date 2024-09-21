@@ -18,12 +18,7 @@ export default async function ItemsPage({ searchParams }: Props) {
       total={pages}
     >
       {({ item, path }) => (
-        <ListItem
-          key={item.stdNo}
-          label={item.stdNo}
-          id={item.stdNo}
-          path={path}
-        />
+        <ListItem label={item.stdNo} id={item.stdNo} path={path} />
       )}
     </ListContainer>
   );

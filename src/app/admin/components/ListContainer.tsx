@@ -35,7 +35,11 @@ export default function ListContainer<T>({
       </Flex>
       <Divider />
       <ScrollArea type='always' style={{ flex: 1 }} p={'sm'}>
-        {items.map((item: T) => children({ item, path }))}
+        {items.map((item: T, index: number) => (
+          <React.Fragment key={index}>
+            {children({ item, path })}
+          </React.Fragment>
+        ))}
       </ScrollArea>
 
       <Divider />
