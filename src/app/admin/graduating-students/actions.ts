@@ -7,11 +7,10 @@ import { revalidatePath } from 'next/cache';
 
 export type Clearance = typeof graduatingStudents.$inferSelect;
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 15;
 
 export async function getGraduatingStudents(page: number = 1) {
   const offset = (page - 1) * ITEMS_PER_PAGE;
-  console.log({ offset, page, ITEMS_PER_PAGE });
   const list = await db
     .select()
     .from(graduatingStudents)
@@ -30,7 +29,7 @@ export async function getGraduatingStudents(page: number = 1) {
       ...it.graduating_students,
       student: it.students,
     })),
-    totalPages: Math.ceil(totalCount / ITEMS_PER_PAGE),
+    pages: Math.ceil(totalCount / ITEMS_PER_PAGE),
   };
 }
 
