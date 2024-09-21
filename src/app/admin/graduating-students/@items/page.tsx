@@ -8,10 +8,11 @@ type Props = {
 };
 
 export default async function ItemsPage({ searchParams }: Props) {
-  console.log({ searchParams });
-  const { items, totalPages } = await getGraduatingStudents();
+  const { items, totalPages } = await getGraduatingStudents(
+    Number(searchParams?.page),
+  );
   return (
-    <ItemsContainer>
+    <ItemsContainer total={totalPages}>
       {items.map((item) => (
         <NavLink
           href={`/admin/graduating-students/${item.stdNo}`}

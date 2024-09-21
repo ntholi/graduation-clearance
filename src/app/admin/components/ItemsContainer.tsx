@@ -1,21 +1,16 @@
-import {
-  ActionIcon,
-  Divider,
-  Flex,
-  Group,
-  Pagination,
-  ScrollArea,
-} from '@mantine/core';
+import { ActionIcon, Divider, Flex, Group, ScrollArea } from '@mantine/core';
 import React from 'react';
 import SearchField from './SearchField';
+import Pagination from './Pagination';
 import Link from 'next/link';
 import { PlusIcon } from 'lucide-react';
 
 type Props = {
   children: React.ReactNode;
+  total: number;
 };
 
-export default function ItemsContainer({ children }: Props) {
+export default function ItemsContainer({ children, total }: Props) {
   return (
     <Flex direction='column' h='100%'>
       <Flex p={'md'} justify='space-between' align={'center'} gap={'xs'}>
@@ -37,7 +32,7 @@ export default function ItemsContainer({ children }: Props) {
         {children}
       </ScrollArea>
       <Divider />
-      <Pagination total={2} value={1} size={'xs'} m={'sm'} />
+      <Pagination total={total} />
     </Flex>
   );
 }
