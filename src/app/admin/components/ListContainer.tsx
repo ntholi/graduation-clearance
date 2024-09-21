@@ -21,9 +21,10 @@ export default function ListContainer<T>({
   return (
     <Flex direction='column' h='100%'>
       <Flex p={'md'} justify='space-between' align={'center'} gap={'xs'}>
-        <Group grow>
-          <SearchField style={{ width: '100%' }} />
+        <Group style={{ width: '100%', flex: 1 }}>
+          <SearchField path={path} style={{ width: '100%' }} />
         </Group>
+
         <ActionIcon
           variant='default'
           component={Link}

@@ -9,12 +9,12 @@ export type Clearance = typeof graduatingStudents.$inferSelect;
 
 const ITEMS_PER_PAGE = 15;
 
-export async function getGraduatingStudents(page: number = 1, search?: string) {
+export async function getGraduatingStudents(page: number = 1, search = '') {
   const offset = (page - 1) * ITEMS_PER_PAGE;
   const list = await db
     .select()
     .from(graduatingStudents)
-    // .where(like(graduatingStudents.stdNo, `%${search}%`))
+    .where(like(graduatingStudents.stdNo, `%${search}%`))
     .leftJoin(students, eq(students.stdNo, graduatingStudents.stdNo))
     .orderBy(desc(graduatingStudents.createdAt))
     .limit(ITEMS_PER_PAGE)
@@ -34,7 +34,7 @@ export async function getGraduatingStudents(page: number = 1, search?: string) {
   };
 }
 
-export async function getStudent(stdNo: number) {
+export async function getStudent(stdNo: string) {
   const student = await db
     .select()
     .from(graduatingStudents)
@@ -43,7 +43,7 @@ export async function getStudent(stdNo: number) {
   return student;
 }
 
-export async function saveGraduationList(stdNumbers: number[]) {
+export async function saveGraduationList(stdNumbers: string[]) {
   await db
     .insert(students)
     .values(
@@ -82,7 +82,7 @@ export async function createGraduatingStudent(
   return res;
 }
 
-export async function deleteStudent(stdNo: number) {
+export async function deleteStudent(stdNo: string) {
   await db
     .delete(graduatingStudents)
     .where(eq(graduatingStudents.stdNo, stdNo));
@@ -90,7 +90,7 @@ export async function deleteStudent(stdNo: number) {
 }
 
 export async function updateStudent(
-  id: number,
+  id: string,
   values: Clearance,
 ): Promise<Clearance> {
   const res = await db

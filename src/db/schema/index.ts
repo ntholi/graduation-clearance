@@ -15,13 +15,13 @@ import { nanoid } from 'nanoid';
 import { users } from './auth';
 
 export const students = pgTable('students', {
-  stdNo: integer('std_no').notNull().primaryKey(),
+  stdNo: varchar('std_no', { length: 9 }).notNull().primaryKey(),
   userId: text('user_id')
     .unique()
     .references(() => users.id, { onDelete: 'cascade' }),
   name: text('name'),
   nationalId: text('national_id'),
-  // phoneNumber: text('phone_number'),
+  phoneNumber: text('phone_number'),
   program: text('program'),
   createdAt: timestamp('created_at').defaultNow(),
 });
@@ -32,17 +32,19 @@ export const signupRequests = pgTable('signup_requests', {
     .notNull()
     .unique()
     .references(() => users.id, { onDelete: 'cascade' }),
-  stdNo: integer('std_no').notNull(),
+  stdNo: varchar('std_no', { length: 9 }).notNull(),
   approved: boolean('approved').default(false),
+
   name: text('name').notNull(),
   createdAt: timestamp('created_at').defaultNow(),
 });
 
 export const enrollments = pgTable('enrollments', {
   id: serial('id').notNull().primaryKey(),
-  stdNo: integer('std_no')
+  stdNo: varchar('std_no', { length: 9 })
     .notNull()
     .references(() => students.stdNo, { onDelete: 'cascade' }),
+
   term: text('term').notNull(),
   semester: text('semester').notNull(),
   gpa: decimal('gpa', { precision: 3, scale: 2 }).notNull(),
@@ -83,9 +85,10 @@ export const blockedStudents = pgTable('blocked_students', {
   id: varchar('id', { length: 21 })
     .$defaultFn(() => nanoid())
     .primaryKey(),
-  stdNo: integer('std_no')
+  stdNo: varchar('std_no', { length: 9 })
     .notNull()
     .references(() => students.stdNo, { onDelete: 'no action' }),
+
   blockedBy: blockedByEnum('blocked_by').notNull(),
   reason: text('reason'),
   createdAt: timestamp('created_at').defaultNow(),
@@ -99,9 +102,10 @@ export const financeClearanceStatusEnum = pgEnum('finance_clearance_status', [
 
 export const financeClearance = pgTable('finance_clearance', {
   id: serial('id').notNull().primaryKey(),
-  stdNo: integer('std_no')
+  stdNo: varchar('std_no', { length: 9 })
     .notNull()
     .references(() => students.stdNo, { onDelete: 'cascade' }),
+
   status: financeClearanceStatusEnum('status').notNull().default('pending'),
   blockedStudentId: varchar('blocked_student_id', { length: 21 }).references(
     () => blockedStudents.id,
@@ -111,7 +115,7 @@ export const financeClearance = pgTable('finance_clearance', {
 });
 
 export const graduatingStudents = pgTable('graduating_students', {
-  stdNo: integer('std_no')
+  stdNo: varchar('std_no', { length: 9 })
     .primaryKey()
     .notNull()
     .references(() => students.stdNo, { onDelete: 'cascade' }),

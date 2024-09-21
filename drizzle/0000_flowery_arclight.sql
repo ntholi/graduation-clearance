@@ -18,20 +18,15 @@ END $$;
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "blocked_students" (
 	"id" varchar(21) PRIMARY KEY NOT NULL,
-	"std_no" integer NOT NULL,
+	"std_no" varchar(9) NOT NULL,
 	"blocked_by" "blocked_by" NOT NULL,
 	"reason" text,
 	"created_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "cleared_faculty_students" (
-	"std_no" integer NOT NULL,
-	"cleared_at" timestamp DEFAULT now()
-);
---> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "enrollments" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"std_no" integer NOT NULL,
+	"std_no" varchar(9) NOT NULL,
 	"term" text NOT NULL,
 	"semester" text NOT NULL,
 	"gpa" numeric(3, 2) NOT NULL,
@@ -41,10 +36,10 @@ CREATE TABLE IF NOT EXISTS "enrollments" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "finance_clearance" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"std_no" integer NOT NULL,
+	"std_no" varchar(9) NOT NULL,
 	"status" "finance_clearance_status" DEFAULT 'pending' NOT NULL,
 	"blocked_student_id" varchar(21),
-	"cleared_at" timestamp DEFAULT now()
+	"created_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "grades" (
@@ -56,10 +51,15 @@ CREATE TABLE IF NOT EXISTS "grades" (
 	"credits" integer NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "graduating_students" (
+	"std_no" varchar(9) PRIMARY KEY NOT NULL,
+	"created_at" timestamp DEFAULT now()
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "signup_requests" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"user_id" text NOT NULL,
-	"std_no" integer NOT NULL,
+	"std_no" varchar(9) NOT NULL,
 	"approved" boolean DEFAULT false,
 	"name" text NOT NULL,
 	"created_at" timestamp DEFAULT now(),
@@ -67,10 +67,11 @@ CREATE TABLE IF NOT EXISTS "signup_requests" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "students" (
-	"std_no" integer PRIMARY KEY NOT NULL,
+	"std_no" varchar(9) PRIMARY KEY NOT NULL,
 	"user_id" text,
 	"name" text,
 	"national_id" text,
+	"phone_number" text,
 	"program" text,
 	"created_at" timestamp DEFAULT now(),
 	CONSTRAINT "students_user_id_unique" UNIQUE("user_id")
@@ -134,12 +135,6 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "cleared_faculty_students" ADD CONSTRAINT "cleared_faculty_students_std_no_students_std_no_fk" FOREIGN KEY ("std_no") REFERENCES "public"."students"("std_no") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
  ALTER TABLE "enrollments" ADD CONSTRAINT "enrollments_std_no_students_std_no_fk" FOREIGN KEY ("std_no") REFERENCES "public"."students"("std_no") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -159,6 +154,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "grades" ADD CONSTRAINT "grades_enrollment_id_enrollments_id_fk" FOREIGN KEY ("enrollment_id") REFERENCES "public"."enrollments"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "graduating_students" ADD CONSTRAINT "graduating_students_std_no_students_std_no_fk" FOREIGN KEY ("std_no") REFERENCES "public"."students"("std_no") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

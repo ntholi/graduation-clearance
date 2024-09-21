@@ -4,15 +4,16 @@ import { Search } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 
-export default function SearchField(props: BoxProps) {
+type Props = BoxProps & { path: string };
+export default function SearchField({ path, ...props }: Props) {
   const [value, setValue] = React.useState('');
-  const pathname = usePathname();
+
   const router = useRouter();
 
   function handleSearch(value: string) {
     setValue(value);
     console.log('Search value:', value);
-    router.push(`${pathname}?search=${value}`);
+    router.push(`${path}?search=${value}`);
   }
 
   const leftSection = value ? (

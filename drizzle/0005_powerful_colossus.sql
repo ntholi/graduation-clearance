@@ -1,1 +1,0 @@
-ALTER TABLE "graduating_students" DROP COLUMN IF EXISTS "faculty";
