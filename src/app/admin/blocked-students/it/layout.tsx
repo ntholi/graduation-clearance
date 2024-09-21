@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import ListPage from '../../components/ListPage';
+import ListPage from '../../components/ListPageLayout';
 import { getBlockedStudents } from '../actions';
 
 export default async function Layout({ children }: PropsWithChildren) {

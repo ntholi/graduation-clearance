@@ -2,10 +2,37 @@
 
 import db from '@/db';
 import { graduatingStudents, students } from '@/db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, desc, count } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 export type Clearance = typeof graduatingStudents.$inferSelect;
+
+const ITEMS_PER_PAGE = 10;
+
+export async function getGraduatingStudents(page: number = 1) {
+  const offset = (page - 1) * ITEMS_PER_PAGE;
+  console.log({ offset, page, ITEMS_PER_PAGE });
+  const list = await db
+    .select()
+    .from(graduatingStudents)
+    .leftJoin(students, eq(students.stdNo, graduatingStudents.stdNo))
+    .orderBy(desc(graduatingStudents.createdAt))
+    .limit(ITEMS_PER_PAGE)
+    .offset(offset);
+
+  const totalCount = await db
+    .select({ count: count() })
+    .from(graduatingStudents)
+    .then((it) => it[0].count);
+
+  return {
+    items: list.map((it) => ({
+      ...it.graduating_students,
+      student: it.students,
+    })),
+    totalPages: Math.ceil(totalCount / ITEMS_PER_PAGE),
+  };
+}
 
 export async function getStudent(stdNo: number) {
   const student = await db
