@@ -23,18 +23,14 @@ async function PageSwitch() {
   const session = await auth();
   const staffRole = ['registry', 'finance', 'faculty', 'admin'];
 
+  if (!session?.user) return redirect('/login');
+
   if (session?.user?.role && staffRole.includes(session?.user?.role)) {
-    return redirect('/staff');
+    return redirect('/admin');
   }
   if (session?.user?.role === 'student') {
     return redirect('/student');
+  } else {
+    return redirect('/signup');
   }
-  return (
-    <div className='flex h-screen items-center justify-center'>
-      <h1>
-        Role is {session?.user?.role || 'unknown'} for{' '}
-        {session?.user?.name || 'user'}
-      </h1>
-    </div>
-  );
 }

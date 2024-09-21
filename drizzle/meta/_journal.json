@@ -8,6 +8,13 @@
       "when": 1726918947568,
       "tag": "0000_flowery_arclight",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1726937508604,
+      "tag": "0001_icy_darkstar",
+      "breakpoints": true
     }
   ]
 }

@@ -21,7 +21,6 @@ export const students = pgTable('students', {
     .references(() => users.id, { onDelete: 'cascade' }),
   name: text('name'),
   nationalId: text('national_id'),
-  phoneNumber: text('phone_number'),
   program: text('program'),
   createdAt: timestamp('created_at').defaultNow(),
 });

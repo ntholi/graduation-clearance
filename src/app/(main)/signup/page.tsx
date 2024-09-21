@@ -14,7 +14,7 @@ export default async function RegistrationPage() {
 
   if (!session) return redirect('/login');
 
-  if (student) return redirect('/');
+  if (student) return redirect('/student');
 
   async function handleLogout() {
     'use server';
@@ -24,7 +24,7 @@ export default async function RegistrationPage() {
   return (
     <Gradient className='flex h-screen flex-col items-center justify-center p-4'>
       <Logo width={500} height={500} className='mx-auto block h-32 w-auto' />
-      <Card className='w-full md:mt-10 md:w-[400px]'>
+      <Card className='w-full md:mt-5 md:w-[400px]'>
         <CardHeader>
           <CardTitle>Sign Up</CardTitle>
         </CardHeader>

@@ -17,16 +17,26 @@ import { Input } from '@/components/ui/input';
 import { CheckCircle, Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { getSignUp, signUpStudent } from './actions';
-import { signUpSchema } from './schema';
+
+export const SignUpSchema = z.object({
+  name: z.string().min(3),
+  studentNumber: z
+    .string()
+    .min(9)
+    .max(9)
+    .refine((value) => !isNaN(Number(value)) && value.startsWith('9010')),
+  phoneNumber: z.string().min(8).max(12),
+});
 
 export function SignUpForm() {
   const [loading, setLoading] = useState(true);
   const [submitted, setSubmitted] = useState(false);
-  const form = useForm<z.infer<typeof signUpSchema>>({
-    resolver: zodResolver(signUpSchema),
+  const form = useForm<z.infer<typeof SignUpSchema>>({
+    resolver: zodResolver(SignUpSchema),
     defaultValues: {
       name: '',
       studentNumber: '',
+      phoneNumber: '',
     },
   });
 
@@ -46,7 +56,7 @@ export function SignUpForm() {
       });
   }, []);
 
-  async function onSubmit(values: z.infer<typeof signUpSchema>) {
+  async function onSubmit(values: z.infer<typeof SignUpSchema>) {
     await signUpStudent(values);
     setSubmitted(true);
   }
@@ -85,6 +95,20 @@ export function SignUpForm() {
               <FormLabel>Student Number</FormLabel>
               <FormControl>
                 <Input placeholder='Student Number' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='phoneNumber'
+          disabled={loading}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Phone Number</FormLabel>
+              <FormControl>
+                <Input placeholder='Phone Number' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

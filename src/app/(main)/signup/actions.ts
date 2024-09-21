@@ -2,11 +2,12 @@
 import { auth } from '@/auth';
 import db from '@/db';
 import { signupRequests } from '@/db/schema';
-import { signUpSchema } from './schema';
 import { z } from 'zod';
 import { eq } from 'drizzle-orm';
+import { users } from '@/db/schema/auth';
+import { SignUpSchema } from './form';
 
-export async function signUpStudent(student: z.infer<typeof signUpSchema>) {
+export async function signUpStudent(student: z.infer<typeof SignUpSchema>) {
   const session = await auth();
   if (!session?.user) {
     return { error: 'Unauthorized' };
@@ -22,6 +23,10 @@ export async function signUpStudent(student: z.infer<typeof signUpSchema>) {
       target: signupRequests.userId,
       set: { name: student.name, stdNo: student.studentNumber },
     });
+  await db
+    .update(users)
+    .set({ phoneNumber: student.phoneNumber })
+    .where(eq(users.id, session.user.id!));
 }
 
 export async function getSignUp() {
