@@ -5,13 +5,19 @@ import Pagination from './Pagination';
 import Link from 'next/link';
 import { PlusIcon } from 'lucide-react';
 
-type Props = {
-  children: (props: { path: string }) => React.ReactNode;
+type Props<T> = {
+  children: (props: { item: T; path: string }) => React.ReactNode;
   total: number;
+  items: T[];
   path: string;
 };
 
-export default function ListContainer({ children, total, path }: Props) {
+export default function ListContainer<T>({
+  children,
+  total,
+  path,
+  items,
+}: Props<T>) {
   return (
     <Flex direction='column' h='100%'>
       <Flex p={'md'} justify='space-between' align={'center'} gap={'xs'}>
@@ -29,8 +35,9 @@ export default function ListContainer({ children, total, path }: Props) {
       </Flex>
       <Divider />
       <ScrollArea type='always' style={{ flex: 1 }} p={'sm'}>
-        {children({ path })}
+        {items.map((item: T) => children({ item, path }))}
       </ScrollArea>
+
       <Divider />
       <Pagination total={total} path={path} />
     </Flex>

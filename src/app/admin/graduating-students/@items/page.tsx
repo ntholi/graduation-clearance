@@ -11,17 +11,19 @@ export default async function ItemsPage({ searchParams }: Props) {
     Number(searchParams?.page),
   );
   return (
-    <ListContainer path='/admin/graduating-students' total={totalPages}>
-      {(props) =>
-        items.map((item) => (
-          <ListItem
-            label={item.stdNo}
-            id={item.stdNo}
-            key={item.stdNo}
-            {...props}
-          />
-        ))
-      }
+    <ListContainer
+      items={items}
+      path='/admin/graduating-students'
+      total={totalPages}
+    >
+      {({ item, path }) => (
+        <ListItem
+          label={item.stdNo}
+          id={item.stdNo}
+          key={item.stdNo}
+          path={path}
+        />
+      )}
     </ListContainer>
   );
 }
