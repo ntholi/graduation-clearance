@@ -27,7 +27,7 @@ async function writeFileContents(file: File): Promise<number> {
         const stdNumbers = rawData
           .flatMap((row) => row.map((cell) => cell.toString()))
           .filter((cell) => cell.startsWith('9010'));
-        await saveGraduationList(stdNumbers.map(Number));
+        await saveGraduationList(stdNumbers);
         resolve(stdNumbers.length);
       } catch (error) {
         reject(error);
