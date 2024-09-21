@@ -18,7 +18,6 @@ class Student(Base):
     name: Mapped[Optional[str]] = mapped_column(String)
     national_id: Mapped[str] = mapped_column(String, nullable=False)
     program: Mapped[str] = mapped_column(String, nullable=False)
-    email: Mapped[Optional[str]] = mapped_column(String, unique=True)
     created_at: Mapped[datetime] = mapped_column(TIMESTAMP, server_default=func.now())
 
     enrollments: Mapped[List["Enrollment"]] = relationship(
@@ -26,7 +25,7 @@ class Student(Base):
     )
 
     def __repr__(self) -> str:
-        return f"Student(std_no={self.std_no}, user_id={self.user_id}, name={self.name}, national_id={self.national_id}, program={self.program}, email={self.email}, created_at={self.created_at})"
+        return f"Student(std_no={self.std_no}, user_id={self.user_id}, name={self.name}, national_id={self.national_id}, program={self.program}, created_at={self.created_at})"
 
 
 class SignUpRequest(Base):

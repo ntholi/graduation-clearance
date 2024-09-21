@@ -12,7 +12,16 @@ def read_student(std_no: int):
 
 
 def save_student(student: Student):
-    db_session.add(student)
+    existing_student = (
+        db_session.query(Student).filter(Student.std_no == student.std_no).first()
+    )
+    if existing_student:
+        existing_student.user_id = student.user_id
+        existing_student.name = student.name
+        existing_student.national_id = student.national_id
+        existing_student.program = student.program
+    else:
+        db_session.add(student)
     db_session.commit()
     print(f"Student {student.std_no} saved")
 
@@ -30,7 +39,7 @@ def save_enrollment(data: tuple[Enrollment, list[Grade]]):
 
 def approve_signup_requests():
     requests = (
-        db_session.query(SignUpRequest).filter(SignUpRequest.approved == True).all()
+        db_session.query(SignUpRequest).filter(SignUpRequest.approved == False).all()
     )
     print(f"Found {len(requests)} requests to approve")
     scrapper = Scrapper()
@@ -40,6 +49,8 @@ def approve_signup_requests():
         save_student(student)
         for enrollment in enrollments:
             save_enrollment(enrollment)
+        signup.approved = True
+        db_session.commit()
 
 
 def main():
