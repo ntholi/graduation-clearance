@@ -58,5 +58,6 @@ export async function updateStudent(
     .where(eq(students.stdNo, id))
     .returning();
   revalidatePath(`/admin/students/${id}`);
+  revalidatePath('/admin/students');
   return res[0];
 }

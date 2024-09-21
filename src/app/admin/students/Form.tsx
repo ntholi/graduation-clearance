@@ -15,12 +15,9 @@ type Props = {
 };
 
 const UserSchema = z.object({
-  stdNo: z.number().min(901000000),
+  stdNo: z.string().regex(/^9010\d{5}$/),
   name: z.string().min(3),
-  email: z.string().email(),
-  nationalId: z.string(),
-  program: z.string(),
-  userId: z.string(),
+  email: z.string().email().optional(),
 });
 
 export default function Form({ onSubmit, value }: Props) {
@@ -43,7 +40,7 @@ export default function Form({ onSubmit, value }: Props) {
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <FormHeader title='Student' isLoading={pending} />
       <Stack p={'xl'}>
-        <NumberInput label='Student Number' {...form.getInputProps('stdNo')} />
+        <TextInput label='Student Number' {...form.getInputProps('stdNo')} />
         <TextInput label='Name' {...form.getInputProps('name')} />
         <TextInput label='Email' {...form.getInputProps('email')} />
         <TextInput label='National ID' {...form.getInputProps('nationalId')} />
