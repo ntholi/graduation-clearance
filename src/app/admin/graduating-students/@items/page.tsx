@@ -16,7 +16,7 @@ export default async function ItemsPage({ searchParams }: Props) {
         items.map((item) => (
           <ListItem
             label={item.stdNo}
-            href={`${props.path}/${item.stdNo}`}
+            id={item.stdNo}
             key={item.stdNo}
             {...props}
           />

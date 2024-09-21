@@ -6,19 +6,20 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import React from 'react';
 
 type Props = {
-  href: string;
   path: string;
+  id: string | number;
 } & NavLinkProps;
 
-export default function ListItem({ href, path, ...props }: Props) {
+export default function ListItem({ path, id, ...props }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
   return (
     <NavLink
-      href={`${href}?${searchParams.toString()}`}
+      href={`${path}/${id}?${searchParams.toString()}`}
       component={Link}
       {...props}
-      active={pathname === href}
+      active={pathname === `${path}/${id}`}
     />
   );
 }
