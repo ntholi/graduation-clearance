@@ -1,7 +1,8 @@
-import { NavLink, NavLinkProps } from '@mantine/core';
+import { NavLink } from '@mantine/core';
 import Link from 'next/link';
+import ListContainer from '../../components/ListContainer';
 import { getGraduatingStudents } from '../actions';
-import ItemsContainer from '../../components/ItemsContainer';
+import ListItem from '../../components/ListItem';
 
 type Props = {
   searchParams?: { [key: string]: string | string[] | undefined };
@@ -12,16 +13,14 @@ export default async function ItemsPage({ searchParams }: Props) {
     Number(searchParams?.page),
   );
   return (
-    <ItemsContainer total={totalPages}>
+    <ListContainer total={totalPages}>
       {items.map((item) => (
-        <NavLink
-          href={`/admin/graduating-students/${item.stdNo}`}
+        <ListItem
           key={item.stdNo}
+          path='/admin/graduating-students'
           label={item.stdNo}
-          component={Link}
-          // active={pathname === item.href}
         />
       ))}
-    </ItemsContainer>
+    </ListContainer>
   );
 }

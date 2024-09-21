@@ -10,7 +10,7 @@ type Props = {
   total: number;
 };
 
-export default function ItemsContainer({ children, total }: Props) {
+export default function ListContainer({ children, total }: Props) {
   return (
     <Flex direction='column' h='100%'>
       <Flex p={'md'} justify='space-between' align={'center'} gap={'xs'}>
