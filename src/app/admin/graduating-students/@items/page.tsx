@@ -9,6 +9,7 @@ type Props = {
 export default async function ItemsPage({ searchParams }: Props) {
   const { items, pages } = await getGraduatingStudents(
     Number(searchParams?.page),
+    searchParams?.search as string,
   );
   return (
     <ListContainer

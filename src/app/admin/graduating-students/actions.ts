@@ -2,18 +2,19 @@
 
 import db from '@/db';
 import { graduatingStudents, students } from '@/db/schema';
-import { eq, desc, count } from 'drizzle-orm';
+import { eq, desc, count, like } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 export type Clearance = typeof graduatingStudents.$inferSelect;
 
 const ITEMS_PER_PAGE = 15;
 
-export async function getGraduatingStudents(page: number = 1) {
+export async function getGraduatingStudents(page: number = 1, search?: string) {
   const offset = (page - 1) * ITEMS_PER_PAGE;
   const list = await db
     .select()
     .from(graduatingStudents)
+    .where(like(graduatingStudents.stdNo, `%${search}%`))
     .leftJoin(students, eq(students.stdNo, graduatingStudents.stdNo))
     .orderBy(desc(graduatingStudents.createdAt))
     .limit(ITEMS_PER_PAGE)
