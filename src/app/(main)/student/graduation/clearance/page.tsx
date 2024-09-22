@@ -3,14 +3,17 @@ import React, { useState } from 'react';
 import ClearanceStep from './ClearanceStep';
 import { steps } from './steps';
 import Container from '@/components/ui/container';
+import { checkClearance } from './actions';
 
 export default function ClearancePage() {
-  const [completedSteps, setCompletedSteps] = useState<Set<number>>(
-    new Set([1, 2, 3]),
-  );
+  const [clearanceStatus, setClearanceStatus] = useState<
+    Record<number, boolean | null>
+  >(Object.fromEntries(steps.map((step) => [step.id, null])));
 
-  const handleComplete = (stepId: number) => {
-    setCompletedSteps((prev) => new Set(prev).add(stepId));
+  const handleCheckClearance = async (stepId: number) => {
+    const isCleared = await checkClearance(stepId);
+    setClearanceStatus((prev) => ({ ...prev, [stepId]: isCleared }));
+    return isCleared;
   };
 
   return (
@@ -25,9 +28,9 @@ export default function ClearancePage() {
               <ClearanceStep
                 key={step.id}
                 step={step}
-                isCleared={completedSteps.has(step.id)}
+                isCleared={clearanceStatus[step.id]}
                 isLast={index === steps.length - 1}
-                onClear={handleComplete}
+                onCheckClearance={handleCheckClearance}
               />
             ))}
           </div>

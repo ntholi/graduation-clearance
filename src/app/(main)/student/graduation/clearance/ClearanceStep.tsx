@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -6,24 +6,43 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { CheckCircle2, CircleAlert } from 'lucide-react';
+import { CheckCircle2, CircleAlert, Loader2 } from 'lucide-react';
 import { Step } from './steps';
 
 interface Props {
   step: Step;
-  isCleared: boolean;
+  isCleared: boolean | null;
   isLast: boolean;
-  onClear: (id: number) => void;
+  onCheckClearance: (id: number) => Promise<boolean>;
 }
 
-function ClearanceStep({ step, isCleared, isLast, onClear }: Props) {
+function ClearanceStep({ step, isCleared, isLast, onCheckClearance }: Props) {
+  const [isChecking, setIsChecking] = useState(false);
   const Icon = step.icon;
+
+  useEffect(() => {
+    const checkClearance = async () => {
+      if (isCleared === null) {
+        setIsChecking(true);
+        await onCheckClearance(step.id);
+        setIsChecking(false);
+      }
+    };
+
+    checkClearance();
+  }, [isCleared, onCheckClearance, step.id]);
 
   return (
     <div className={`flex ${!isLast ? 'mb-8' : ''}`}>
       <div className='mr-4 flex flex-col items-center'>
         <div
-          className={`rounded-full p-4 ${isCleared ? 'bg-foreground/90' : 'bg-foreground/30'}`}
+          className={`rounded-full p-4 ${
+            isCleared === true
+              ? 'bg-foreground/90'
+              : isCleared === false
+                ? 'bg-red-500'
+                : 'bg-foreground/30'
+          }`}
         >
           <Icon className='h-6 w-6 text-background' />
         </div>
@@ -37,20 +56,24 @@ function ClearanceStep({ step, isCleared, isLast, onClear }: Props) {
           <CardDescription>{step.description}</CardDescription>
         </CardHeader>
         <CardContent>
-          {isCleared ? (
+          {isChecking ? (
+            <div className='flex items-center text-gray-500'>
+              <Loader2 className='mr-2 h-5 w-5 animate-spin' />
+              <span className='text-sm'>Checking clearance...</span>
+            </div>
+          ) : isCleared === true ? (
             <div className='flex items-center text-green-600 dark:text-green-400'>
               <CheckCircle2 className='mr-2 h-5 w-5' />
               <span className='text-sm'>Cleared</span>
             </div>
+          ) : isCleared === false ? (
+            <div className='flex items-center text-red-600 dark:text-red-400'>
+              <CircleAlert className='mr-2 h-5 w-5' />
+              <span className='text-sm'>Not Cleared</span>
+            </div>
           ) : (
-            <div className='flex items-center justify-between'>
-              <div className='flex items-center text-red-600 dark:text-red-400'>
-                <CircleAlert className='mr-2 h-5 w-5' />
-                <span className='text-sm'>Not Cleared</span>
-              </div>
-              <Button onClick={() => onClear(step.id)}>
-                Request Clearance
-              </Button>
+            <div className='flex items-center text-gray-500'>
+              <span className='text-sm'>Unable to check clearance</span>
             </div>
           )}
         </CardContent>
@@ -58,4 +81,5 @@ function ClearanceStep({ step, isCleared, isLast, onClear }: Props) {
     </div>
   );
 }
+
 export default ClearanceStep;
