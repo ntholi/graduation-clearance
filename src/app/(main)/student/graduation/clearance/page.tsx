@@ -14,8 +14,8 @@ export default function ClearancePage() {
   };
 
   return (
-    <div className='bg-muted/20'>
-      <Container className='min-h-screen'>
+    <div className='min-h-screen bg-muted/20'>
+      <Container className='pb-5'>
         <div className='mx-auto max-w-2xl'>
           <h1 className='py-10 text-center text-3xl font-semibold text-gray-800 dark:text-gray-200'>
             Graduation Clearance

@@ -4,7 +4,7 @@ import React from 'react';
 
 export default function Footer() {
   return (
-    <footer className='mt-5 flex justify-end border-t bg-white p-2 dark:bg-black md:p-3'>
+    <footer className='flex justify-end border-t bg-white p-2 dark:bg-black md:p-3'>
       <Link
         href={'https://github.com/ntholi/registry'}
         className='flex items-center gap-2 text-muted-foreground'
