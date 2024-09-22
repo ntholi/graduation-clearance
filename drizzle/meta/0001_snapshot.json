@@ -1,6 +1,6 @@
 {
-  "id": "b69fe72c-da6e-4152-bc54-903a6ccf7fce",
-  "prevId": "5ce2a6d4-2eb8-4cba-974f-84b1b653ca0b",
+  "id": "0cea523e-56a8-495d-80e4-2158b06132b2",
+  "prevId": "34f26e44-326a-4cdb-bedd-b5cc09cf3d89",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -315,12 +315,13 @@
           "primaryKey": false,
           "notNull": true
         },
-        "approved": {
-          "name": "approved",
-          "type": "boolean",
+        "status": {
+          "name": "status",
+          "type": "sign_up_request",
+          "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false,
-          "default": false
+          "notNull": true,
+          "default": "'pending'"
         },
         "name": {
           "name": "name",
@@ -776,6 +777,15 @@
         "pending",
         "cleared",
         "blocked"
+      ]
+    },
+    "public.sign_up_request": {
+      "name": "sign_up_request",
+      "schema": "public",
+      "values": [
+        "pending",
+        "approved",
+        "rejected"
       ]
     },
     "public.role": {

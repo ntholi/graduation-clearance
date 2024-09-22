@@ -1,5 +1,5 @@
 {
-  "id": "5ce2a6d4-2eb8-4cba-974f-84b1b653ca0b",
+  "id": "34f26e44-326a-4cdb-bedd-b5cc09cf3d89",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -315,12 +315,12 @@
           "primaryKey": false,
           "notNull": true
         },
-        "approved": {
-          "name": "approved",
-          "type": "boolean",
+        "status": {
+          "name": "status",
+          "type": "sign_up_request",
+          "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false,
-          "default": false
+          "notNull": true
         },
         "name": {
           "name": "name",
@@ -387,12 +387,6 @@
         },
         "national_id": {
           "name": "national_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "phone_number": {
-          "name": "phone_number",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -688,6 +682,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "phone_number": {
+          "name": "phone_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "role": {
           "name": "role",
           "type": "role",
@@ -776,6 +776,15 @@
         "pending",
         "cleared",
         "blocked"
+      ]
+    },
+    "public.sign_up_request": {
+      "name": "sign_up_request",
+      "schema": "public",
+      "values": [
+        "pending",
+        "approved",
+        "rejected"
       ]
     },
     "public.role": {

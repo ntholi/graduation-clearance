@@ -25,6 +25,12 @@ export const students = pgTable('students', {
   createdAt: timestamp('created_at').defaultNow(),
 });
 
+export const signUpRequestStatus = pgEnum('sign_up_request', [
+  'pending',
+  'approved',
+  'rejected',
+]);
+
 export const signupRequests = pgTable('signup_requests', {
   id: serial('id').notNull().primaryKey(),
   userId: text('user_id')
@@ -32,8 +38,7 @@ export const signupRequests = pgTable('signup_requests', {
     .unique()
     .references(() => users.id, { onDelete: 'cascade' }),
   stdNo: varchar('std_no', { length: 9 }).notNull(),
-  approved: boolean('approved').default(false),
-
+  status: signUpRequestStatus('status').default('pending').notNull(),
   name: text('name').notNull(),
   createdAt: timestamp('created_at').defaultNow(),
 });

@@ -11,6 +11,12 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ CREATE TYPE "public"."sign_up_request" AS ENUM('pending', 'approved', 'rejected');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  CREATE TYPE "public"."role" AS ENUM('student', 'registry', 'finance', 'faculty', 'admin');
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -60,7 +66,7 @@ CREATE TABLE IF NOT EXISTS "signup_requests" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"user_id" text NOT NULL,
 	"std_no" varchar(9) NOT NULL,
-	"approved" boolean DEFAULT false,
+	"status" "sign_up_request" NOT NULL,
 	"name" text NOT NULL,
 	"created_at" timestamp DEFAULT now(),
 	CONSTRAINT "signup_requests_user_id_unique" UNIQUE("user_id")
@@ -71,7 +77,6 @@ CREATE TABLE IF NOT EXISTS "students" (
 	"user_id" text,
 	"name" text,
 	"national_id" text,
-	"phone_number" text,
 	"program" text,
 	"created_at" timestamp DEFAULT now(),
 	CONSTRAINT "students_user_id_unique" UNIQUE("user_id")
@@ -115,6 +120,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"id" text PRIMARY KEY NOT NULL,
 	"name" text,
 	"email" text,
+	"phone_number" text,
 	"role" "role",
 	"emailVerified" timestamp,
 	"image" text,

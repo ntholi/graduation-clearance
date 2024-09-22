@@ -1,7 +1,10 @@
 from datetime import datetime
+from enum import Enum
 from typing import List, Optional
 
-from sqlalchemy import DECIMAL, TIMESTAMP, Boolean, ForeignKey, Integer, String
+from sqlalchemy import DECIMAL, TIMESTAMP, Boolean
+from sqlalchemy import Enum as SQLAlchemyEnum
+from sqlalchemy import ForeignKey, Integer, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 
@@ -28,18 +31,28 @@ class Student(Base):
         return f"Student(std_no={self.std_no}, user_id={self.user_id}, name={self.name}, national_id={self.national_id}, program={self.program}, created_at={self.created_at})"
 
 
+class SignUpRequestStatus(Enum):
+    pending = "pending"
+    approved = "approved"
+    rejected = "rejected"
+
+
 class SignUpRequest(Base):
     __tablename__ = "signup_requests"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     user_id: Mapped[Optional[str]] = mapped_column(String)
     std_no: Mapped[int] = mapped_column(Integer, nullable=False)
-    approved: Mapped[bool] = mapped_column(Boolean, default=False)
     name: Mapped[str] = mapped_column(String, nullable=False)
+    status: Mapped[SignUpRequestStatus] = mapped_column(
+        SQLAlchemyEnum(SignUpRequestStatus),
+        nullable=False,
+        default=SignUpRequestStatus.pending,
+    )
     created_at: Mapped[datetime] = mapped_column(TIMESTAMP, server_default=func.now())
 
     def __repr__(self) -> str:
-        return f"SignUp(id={self.id}, user_id={self.user_id}, std_no={self.std_no}, approved={self.approved}, name={self.name}, created_at={self.created_at})"
+        return f"SignUp(id={self.id}, user_id={self.user_id}, std_no={self.std_no}, status={self.status}, name={self.name}, created_at={self.created_at})"
 
 
 class Enrollment(Base):
