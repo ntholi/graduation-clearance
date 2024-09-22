@@ -17,7 +17,7 @@ export default async function Navbar() {
     <nav className='border-b p-2'>
       <Container width='lg' className='flex items-center justify-between'>
         <div className='flex items-center'>
-          <Link href='/'>
+          <Link href='/student'>
             <Logo className='mr-4 h-14 w-auto' />
           </Link>
         </div>
