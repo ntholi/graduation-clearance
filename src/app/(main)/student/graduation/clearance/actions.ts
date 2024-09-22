@@ -1,7 +1,12 @@
 'use server';
 
-import { graduatingStudents, students } from '@/db/schema';
-import { eq } from 'drizzle-orm';
+import {
+  blockedByEnum,
+  blockedStudents,
+  graduatingStudents,
+  students,
+} from '@/db/schema';
+import { eq, and } from 'drizzle-orm';
 import db from '@/db';
 import { auth } from '@/auth';
 
@@ -19,13 +24,37 @@ export async function checkClearance(stepId: number): Promise<boolean> {
 
   switch (stepId) {
     case 1:
-      const result = await db
-        .select()
-        .from(graduatingStudents)
-        .where(eq(graduatingStudents.stdNo, student.stdNo));
-      return result.length > 0;
+      return isGraduatingStudent(student.stdNo);
+    case 2:
+      isBlocked(student.stdNo, 'library');
+    case 3:
+      isBlocked(student.stdNo, 'resource');
 
     default:
       throw new Error('Invalid step ID');
   }
+}
+
+async function isGraduatingStudent(stdNo: string) {
+  const res = await db
+    .select()
+    .from(graduatingStudents)
+    .where(eq(graduatingStudents.stdNo, stdNo));
+  return res.length > 0;
+}
+
+async function isBlocked(
+  stdNo: string,
+  blockedBy: (typeof blockedByEnum.enumValues)[number],
+) {
+  const res = await db
+    .select()
+    .from(blockedStudents)
+    .where(
+      and(
+        eq(blockedStudents.stdNo, stdNo),
+        eq(blockedStudents.blockedBy, blockedBy),
+      ),
+    );
+  return res.length === 0;
 }
