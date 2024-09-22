@@ -14,13 +14,13 @@ const links = [
   {
     title: 'Clearance',
     description: 'Graduation Clearance',
-    href: '/graduation/clearance',
+    href: '/student/graduation/clearance',
     icon: GraduationCap,
   },
   {
     title: 'Transcripts',
     description: 'View Your Transcripts',
-    href: '/transcript',
+    href: '/student/transcript',
     icon: FileText,
   },
 ];
