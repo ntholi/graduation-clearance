@@ -13,6 +13,7 @@ type Props<T> = {
   path: string;
   renderItem: (item: T, path: string) => React.ReactNode;
   searchParams?: { [key: string]: string | string[] | undefined };
+  actionIcons?: React.ReactNode[];
 };
 
 export default async function ItemsList<T>({
@@ -20,6 +21,7 @@ export default async function ItemsList<T>({
   path,
   renderItem,
   searchParams,
+  actionIcons,
 }: Props<T>) {
   const { items, pages } = await getItems(
     Number(searchParams?.page),
@@ -41,6 +43,9 @@ export default async function ItemsList<T>({
         >
           <PlusIcon size={'1rem'} />
         </ActionIcon>
+        {actionIcons?.map((component, index) => (
+          <React.Fragment key={index}>{component}</React.Fragment>
+        ))}
       </Flex>
       <Divider />
       <ScrollArea type='always' style={{ flex: 1 }} p={'sm'}>

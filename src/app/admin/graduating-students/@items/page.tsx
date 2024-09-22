@@ -1,6 +1,7 @@
 import ItemsList from '../../components/ItemsList';
 import ListItem from '../../components/ListItem';
 import { getGraduatingStudents } from '../actions';
+import SheetReader from '../SheetReader';
 
 type Props = {
   searchParams?: { [key: string]: string | string[] | undefined };
@@ -15,6 +16,7 @@ export default async function ItemsPage({ searchParams }: Props) {
         <ListItem label={item.stdNo} id={item.stdNo} path={path} />
       )}
       searchParams={searchParams}
+      actionIcons={[<SheetReader />]}
     />
   );
 }
