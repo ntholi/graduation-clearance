@@ -34,8 +34,15 @@ export async function getSignUp() {
   if (!session?.user) {
     return { error: 'Unauthorized' };
   }
-  const signUp = await db.query.signupRequests.findFirst({
-    where: eq(signupRequests.userId, session.user.id!),
-  });
-  return signUp;
+  const signUp = await db
+    .select()
+    .from(signupRequests)
+    .where(eq(signupRequests.userId, session.user.id!))
+    .innerJoin(users, eq(users.id, signupRequests.userId))
+    .then((it) => it[0]);
+  return {
+    name: signUp?.signup_requests.name,
+    studentNumber: signUp?.signup_requests.stdNo,
+    phoneNumber: signUp?.users.phoneNumber,
+  };
 }

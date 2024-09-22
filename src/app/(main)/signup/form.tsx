@@ -46,7 +46,8 @@ export function SignUpForm() {
         if (signUp && 'name' in signUp) {
           form.reset({
             name: signUp.name,
-            studentNumber: signUp.stdNo.toString(),
+            studentNumber: signUp.studentNumber,
+            phoneNumber: signUp.phoneNumber ?? '',
           });
           setSubmitted(true);
         }
