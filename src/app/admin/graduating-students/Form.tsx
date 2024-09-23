@@ -15,7 +15,7 @@ type Props = {
 };
 
 const UserSchema = z.object({
-  stdNo: z.number().min(901000000),
+  stdNo: z.string().regex(/^9010\d{5}$/),
 });
 
 export default function Form({ onSubmit, value }: Props) {

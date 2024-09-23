@@ -51,12 +51,7 @@ export default function ClearanceStep({ step, isLast }: Props) {
           <CardDescription>{step.description}</CardDescription>
         </CardHeader>
         <CardContent>
-          <ClearanceStatus isChecking={isChecking} isCleared={query === null} />
-          {query && (
-            <CardDescription className='ml-7 mt-2 text-red-400'>
-              <p>{query}</p>
-            </CardDescription>
-          )}
+          <ClearanceStatus isChecking={isChecking} query={query} />
         </CardContent>
       </Card>
     </div>
@@ -65,10 +60,10 @@ export default function ClearanceStep({ step, isLast }: Props) {
 
 function ClearanceStatus({
   isChecking,
-  isCleared,
+  query,
 }: {
   isChecking: boolean;
-  isCleared: boolean | null;
+  query: string | null;
 }) {
   if (isChecking) {
     return (
@@ -79,7 +74,7 @@ function ClearanceStatus({
     );
   }
 
-  if (isCleared === true) {
+  if (!query) {
     return (
       <div className='flex items-center text-green-600 dark:text-green-400'>
         <CheckCircle2 className='mr-2 h-5 w-5' />
@@ -88,11 +83,11 @@ function ClearanceStatus({
     );
   }
 
-  if (isCleared === false) {
+  if (query) {
     return (
       <div className='flex items-center text-red-600 dark:text-red-400'>
         <CircleAlert className='mr-2 h-5 w-5' />
-        <span className='text-sm'>Not Cleared</span>
+        <p className='text-sm'>Not Cleared{query ? `, ${query}` : ''}</p>
       </div>
     );
   }
