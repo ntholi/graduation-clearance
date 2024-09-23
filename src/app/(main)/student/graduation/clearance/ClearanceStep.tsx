@@ -52,6 +52,11 @@ export default function ClearanceStep({ step, isLast }: Props) {
         </CardHeader>
         <CardContent>
           <ClearanceStatus isChecking={isChecking} isCleared={query === null} />
+          {query && (
+            <CardDescription className='ml-7 mt-2 text-red-400'>
+              <p>{query}</p>
+            </CardDescription>
+          )}
         </CardContent>
       </Card>
     </div>
