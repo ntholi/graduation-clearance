@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS "signup_requests" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"user_id" text NOT NULL,
 	"std_no" varchar(9) NOT NULL,
-	"status" "sign_up_request" NOT NULL,
+	"status" "sign_up_request" DEFAULT 'pending' NOT NULL,
 	"name" text NOT NULL,
 	"created_at" timestamp DEFAULT now(),
 	CONSTRAINT "signup_requests_user_id_unique" UNIQUE("user_id")
@@ -78,8 +78,7 @@ CREATE TABLE IF NOT EXISTS "students" (
 	"name" text,
 	"national_id" text,
 	"program" text,
-	"created_at" timestamp DEFAULT now(),
-	CONSTRAINT "students_user_id_unique" UNIQUE("user_id")
+	"created_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "accounts" (
@@ -97,7 +96,7 @@ CREATE TABLE IF NOT EXISTS "accounts" (
 	CONSTRAINT "accounts_provider_providerAccountId_pk" PRIMARY KEY("provider","providerAccountId")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "authenticator" (
+CREATE TABLE IF NOT EXISTS "authenticators" (
 	"credentialID" text NOT NULL,
 	"userId" text NOT NULL,
 	"providerAccountId" text NOT NULL,
@@ -106,8 +105,8 @@ CREATE TABLE IF NOT EXISTS "authenticator" (
 	"credentialDeviceType" text NOT NULL,
 	"credentialBackedUp" boolean NOT NULL,
 	"transports" text,
-	CONSTRAINT "authenticator_userId_credentialID_pk" PRIMARY KEY("userId","credentialID"),
-	CONSTRAINT "authenticator_credentialID_unique" UNIQUE("credentialID")
+	CONSTRAINT "authenticators_userId_credentialID_pk" PRIMARY KEY("userId","credentialID"),
+	CONSTRAINT "authenticators_credentialID_unique" UNIQUE("credentialID")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "sessions" (
@@ -117,7 +116,7 @@ CREATE TABLE IF NOT EXISTS "sessions" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users" (
-	"id" text PRIMARY KEY NOT NULL,
+	"id" varchar(21) PRIMARY KEY NOT NULL,
 	"name" text,
 	"email" text,
 	"phone_number" text,
@@ -189,7 +188,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "authenticator" ADD CONSTRAINT "authenticator_userId_users_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "authenticators" ADD CONSTRAINT "authenticators_userId_users_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

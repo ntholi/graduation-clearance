@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1727020203331,
-      "tag": "0000_fearless_spot",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1727020766749,
-      "tag": "0001_thankful_roxanne_simpson",
+      "when": 1727110627645,
+      "tag": "0000_fast_roughhouse",
       "breakpoints": true
     }
   ]

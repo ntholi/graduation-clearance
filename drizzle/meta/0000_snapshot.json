@@ -1,5 +1,5 @@
 {
-  "id": "34f26e44-326a-4cdb-bedd-b5cc09cf3d89",
+  "id": "0d7f93d7-c317-4703-aff1-d75267073fb1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -320,7 +320,8 @@
           "type": "sign_up_request",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "'pending'"
         },
         "name": {
           "name": "name",
@@ -422,15 +423,7 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "students_user_id_unique": {
-          "name": "students_user_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "user_id"
-          ]
-        }
-      }
+      "uniqueConstraints": {}
     },
     "public.accounts": {
       "name": "accounts",
@@ -530,8 +523,8 @@
       },
       "uniqueConstraints": {}
     },
-    "public.authenticator": {
-      "name": "authenticator",
+    "public.authenticators": {
+      "name": "authenticators",
       "schema": "",
       "columns": {
         "credentialID": {
@@ -585,9 +578,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "authenticator_userId_users_id_fk": {
-          "name": "authenticator_userId_users_id_fk",
-          "tableFrom": "authenticator",
+        "authenticators_userId_users_id_fk": {
+          "name": "authenticators_userId_users_id_fk",
+          "tableFrom": "authenticators",
           "tableTo": "users",
           "columnsFrom": [
             "userId"
@@ -600,8 +593,8 @@
         }
       },
       "compositePrimaryKeys": {
-        "authenticator_userId_credentialID_pk": {
-          "name": "authenticator_userId_credentialID_pk",
+        "authenticators_userId_credentialID_pk": {
+          "name": "authenticators_userId_credentialID_pk",
           "columns": [
             "userId",
             "credentialID"
@@ -609,8 +602,8 @@
         }
       },
       "uniqueConstraints": {
-        "authenticator_credentialID_unique": {
-          "name": "authenticator_credentialID_unique",
+        "authenticators_credentialID_unique": {
+          "name": "authenticators_credentialID_unique",
           "nullsNotDistinct": false,
           "columns": [
             "credentialID"
@@ -666,7 +659,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "text",
+          "type": "varchar(21)",
           "primaryKey": true,
           "notNull": true
         },

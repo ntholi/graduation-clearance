@@ -1,13 +1,14 @@
 import {
   boolean,
-  timestamp,
-  pgTable,
-  text,
-  primaryKey,
   integer,
   pgEnum,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
   varchar,
 } from 'drizzle-orm/pg-core';
+import { nanoid } from 'nanoid';
 import type { AdapterAccountType } from 'next-auth/adapters';
 
 export const userRole = pgEnum('role', [
@@ -19,9 +20,9 @@ export const userRole = pgEnum('role', [
 ]);
 
 export const users = pgTable('users', {
-  id: text('id')
-    .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
+  id: varchar('id', { length: 21 })
+    .$defaultFn(() => nanoid())
+    .primaryKey(),
   name: text('name'),
   email: text('email').unique(),
   phoneNumber: text('phone_number'),
@@ -77,7 +78,7 @@ export const verificationTokens = pgTable(
 );
 
 export const authenticators = pgTable(
-  'authenticator',
+  'authenticators',
   {
     credentialID: text('credentialID').notNull().unique(),
     userId: text('userId')
