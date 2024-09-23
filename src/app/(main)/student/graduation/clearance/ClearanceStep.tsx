@@ -51,7 +51,11 @@ export default function ClearanceStep({ step, isLast }: Props) {
           <CardDescription>{step.description}</CardDescription>
         </CardHeader>
         <CardContent>
-          <ClearanceStatus isChecking={isChecking} query={query} />
+          <ClearanceStatus
+            isChecking={isChecking}
+            isCleared={query === null}
+            query={query}
+          />
         </CardContent>
       </Card>
     </div>
@@ -60,9 +64,11 @@ export default function ClearanceStep({ step, isLast }: Props) {
 
 function ClearanceStatus({
   isChecking,
+  isCleared,
   query,
 }: {
   isChecking: boolean;
+  isCleared: boolean;
   query: string | null;
 }) {
   if (isChecking) {
@@ -74,7 +80,7 @@ function ClearanceStatus({
     );
   }
 
-  if (!query) {
+  if (isCleared) {
     return (
       <div className='flex items-center text-green-600 dark:text-green-400'>
         <CheckCircle2 className='mr-2 h-5 w-5' />
@@ -83,7 +89,7 @@ function ClearanceStatus({
     );
   }
 
-  if (query) {
+  if (!isCleared) {
     return (
       <div className='flex items-center text-red-600 dark:text-red-400'>
         <CircleAlert className='mr-2 h-5 w-5' />
