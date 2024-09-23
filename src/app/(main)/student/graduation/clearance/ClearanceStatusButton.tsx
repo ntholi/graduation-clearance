@@ -31,8 +31,13 @@ export default function ClearanceStatusButton({ className }: Props) {
   }, []);
 
   return (
-    <div className={cn('flex items-center justify-between', className)}>
-      <p className='text-lg font-medium'>
+    <div
+      className={cn(
+        'flex items-center justify-between rounded-lg bg-background p-4',
+        className,
+      )}
+    >
+      <p>
         {isLoading
           ? 'Checking clearance...'
           : isCleared

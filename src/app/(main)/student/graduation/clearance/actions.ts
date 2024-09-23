@@ -42,7 +42,7 @@ async function isGraduatingStudent(stdNo: string) {
     .select()
     .from(graduatingStudents)
     .where(eq(graduatingStudents.stdNo, stdNo));
-  return res.length ? null : 'Consult your faculty for more information';
+  return res.length ? null : 'Consult your faculty';
 }
 
 type BlockedBy = (typeof blockedByEnum.enumValues)[number];
