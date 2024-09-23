@@ -3,24 +3,28 @@ import { Step } from './steps';
 
 interface Props {
   step: Step;
-  isCleared: boolean | null;
+  isCleared: boolean;
   isLast: boolean;
+  isChecking: boolean;
 }
 
-export default function StepIcon({ step, isCleared, isLast }: Props) {
+export default function StepIcon({
+  step,
+  isChecking,
+  isCleared,
+  isLast,
+}: Props) {
   const Icon = step.icon;
+
+  const bgColor = isChecking
+    ? 'bg-foreground/30'
+    : isCleared
+      ? 'bg-foreground/90'
+      : 'bg-red-500';
 
   return (
     <div className='mr-4 flex flex-col items-center'>
-      <div
-        className={`rounded-full p-4 ${
-          isCleared === true
-            ? 'bg-foreground/90'
-            : isCleared === false
-              ? 'bg-red-500'
-              : 'bg-foreground/30'
-        }`}
-      >
+      <div className={`rounded-full p-4 ${bgColor}`}>
         <Icon className='h-6 w-6 text-background' />
       </div>
       {!isLast && (

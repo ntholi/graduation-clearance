@@ -9,7 +9,7 @@ import {
 import { CheckCircle2, CircleAlert, Loader2 } from 'lucide-react';
 import { Step } from './steps';
 import StepIcon from './StepIcon';
-import { checkClearance } from './actions';
+import { getClearanceQuery as getClearanceQuery } from './actions';
 
 interface Props {
   step: Step;
@@ -17,18 +17,18 @@ interface Props {
 }
 
 export default function ClearanceStep({ step, isLast }: Props) {
-  const [isCleared, setIsCleared] = useState<boolean | null>(null);
+  const [query, setQuery] = useState<string | null>(null);
   const [isChecking, setIsChecking] = useState(false);
 
   useEffect(() => {
     const checkStepClearance = async () => {
       setIsChecking(true);
       try {
-        const result = await checkClearance(step.id);
-        setIsCleared(result);
+        const result = await getClearanceQuery(step.id);
+        setQuery(result);
       } catch (error) {
         console.error('Error checking clearance:', error);
-        setIsCleared(null);
+        setQuery(null);
       } finally {
         setIsChecking(false);
       }
@@ -39,14 +39,19 @@ export default function ClearanceStep({ step, isLast }: Props) {
 
   return (
     <div className={`flex ${!isLast ? 'mb-8' : ''}`}>
-      <StepIcon step={step} isCleared={isCleared} isLast={isLast} />
+      <StepIcon
+        step={step}
+        isChecking={isChecking}
+        isCleared={query === null}
+        isLast={isLast}
+      />
       <Card className='w-full'>
         <CardHeader>
           <CardTitle>{step.title}</CardTitle>
           <CardDescription>{step.description}</CardDescription>
         </CardHeader>
         <CardContent>
-          <ClearanceStatus isChecking={isChecking} isCleared={isCleared} />
+          <ClearanceStatus isChecking={isChecking} isCleared={query === null} />
         </CardContent>
       </Card>
     </div>

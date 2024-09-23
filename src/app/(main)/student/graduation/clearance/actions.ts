@@ -10,7 +10,7 @@ import { eq, and } from 'drizzle-orm';
 import db from '@/db';
 import { auth } from '@/auth';
 
-export async function checkClearance(stepId: number): Promise<boolean> {
+export async function getClearanceQuery(step: number): Promise<string | null> {
   const session = await auth();
 
   if (!session || !session.user?.id) {
@@ -23,17 +23,17 @@ export async function checkClearance(stepId: number): Promise<boolean> {
     .where(eq(students.userId, session.user.id))
     .then((it) => it[0]);
 
-  switch (stepId) {
+  switch (step) {
     case 1:
       return isGraduatingStudent(student.stdNo);
     case 2:
-      return isCleared(student.stdNo, 'library');
+      return isBlocked(student.stdNo, 'library');
     case 3:
-      return isCleared(student.stdNo, 'resource');
+      return isBlocked(student.stdNo, 'resource');
     case 4:
-      return isCleared(student.stdNo, 'finance');
+      return isBlocked(student.stdNo, 'finance');
     default:
-      return false;
+      return 'Unknown';
   }
 }
 
@@ -42,13 +42,12 @@ async function isGraduatingStudent(stdNo: string) {
     .select()
     .from(graduatingStudents)
     .where(eq(graduatingStudents.stdNo, stdNo));
-  return res.length > 0;
+  return res.length ? null : 'Consult your faculty';
 }
 
-async function isCleared(
-  stdNo: string,
-  blockedBy: (typeof blockedByEnum.enumValues)[number],
-) {
+type BlockedBy = (typeof blockedByEnum.enumValues)[number];
+
+async function isBlocked(stdNo: string, blockedBy: BlockedBy) {
   const res = await db
     .select()
     .from(blockedStudents)
@@ -57,6 +56,8 @@ async function isCleared(
         eq(blockedStudents.stdNo, stdNo),
         eq(blockedStudents.blockedBy, blockedBy),
       ),
-    );
-  return res.length === 0;
+    )
+    .limit(1)
+    .then((it) => it[0]);
+  return res ? res.reason : null;
 }
