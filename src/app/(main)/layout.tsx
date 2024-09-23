@@ -5,6 +5,7 @@ import './globals.css';
 import Footer from './student/base/Footer';
 import { Toaster } from '@/components/ui/sonner';
 import Gradient from '@/components/ui/Gradient';
+import ComingSoonPage from './ComingSoonPage';
 
 export const metadata: Metadata = {
   title: 'Limkokwing Registry',
@@ -31,13 +32,16 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body suppressHydrationWarning>
-        <SessionProvider>
-          <Providers>
-            <Gradient>{children}</Gradient>
-            <Footer />
-            <Toaster />
-          </Providers>
-        </SessionProvider>
+        {/* <SessionProvider> */}
+        <Providers>
+          <Gradient>
+            <ComingSoonPage />
+            {/* {children} */}
+          </Gradient>
+          <Footer />
+          {/* <Toaster /> */}
+        </Providers>
+        {/* </SessionProvider> */}
       </body>
     </html>
   );

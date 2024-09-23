@@ -5,29 +5,31 @@ import Logo from './student/base/Logo';
 import Container from '@/components/ui/container';
 
 export default function ComingSoonPage() {
-  const [days, setDays] = useState(0);
-  const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(0);
-  const target = new Date('2024-09-24T10:00:00'); // Set your target date here
+  const [days, setDays] = useState<string>('?');
+  const [hours, setHours] = useState<string>('?');
+  const [minutes, setMinutes] = useState<string>('?');
+  const [seconds, setSeconds] = useState<string>('?');
+  const target = new Date('2024-09-25T14:00:00'); // Set your target date here
 
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date();
       const difference = target.getTime() - now.getTime();
 
-      const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const d = Math.floor(difference / (1000 * 60 * 60 * 24)).toString();
       setDays(d);
 
       const h = Math.floor(
         (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-      );
+      ).toString();
       setHours(h);
 
-      const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      const m = Math.floor(
+        (difference % (1000 * 60 * 60)) / (1000 * 60),
+      ).toString();
       setMinutes(m);
 
-      const s = Math.floor((difference % (1000 * 60)) / 1000);
+      const s = Math.floor((difference % (1000 * 60)) / 1000).toString();
       setSeconds(s);
     }, 1000);
 
