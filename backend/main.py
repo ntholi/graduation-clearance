@@ -7,6 +7,8 @@ from database.models import (
     SignUpRequest,
     SignUpRequestStatus,
     Student,
+    User,
+    UserRole,
 )
 from rich import print
 from scrapper import Scrapper
@@ -32,6 +34,13 @@ def save_student(student: Student):
     print(f"Student {student.std_no} saved")
 
 
+def mark_user_as_student(user_id: str):
+    user = db_session.query(User).filter(User.id == user_id).first()
+    if user:
+        user.role = UserRole.student
+        db_session.commit()
+
+
 def save_enrollment(data: tuple[Enrollment, list[Grade]]):
     enrollment, grades = data
     db_session.add(enrollment)
@@ -55,6 +64,7 @@ def approve_signup_requests():
         student, enrollments = scrapper.get_student_data(signup.std_no)
         student.user_id = signup.user_id
         save_student(student)
+        mark_user_as_student(signup.user_id)
         for enrollment in enrollments:
             save_enrollment(enrollment)
         signup.status = SignUpRequestStatus.approved

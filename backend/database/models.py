@@ -13,6 +13,21 @@ class Base(DeclarativeBase):
     pass
 
 
+class UserRole(Enum):
+    student = "student"
+    registry = "registry"
+    finance = "finance"
+    faculty = "faculty"
+    admin = "admin"
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    role: Mapped[UserRole] = mapped_column(SQLAlchemyEnum(UserRole))
+
+
 class Student(Base):
     __tablename__ = "students"
 
