@@ -51,8 +51,8 @@ export default function Navigation() {
         <NavLink
           label='Finance Clearance'
           component={Link}
-          active={pathname.startsWith('/admin/clearance/finance')}
-          href={'/admin/clearance/finance'}
+          active={pathname.startsWith('/admin/finance-clearance')}
+          href={'/admin/finance-clearance'}
           leftSection={<Landmark size='1.1rem' />}
           rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
         />
