@@ -13,6 +13,8 @@ import { auth } from '@/auth';
 export async function checkClearance(stepId: number): Promise<boolean> {
   const session = await auth();
 
+  console.log('stepId', stepId);
+
   if (!session || !session.user?.id) {
     throw new Error('Unauthorized');
   }
@@ -26,12 +28,13 @@ export async function checkClearance(stepId: number): Promise<boolean> {
     case 1:
       return isGraduatingStudent(student.stdNo);
     case 2:
-      isBlocked(student.stdNo, 'library');
+      return isBlocked(student.stdNo, 'library');
     case 3:
-      isBlocked(student.stdNo, 'resource');
+      return isBlocked(student.stdNo, 'resource');
+    case 4:
 
     default:
-      throw new Error('Invalid step ID');
+      return false;
   }
 }
 
