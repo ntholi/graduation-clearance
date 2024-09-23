@@ -1,21 +1,10 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import ClearanceStep from './ClearanceStep';
-import { steps } from './steps';
 import Container from '@/components/ui/container';
-import { checkClearance } from './actions';
+import { steps } from './steps';
 
 export default function ClearancePage() {
-  const [clearanceStatus, setClearanceStatus] = useState<
-    Record<number, boolean | null>
-  >(Object.fromEntries(steps.map((step) => [step.id, null])));
-
-  const handleCheckClearance = async (stepId: number) => {
-    const isCleared = await checkClearance(stepId);
-    setClearanceStatus((prev) => ({ ...prev, [stepId]: isCleared }));
-    return isCleared;
-  };
-
   return (
     <div className='min-h-screen bg-muted/20'>
       <Container className='pb-5'>
@@ -28,9 +17,7 @@ export default function ClearancePage() {
               <ClearanceStep
                 key={step.id}
                 step={step}
-                isCleared={clearanceStatus[step.id]}
                 isLast={index === steps.length - 1}
-                onCheckClearance={handleCheckClearance}
               />
             ))}
           </div>

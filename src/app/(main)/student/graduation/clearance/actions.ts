@@ -13,26 +13,25 @@ import { auth } from '@/auth';
 export async function checkClearance(stepId: number): Promise<boolean> {
   const session = await auth();
 
-  console.log('stepId', stepId);
-
   if (!session || !session.user?.id) {
     throw new Error('Unauthorized');
   }
+
   const student = await db
     .select()
     .from(students)
-    .where(eq(students.userId, session?.user.id))
+    .where(eq(students.userId, session.user.id))
     .then((it) => it[0]);
 
   switch (stepId) {
     case 1:
       return isGraduatingStudent(student.stdNo);
     case 2:
-      return isBlocked(student.stdNo, 'library');
+      return isCleared(student.stdNo, 'library');
     case 3:
-      return isBlocked(student.stdNo, 'resource');
+      return isCleared(student.stdNo, 'resource');
     case 4:
-
+      return isCleared(student.stdNo, 'finance');
     default:
       return false;
   }
@@ -46,7 +45,7 @@ async function isGraduatingStudent(stdNo: string) {
   return res.length > 0;
 }
 
-async function isBlocked(
+async function isCleared(
   stdNo: string,
   blockedBy: (typeof blockedByEnum.enumValues)[number],
 ) {
