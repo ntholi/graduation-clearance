@@ -23,7 +23,7 @@ export default function Pagination({ total, path }: Props) {
   return (
     <Box p={'sm'}>
       <MantinePagination
-        size={'sm'}
+        size={'xs'}
         total={total}
         value={page ?? 1}
         onChange={handleChange}
