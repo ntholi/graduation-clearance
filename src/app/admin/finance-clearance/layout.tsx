@@ -13,7 +13,7 @@ export default function Layout({ children }: PropsWithChildren) {
         <ListItem
           label={item.stdNo}
           description={item.student?.name}
-          id={item.id}
+          id={item.stdNo}
           path={path}
         />
       )}

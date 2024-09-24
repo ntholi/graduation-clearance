@@ -1,9 +1,11 @@
 'use server';
 
 import db from '@/db';
-import { financeClearance, students } from '@/db/schema';
-import { eq, desc, count, like } from 'drizzle-orm';
+import { blockedStudents, financeClearance, students } from '@/db/schema';
+import { eq, desc, count, like, and } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
+import { FinanceClearanceSchema } from './Form';
+import { z } from 'zod';
 
 export type Clearance = typeof financeClearance.$inferSelect;
 
@@ -40,28 +42,60 @@ export async function getClearanceList(page: number = 1, search = '') {
 }
 
 export async function getClearance(stdNo: string) {
-  const student = await db
-    .select()
+  const res = await db
+    .select({
+      id: financeClearance.id,
+      stdNo: financeClearance.stdNo,
+      student: {
+        name: students.name,
+      },
+      blockedStudent: {
+        reason: blockedStudents.reason,
+      },
+      status: financeClearance.status,
+      createdAt: financeClearance.createdAt,
+    })
     .from(financeClearance)
     .where(eq(financeClearance.stdNo, stdNo))
-    .then((data) => data[0]);
-  return student;
+    .leftJoin(students, eq(students.stdNo, financeClearance.stdNo))
+    .leftJoin(
+      blockedStudents,
+      and(
+        eq(students.stdNo, blockedStudents.stdNo),
+        eq(blockedStudents.blockedBy, 'finance'),
+      ),
+    )
+    .then((it) => it[0]);
+
+  return res;
 }
 
 export async function deleteClearance(stdNo: string) {
   await db.delete(financeClearance).where(eq(financeClearance.stdNo, stdNo));
-  revalidatePath('/admin/finance/clearance');
+  revalidatePath('/admin/finance-clearance');
 }
 
-export async function updateClearance(
-  id: string,
-  values: Clearance,
-): Promise<Clearance> {
-  const res = await db
+export async function blockStudent(
+  stdNo: string,
+  reason?: string,
+): Promise<void> {
+  const blocked = await db
+    .insert(blockedStudents)
+    .values({
+      blockedBy: 'finance',
+      stdNo,
+      reason: reason,
+    })
+    .returning()
+    .then((it) => it[0]);
+
+  await db
     .update(financeClearance)
-    .set(values)
-    .where(eq(financeClearance.stdNo, id))
+    .set({
+      status: 'blocked',
+      blockedStudentId: blocked.id,
+    })
+    .where(eq(financeClearance.stdNo, stdNo))
     .returning();
-  revalidatePath(`/admin/finance/clearance/${id}`);
-  return res[0];
+  revalidatePath(`/admin/finance-clearance/${stdNo}`);
 }
