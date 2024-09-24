@@ -59,7 +59,7 @@ async function isFinanceCleared(stdNo: string): Promise<ClearanceStatus> {
     .where(eq(financeClearance.stdNo, stdNo))
     .limit(1)
     .then((it) => it[0]);
-  if (res.status === 'pending') {
+  if (res?.status === 'pending') {
     return {
       status: 'pending',
     };
