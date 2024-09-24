@@ -4,7 +4,7 @@ import ListLayout from '@admin/components/ListLayout';
 import { PropsWithChildren } from 'react';
 import { getGraduatingStudents } from './actions';
 
-export default async function Layout({ children }: PropsWithChildren) {
+export default function Layout({ children }: PropsWithChildren) {
   return (
     <ListLayout
       getItems={(page, search) => getGraduatingStudents(page, search)}
