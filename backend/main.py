@@ -1,8 +1,8 @@
-from ast import Tuple
-
 from database import db_session, init_db
 from database.models import (
     Enrollment,
+    FinanceClearance,
+    FinanceClearanceStatus,
     Grade,
     SignUpRequest,
     SignUpRequestStatus,
@@ -34,11 +34,22 @@ def save_student(student: Student):
     print(f"Student {student.std_no} saved")
 
 
-def mark_user_as_student(user_id: str):
+def mark_user_as_student(user_id: str | None):
     user = db_session.query(User).filter(User.id == user_id).first()
     if user:
         user.role = UserRole.student
         db_session.commit()
+
+
+def create_finance_clearance(student: Student):
+    clearance = FinanceClearance(
+        std_no=student.std_no,
+        status=FinanceClearanceStatus.pending,
+        blocked_student_id=None,
+    )
+    db_session.add(clearance)
+    db_session.commit()
+    print(f"Finance clearance for {student.std_no} created")
 
 
 def save_enrollment(data: tuple[Enrollment, list[Grade]]):
@@ -65,6 +76,7 @@ def approve_signup_requests():
         student.user_id = signup.user_id
         save_student(student)
         mark_user_as_student(signup.user_id)
+        create_finance_clearance(student)
         for enrollment in enrollments:
             save_enrollment(enrollment)
         signup.status = SignUpRequestStatus.approved
