@@ -1,26 +1,27 @@
 import React from 'react';
 import { Step } from './steps';
+import ClearanceStatus from './ClearanceStatus';
 
 interface Props {
   step: Step;
-  isCleared: boolean;
+  status?: ClearanceStatus['status'];
   isLast: boolean;
   isChecking: boolean;
 }
 
-export default function StepIcon({
-  step,
-  isChecking,
-  isCleared,
-  isLast,
-}: Props) {
+export default function StepIcon({ step, isChecking, status, isLast }: Props) {
   const Icon = step.icon;
 
-  const bgColor = isChecking
-    ? 'bg-foreground/30'
-    : isCleared
-      ? 'bg-foreground/90'
-      : 'bg-red-500';
+  let bgColor: string;
+  if (isChecking) {
+    bgColor = 'bg-foreground/30';
+  } else if (status === 'cleared') {
+    bgColor = 'bg-foreground/90';
+  } else if (status === 'not cleared') {
+    bgColor = 'bg-red-500';
+  } else {
+    bgColor = 'bg-yellow-500';
+  }
 
   return (
     <div className='mr-4 flex flex-col items-center'>

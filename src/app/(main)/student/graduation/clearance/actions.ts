@@ -3,14 +3,18 @@
 import {
   blockedByEnum,
   blockedStudents,
+  financeClearance,
   graduatingStudents,
   students,
 } from '@/db/schema';
 import { eq, and } from 'drizzle-orm';
 import db from '@/db';
 import { auth } from '@/auth';
+import ClearanceStatus from './ClearanceStatus';
 
-export async function getClearanceQuery(step: number): Promise<string | null> {
+export async function getClearanceQuery(
+  step: number,
+): Promise<ClearanceStatus> {
   const session = await auth();
 
   if (!session || !session.user?.id) {
@@ -31,23 +35,41 @@ export async function getClearanceQuery(step: number): Promise<string | null> {
     case 3:
       return isBlocked(student.stdNo, 'resource');
     case 4:
-      return isBlocked(student.stdNo, 'finance');
+      return isFinanceCleared(student.stdNo);
     default:
-      return 'Unknown';
+      throw new Error('Unknown step');
   }
 }
 
-async function isGraduatingStudent(stdNo: string) {
+async function isGraduatingStudent(stdNo: string): Promise<ClearanceStatus> {
   const res = await db
     .select()
     .from(graduatingStudents)
     .where(eq(graduatingStudents.stdNo, stdNo));
-  return res.length ? null : 'Consult your faculty';
+  if (res.length) {
+    return { status: 'cleared' };
+  }
+  return { status: 'not cleared', message: 'Consult your faculty' };
+}
+
+async function isFinanceCleared(stdNo: string): Promise<ClearanceStatus> {
+  const res = await db
+    .select()
+    .from(financeClearance)
+    .where(eq(financeClearance.stdNo, stdNo))
+    .then((it) => it[0]);
+  if (res)
+    return {
+      status: 'pending',
+    };
+  return isBlocked(stdNo, 'finance');
 }
 
 type BlockedBy = (typeof blockedByEnum.enumValues)[number];
-
-async function isBlocked(stdNo: string, blockedBy: BlockedBy) {
+async function isBlocked(
+  stdNo: string,
+  blockedBy: BlockedBy,
+): Promise<ClearanceStatus> {
   const res = await db
     .select()
     .from(blockedStudents)
@@ -59,5 +81,13 @@ async function isBlocked(stdNo: string, blockedBy: BlockedBy) {
     )
     .limit(1)
     .then((it) => it[0]);
-  return res ? res.reason : null;
+  if (res) {
+    return {
+      status: 'not cleared',
+      message: res.reason,
+    };
+  }
+  return {
+    status: 'cleared',
+  };
 }

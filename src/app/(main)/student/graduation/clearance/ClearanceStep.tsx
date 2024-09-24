@@ -6,10 +6,11 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { CheckCircle2, CircleAlert, Loader2 } from 'lucide-react';
+import { CheckCircle2, Circle, CircleAlert, Loader2 } from 'lucide-react';
 import { Step } from './steps';
 import StepIcon from './StepIcon';
-import { getClearanceQuery as getClearanceQuery } from './actions';
+import { getClearanceQuery as queryClearanceStatus } from './actions';
+import ClearanceStatus from './ClearanceStatus';
 
 interface Props {
   step: Step;
@@ -17,18 +18,18 @@ interface Props {
 }
 
 export default function ClearanceStep({ step, isLast }: Props) {
-  const [query, setQuery] = useState<string | null>(null);
+  const [status, setStatus] = useState<ClearanceStatus | null>(null);
   const [isChecking, setIsChecking] = useState(false);
 
   useEffect(() => {
     const checkStepClearance = async () => {
       setIsChecking(true);
       try {
-        const result = await getClearanceQuery(step.id);
-        setQuery(result);
+        const result = await queryClearanceStatus(step.id);
+        setStatus(result);
       } catch (error) {
         console.error('Error checking clearance:', error);
-        setQuery(null);
+        setStatus(null);
       } finally {
         setIsChecking(false);
       }
@@ -42,7 +43,7 @@ export default function ClearanceStep({ step, isLast }: Props) {
       <StepIcon
         step={step}
         isChecking={isChecking}
-        isCleared={query === null}
+        status={status?.status}
         isLast={isLast}
       />
       <Card className='w-full'>
@@ -51,25 +52,19 @@ export default function ClearanceStep({ step, isLast }: Props) {
           <CardDescription>{step.description}</CardDescription>
         </CardHeader>
         <CardContent>
-          <ClearanceStatus
-            isChecking={isChecking}
-            isCleared={query === null}
-            query={query}
-          />
+          <Status isChecking={isChecking} status={status} />
         </CardContent>
       </Card>
     </div>
   );
 }
 
-function ClearanceStatus({
+function Status({
   isChecking,
-  isCleared,
-  query,
+  status,
 }: {
   isChecking: boolean;
-  isCleared: boolean;
-  query: string | null;
+  status: ClearanceStatus | null;
 }) {
   if (isChecking) {
     return (
@@ -80,7 +75,7 @@ function ClearanceStatus({
     );
   }
 
-  if (isCleared) {
+  if (status?.status === 'cleared') {
     return (
       <div className='flex items-center text-green-600 dark:text-green-400'>
         <CheckCircle2 className='mr-2 h-5 w-5' />
@@ -89,11 +84,22 @@ function ClearanceStatus({
     );
   }
 
-  if (!isCleared) {
+  if (status?.status === 'pending') {
+    return (
+      <div className='flex items-center text-yellow-600 dark:text-yellow-400'>
+        <Circle className='mr-2 h-5 w-5' />
+        <span className='text-sm'>Pending</span>
+      </div>
+    );
+  }
+
+  if (status?.status === 'not cleared') {
     return (
       <div className='flex items-center text-red-600 dark:text-red-400'>
         <CircleAlert className='mr-2 h-5 w-5' />
-        <p className='text-sm'>Not Cleared{query ? `, ${query}` : ''}</p>
+        <p className='text-sm'>
+          Not Cleared{status.message ? `, ${status.message}` : ''}
+        </p>
       </div>
     );
   }
