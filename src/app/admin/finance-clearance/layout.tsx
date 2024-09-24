@@ -1,10 +1,24 @@
-import ListPageLayout from '@admin/components/ListPageLayout';
+'use client';
+import ListItem from '@admin/components/ListItem';
+import ListLayout from '@admin/components/ListLayout';
 import { PropsWithChildren } from 'react';
+import { getClearanceList } from './actions';
 
-type Props = PropsWithChildren & {
-  items: React.ReactNode;
-};
-
-export default async function Layout({ children, items }: Props) {
-  return <ListPageLayout items={items}>{children}</ListPageLayout>;
+export default async function Layout({ children }: PropsWithChildren) {
+  return (
+    <ListLayout
+      getItems={(page, search) => getClearanceList(page, search)}
+      path='/admin/finance-clearance'
+      renderItem={(item, path) => (
+        <ListItem
+          label={item.stdNo}
+          description={item.student?.name}
+          id={item.id}
+          path={path}
+        />
+      )}
+    >
+      {children}
+    </ListLayout>
+  );
 }
