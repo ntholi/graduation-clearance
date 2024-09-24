@@ -53,36 +53,18 @@ async function isGraduatingStudent(stdNo: string): Promise<ClearanceStatus> {
 }
 
 async function isFinanceCleared(stdNo: string): Promise<ClearanceStatus> {
-  const list = await db
-    .select({
-      status: financeClearance.status,
-      reason: blockedStudents.reason,
-    })
+  const res = await db
+    .select()
     .from(financeClearance)
     .where(eq(financeClearance.stdNo, stdNo))
-    .leftJoin(
-      blockedStudents,
-      eq(blockedStudents.stdNo, financeClearance.stdNo),
-    );
-  if (list.length === 0) {
+    .limit(1)
+    .then((it) => it[0]);
+  if (res.status === 'pending') {
     return {
       status: 'pending',
     };
   }
-  const res = list[0];
-  if (res.status === 'cleared') {
-    return {
-      status: 'cleared',
-    };
-  } else if (res.status === 'pending') {
-    return {
-      status: 'pending',
-    };
-  }
-  return {
-    status: 'not cleared',
-    message: res.reason,
-  };
+  return isBlocked(stdNo, 'finance');
 }
 
 type BlockedBy = (typeof blockedByEnum.enumValues)[number];
