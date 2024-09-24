@@ -3,7 +3,7 @@ import React from 'react';
 import ClearanceStep from './ClearanceStep';
 import Container from '@/components/ui/container';
 import { steps } from './steps';
-import ClearanceStatusButton from './ClearanceStatusButton';
+import ClearanceStatusButton from './NextButton';
 
 export default function ClearancePage() {
   return (

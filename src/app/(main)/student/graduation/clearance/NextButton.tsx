@@ -18,7 +18,7 @@ export default function ClearanceStatusButton({ className }: Props) {
         const results = await Promise.all(
           steps.map((step) => getClearanceQuery(step.id)),
         );
-        setIsCleared(results.every((result) => result === null));
+        setIsCleared(results.every((result) => result.status === 'cleared'));
       } catch (error) {
         console.error('Error checking clearances:', error);
         setIsCleared(false);
