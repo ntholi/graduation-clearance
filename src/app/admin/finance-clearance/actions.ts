@@ -2,10 +2,8 @@
 
 import db from '@/db';
 import { blockedStudents, financeClearance, students } from '@/db/schema';
-import { eq, desc, count, like, and } from 'drizzle-orm';
+import { and, count, desc, eq, like } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
-import { FinanceClearanceSchema } from './Form';
-import { z } from 'zod';
 
 export type Clearance = typeof financeClearance.$inferSelect;
 
