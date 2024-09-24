@@ -3,6 +3,7 @@ import ListItem from '@admin/components/ListItem';
 import ListLayout from '@admin/components/ListLayout';
 import { PropsWithChildren } from 'react';
 import { getGraduatingStudents } from './actions';
+import SheetReader from './SheetReader';
 
 export default function Layout({ children }: PropsWithChildren) {
   return (
@@ -17,6 +18,7 @@ export default function Layout({ children }: PropsWithChildren) {
           path={path}
         />
       )}
+      actionIcons={[<SheetReader />]}
     >
       {children}
     </ListLayout>

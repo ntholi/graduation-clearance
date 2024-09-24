@@ -18,15 +18,22 @@ async function writeFileContents(file: File): Promise<number> {
         }
 
         const workbook = XLSX.read(binaryString, { type: 'binary' });
-        const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
+        const stdNumbers: string[] = [];
 
-        const rawData: (string | number)[][] = XLSX.utils.sheet_to_json(sheet, {
-          header: 1,
-        });
-        const stdNumbers = rawData
-          .flatMap((row) => row.map((cell) => cell.toString()))
-          .filter((cell) => cell.startsWith('9010'));
+        for (const sheetName of workbook.SheetNames) {
+          const sheet = workbook.Sheets[sheetName];
+          const rawData: (string | number)[][] = XLSX.utils.sheet_to_json(
+            sheet,
+            {
+              header: 1,
+            },
+          );
+          const sheetStdNumbers = rawData
+            .flatMap((row) => row.map((cell) => cell.toString()))
+            .filter((cell) => cell.startsWith('9010'));
+          stdNumbers.push(...sheetStdNumbers);
+        }
+
         await saveGraduationList(stdNumbers);
         resolve(stdNumbers.length);
       } catch (error) {
