@@ -6,7 +6,6 @@ import {
   Grid,
   GridCol,
   Group,
-  Pagination,
   Paper,
   ScrollArea,
 } from '@mantine/core';
@@ -16,6 +15,7 @@ import React, { useEffect, useState } from 'react';
 import SearchField from './SearchField';
 import Link from 'next/link';
 import { PlusIcon } from 'lucide-react';
+import Pagination from './Pagination';
 
 type Props<T> = {
   getItems: (
