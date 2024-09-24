@@ -3,10 +3,12 @@ import { ActionIcon, FileButton } from '@mantine/core';
 import { Upload } from 'lucide-react';
 import { useTransition, useState } from 'react';
 import * as XLSX from 'xlsx';
-import { saveGraduationList } from './actions';
+import { saveGraduationList } from '../graduating-students/actions';
 import { notifications } from '@mantine/notifications';
 
-async function writeFileContents(file: File): Promise<number> {
+type Action = (studentNumbers: string[]) => Promise<void>;
+
+async function writeFileContents(file: File, action: Action): Promise<number> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = async (event: ProgressEvent<FileReader>) => {
@@ -34,7 +36,7 @@ async function writeFileContents(file: File): Promise<number> {
           stdNumbers.push(...sheetStdNumbers);
         }
 
-        await saveGraduationList(stdNumbers);
+        await action(stdNumbers);
         resolve(stdNumbers.length);
       } catch (error) {
         reject(error);
@@ -45,7 +47,11 @@ async function writeFileContents(file: File): Promise<number> {
   });
 }
 
-export default function SheetReader() {
+type Props = {
+  action: Action;
+};
+
+export default function SheetReader({ action }: Props) {
   const [pending, startTransition] = useTransition();
   const [key, setKey] = useState(0);
 
@@ -54,7 +60,7 @@ export default function SheetReader() {
     startTransition(async () => {
       setKey((prevKey) => prevKey + 1);
       try {
-        const count = await writeFileContents(file);
+        const count = await writeFileContents(file, action);
         notifications.show({
           title: 'Success',
           message: `${count} students added`,

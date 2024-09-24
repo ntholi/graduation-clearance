@@ -2,8 +2,8 @@
 import ListItem from '@admin/components/ListItem';
 import ListLayout from '@admin/components/ListLayout';
 import { PropsWithChildren } from 'react';
-import { getGraduatingStudents } from './actions';
-import SheetReader from './SheetReader';
+import { getGraduatingStudents, saveGraduationList } from './actions';
+import SheetReader from '../base/SheetReader';
 
 export default function Layout({ children }: PropsWithChildren) {
   return (
@@ -18,7 +18,13 @@ export default function Layout({ children }: PropsWithChildren) {
           path={path}
         />
       )}
-      actionIcons={[<SheetReader />]}
+      actionIcons={[
+        <SheetReader
+          action={async (items) => {
+            await saveGraduationList(items);
+          }}
+        />,
+      ]}
     >
       {children}
     </ListLayout>
