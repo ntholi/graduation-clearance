@@ -1,7 +1,7 @@
 import HeaderDisplay from '@admin/components/HeaderDisplay';
 import { Box, Title } from '@mantine/core';
 import { notFound } from 'next/navigation';
-import { blockStudent, deleteClearance, getClearance } from '../actions';
+import { blockStudent, getClearance, updateClearanceStatus } from '../actions';
 import Form from '../Form';
 
 type Props = {
@@ -25,7 +25,7 @@ export default async function Page({ params: { id } }: Props) {
           if (value.status === 'blocked') {
             await blockStudent(item.stdNo, value.reason);
           }
-          await deleteClearance(item.stdNo);
+          await updateClearanceStatus(item.stdNo, value.status);
         }}
       />
     </Box>
