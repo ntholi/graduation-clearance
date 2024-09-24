@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { getClearanceQuery } from './actions';
 import { steps } from './steps';
 import { cn } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   className?: string;
@@ -10,6 +11,7 @@ type Props = {
 export default function ClearanceStatusButton({ className }: Props) {
   const [isCleared, setIsCleared] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const router = useRouter();
 
   useEffect(() => {
     const checkAllClearances = async () => {
@@ -44,7 +46,12 @@ export default function ClearanceStatusButton({ className }: Props) {
             ? 'Cleared'
             : 'Not Cleared'}
       </p>
-      <Button disabled={!isCleared || isLoading}>Next</Button>
+      <Button
+        disabled={!isCleared || isLoading}
+        onClick={() => router.push('/student/graduation/confirmation')}
+      >
+        Next
+      </Button>
     </div>
   );
 }
