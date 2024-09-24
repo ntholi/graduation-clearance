@@ -88,7 +88,7 @@ function Status({
     return (
       <div className='flex items-center text-yellow-600 dark:text-yellow-400'>
         <Circle className='mr-2 h-5 w-5' />
-        <span className='text-sm'>Pending</span>
+        <span className='text-sm'>Pending, check back later</span>
       </div>
     );
   }
