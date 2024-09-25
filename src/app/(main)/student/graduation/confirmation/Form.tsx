@@ -13,6 +13,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import saveConfirmation from './actions';
 import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   student: {
@@ -24,6 +25,7 @@ type Props = {
 export default function Form({ student }: Props) {
   const [confirmed, setConfirmed] = React.useState(false);
   const [pending, startTransition] = useTransition();
+  const router = useRouter();
 
   const handleCheckboxChange = (checked: boolean | 'indeterminate') => {
     setConfirmed(checked === true);
@@ -32,6 +34,7 @@ export default function Form({ student }: Props) {
   function handleSubmit() {
     startTransition(async () => {
       await saveConfirmation({ stdNo: student.stdNo, confirmed });
+      router.push('/student/graduation/success');
     });
   }
 
