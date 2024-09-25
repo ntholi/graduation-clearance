@@ -1,3 +1,4 @@
+'use client';
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { getClearanceQuery } from './actions';
@@ -11,7 +12,7 @@ import { getStudentByUserId } from '@/app/admin/students/actions';
 type Props = {
   className?: string;
 };
-export default function ClearanceStatusButton({ className }: Props) {
+export default function NextButton({ className }: Props) {
   const [isCleared, setIsCleared] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();

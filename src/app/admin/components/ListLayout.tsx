@@ -9,13 +9,12 @@ import {
   Paper,
   ScrollArea,
 } from '@mantine/core';
-import { useRouter } from 'next-nprogress-bar';
+import { PlusIcon } from 'lucide-react';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import SearchField from './SearchField';
-import Link from 'next/link';
-import { PlusIcon } from 'lucide-react';
 import Pagination from './Pagination';
+import SearchField from './SearchField';
 
 type Props<T> = {
   getItems: (
@@ -37,7 +36,6 @@ export default function ListLayout<T>({
 }: Props<T>) {
   const [items, setItems] = useState<T[]>([]);
   const [pages, setPages] = useState(0);
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const page = Number(searchParams.get('page')) || 1;
