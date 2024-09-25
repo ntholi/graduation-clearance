@@ -2,7 +2,7 @@
 import { graduatingStudents } from '@/db/schema';
 import FormHeader from '@admin/components/FormHeader';
 import useFormAction from '@admin/hooks/useFormAction';
-import { NumberInput, Stack } from '@mantine/core';
+import { NumberInput, Stack, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
@@ -38,7 +38,7 @@ export default function Form({ onSubmit, value }: Props) {
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <FormHeader title='Graduating Student' isLoading={pending} />
       <Stack p={'xl'}>
-        <NumberInput label='Student Number' {...form.getInputProps('stdNo')} />
+        <TextInput label='Student Number' {...form.getInputProps('stdNo')} />
       </Stack>
     </form>
   );
