@@ -46,23 +46,23 @@ class Student(Base):
         return f"Student(std_no={self.std_no}, user_id={self.user_id}, name={self.name}, national_id={self.national_id}, program={self.program}, created_at={self.created_at})"
 
 
-class FinanceClearanceStatus(Enum):
+class ClearanceRequestStatus(Enum):
     pending = "pending"
-    cleared = "cleared"
-    blocked = "blocked"
+    processed = "processed"
 
 
-class FinanceClearance(Base):
-    __tablename__ = "finance_clearance"
+class ClearanceRequest(Base):
+    __tablename__ = "clearance_requests"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    std_no: Mapped[str] = mapped_column(
-        String, ForeignKey("students.std_no", ondelete="cascade"), nullable=False
+    std_no: Mapped[int] = mapped_column(
+        Integer, ForeignKey("students.std_no", ondelete="CASCADE"), nullable=False
     )
-    status: Mapped[FinanceClearanceStatus] = mapped_column(
-        SQLAlchemyEnum(FinanceClearanceStatus), nullable=False, default="pending"
+    status: Mapped[ClearanceRequestStatus] = mapped_column(
+        SQLAlchemyEnum(ClearanceRequestStatus),
+        nullable=False,
+        default=ClearanceRequestStatus.pending,
     )
-    blocked_student_id: Mapped[str] = mapped_column(String, nullable=False)
     created_at: Mapped[datetime] = mapped_column(TIMESTAMP, server_default=func.now())
 
 

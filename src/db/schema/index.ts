@@ -14,7 +14,6 @@ import {
 } from 'drizzle-orm/pg-core';
 import { nanoid } from 'nanoid';
 import { users } from './auth';
-import { table } from 'console';
 
 export const students = pgTable('students', {
   stdNo: varchar('std_no', { length: 9 }).notNull().primaryKey(),
@@ -48,7 +47,6 @@ export const enrollments = pgTable('enrollments', {
   stdNo: varchar('std_no', { length: 9 })
     .notNull()
     .references(() => students.stdNo, { onDelete: 'cascade' }),
-
   term: text('term').notNull(),
   semester: text('semester').notNull(),
   gpa: decimal('gpa', { precision: 3, scale: 2 }).notNull(),

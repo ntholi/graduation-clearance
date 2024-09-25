@@ -1,8 +1,8 @@
 from database import db_session, init_db
 from database.models import (
+    ClearanceRequest,
+    ClearanceRequestStatus,
     Enrollment,
-    FinanceClearance,
-    FinanceClearanceStatus,
     Grade,
     SignUpRequest,
     SignUpRequestStatus,
@@ -41,15 +41,14 @@ def mark_user_as_student(user_id: str | None):
         db_session.commit()
 
 
-def create_finance_clearance(student: Student):
-    clearance = FinanceClearance(
+def create_clearance_request(student: Student):
+    clearance = ClearanceRequest(
         std_no=student.std_no,
-        status=FinanceClearanceStatus.pending,
-        blocked_student_id=None,
+        status=ClearanceRequestStatus.pending,
     )
     db_session.add(clearance)
     db_session.commit()
-    print(f"Finance clearance for {student.std_no} created")
+    print(f"Clearance request for {student.std_no} created")
 
 
 def save_enrollment(data: tuple[Enrollment, list[Grade]]):
@@ -60,7 +59,7 @@ def save_enrollment(data: tuple[Enrollment, list[Grade]]):
         grade.enrollment_id = enrollment.id
         db_session.add(grade)
     db_session.commit()
-    print(f"Enrollment {enrollment.id} saved")
+    print(f"Enrollment saved: id={enrollment.id}")
 
 
 def approve_signup_requests():
@@ -76,7 +75,7 @@ def approve_signup_requests():
         student.user_id = signup.user_id
         save_student(student)
         mark_user_as_student(signup.user_id)
-        create_finance_clearance(student)
+        create_clearance_request(student)
         for enrollment in enrollments:
             save_enrollment(enrollment)
         signup.status = SignUpRequestStatus.approved
