@@ -31,7 +31,7 @@ export default function Form({ student }: Props) {
 
   function handleSubmit() {
     startTransition(async () => {
-      await saveConfirmation(student.stdNo);
+      await saveConfirmation({ stdNo: student.stdNo, confirmed });
     });
   }
 

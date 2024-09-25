@@ -2,7 +2,14 @@
 import db from '@/db';
 import { graduationConfirmation } from '@/db/schema';
 
-export default async function saveConfirmation(stdNo: string | null) {
-  if (!stdNo) return;
-  await db.insert(graduationConfirmation).values({ stdNo });
+type Confirmation = typeof graduationConfirmation.$inferInsert;
+
+export default async function saveConfirmation(obj: Confirmation) {
+  await db
+    .insert(graduationConfirmation)
+    .values(obj)
+    .onConflictDoUpdate({
+      target: [graduationConfirmation.stdNo],
+      set: obj,
+    });
 }
