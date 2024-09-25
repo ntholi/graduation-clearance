@@ -9,7 +9,7 @@ export default function ComingSoonPage() {
   const [hours, setHours] = useState<string>('?');
   const [minutes, setMinutes] = useState<string>('?');
   const [seconds, setSeconds] = useState<string>('?');
-  const target = new Date('2024-09-25T14:00:00'); // Set your target date here
+  const target = new Date('2024-09-27T14:00:00'); // Set your target date here
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -47,7 +47,10 @@ export default function ComingSoonPage() {
         </CardHeader>
         <CardContent>
           <p className='mb-2 text-center text-sm text-foreground/90'>
-            Clearance begins on {formatDate(target)}
+            <span className='text-green-400'>
+              Clearance has been postponed to{' '}
+            </span>
+            {formatDate(target)}
           </p>
           <div className='grid grid-cols-4 gap-4 text-center'>
             <div>
