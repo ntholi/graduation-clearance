@@ -6,6 +6,7 @@ import {
   integer,
   pgEnum,
   pgTable,
+  primaryKey,
   serial,
   text,
   timestamp,
@@ -13,6 +14,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import { nanoid } from 'nanoid';
 import { users } from './auth';
+import { table } from 'console';
 
 export const students = pgTable('students', {
   stdNo: varchar('std_no', { length: 9 }).notNull().primaryKey(),
@@ -93,25 +95,44 @@ export const blockedStudents = pgTable('blocked_students', {
   createdAt: timestamp('created_at').defaultNow(),
 });
 
-export const financeClearanceStatusEnum = pgEnum('finance_clearance_status', [
+export const clearanceRequestStatusEnum = pgEnum('clearance_request_status', [
   'pending',
-  'cleared',
-  'blocked',
+  'processed',
 ]);
 
-export const financeClearance = pgTable('finance_clearance', {
+export const clearanceRequest = pgTable('clearance_requests', {
   id: serial('id').notNull().primaryKey(),
   stdNo: varchar('std_no', { length: 9 })
     .notNull()
     .references(() => students.stdNo, { onDelete: 'cascade' }),
-
-  status: financeClearanceStatusEnum('status').notNull().default('pending'),
+  status: clearanceRequestStatusEnum('status').notNull().default('pending'),
   blockedStudentId: varchar('blocked_student_id', { length: 21 }).references(
     () => blockedStudents.id,
     { onDelete: 'set null' },
   ),
   createdAt: timestamp('created_at').defaultNow(),
 });
+
+export const responderEnum = pgEnum('responder', [
+  'finance',
+  'library',
+  'resource',
+  'it',
+]);
+
+export const clearanceResponse = pgTable(
+  'clearance_responses',
+  {
+    clearanceRequestId: integer('clearance_request_id')
+      .notNull()
+      .references(() => clearanceRequest.id, { onDelete: 'cascade' }),
+    responder: responderEnum('responder').notNull(),
+    createdAt: timestamp('created_at').defaultNow(),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.clearanceRequestId, table.responder] }),
+  }),
+);
 
 export const graduatingStudents = pgTable('graduating_students', {
   stdNo: varchar('std_no', { length: 9 })

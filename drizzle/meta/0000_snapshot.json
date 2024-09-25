@@ -1,5 +1,5 @@
 {
-  "id": "f10d431e-11c3-426c-80d4-a4578a0b3800",
+  "id": "c5a360ba-2f24-4693-86b4-34fde55740a5",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -44,6 +44,128 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.clearance_requests": {
+      "name": "clearance_requests",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "std_no": {
+          "name": "std_no",
+          "type": "varchar(9)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "clearance_request_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pending'"
+        },
+        "blocked_student_id": {
+          "name": "blocked_student_id",
+          "type": "varchar(21)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "clearance_requests_std_no_students_std_no_fk": {
+          "name": "clearance_requests_std_no_students_std_no_fk",
+          "tableFrom": "clearance_requests",
+          "tableTo": "students",
+          "columnsFrom": [
+            "std_no"
+          ],
+          "columnsTo": [
+            "std_no"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "clearance_requests_blocked_student_id_blocked_students_id_fk": {
+          "name": "clearance_requests_blocked_student_id_blocked_students_id_fk",
+          "tableFrom": "clearance_requests",
+          "tableTo": "blocked_students",
+          "columnsFrom": [
+            "blocked_student_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.clearance_responses": {
+      "name": "clearance_responses",
+      "schema": "",
+      "columns": {
+        "clearance_request_id": {
+          "name": "clearance_request_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "responder": {
+          "name": "responder",
+          "type": "responder",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "clearance_responses_clearance_request_id_clearance_requests_id_fk": {
+          "name": "clearance_responses_clearance_request_id_clearance_requests_id_fk",
+          "tableFrom": "clearance_responses",
+          "tableTo": "clearance_requests",
+          "columnsFrom": [
+            "clearance_request_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "clearance_responses_clearance_request_id_responder_pk": {
+          "name": "clearance_responses_clearance_request_id_responder_pk",
+          "columns": [
+            "clearance_request_id",
+            "responder"
+          ]
+        }
+      },
       "uniqueConstraints": {}
     },
     "public.enrollments": {
@@ -106,76 +228,6 @@
             "std_no"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "public.finance_clearance": {
-      "name": "finance_clearance",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "std_no": {
-          "name": "std_no",
-          "type": "varchar(9)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "status": {
-          "name": "status",
-          "type": "finance_clearance_status",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'pending'"
-        },
-        "blocked_student_id": {
-          "name": "blocked_student_id",
-          "type": "varchar(21)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "finance_clearance_std_no_students_std_no_fk": {
-          "name": "finance_clearance_std_no_students_std_no_fk",
-          "tableFrom": "finance_clearance",
-          "tableTo": "students",
-          "columnsFrom": [
-            "std_no"
-          ],
-          "columnsTo": [
-            "std_no"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "finance_clearance_blocked_student_id_blocked_students_id_fk": {
-          "name": "finance_clearance_blocked_student_id_blocked_students_id_fk",
-          "tableFrom": "finance_clearance",
-          "tableTo": "blocked_students",
-          "columnsFrom": [
-            "blocked_student_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
@@ -799,13 +851,22 @@
         "it"
       ]
     },
-    "public.finance_clearance_status": {
-      "name": "finance_clearance_status",
+    "public.clearance_request_status": {
+      "name": "clearance_request_status",
       "schema": "public",
       "values": [
         "pending",
-        "cleared",
-        "blocked"
+        "processed"
+      ]
+    },
+    "public.responder": {
+      "name": "responder",
+      "schema": "public",
+      "values": [
+        "finance",
+        "library",
+        "resource",
+        "it"
       ]
     },
     "public.sign_up_request": {
