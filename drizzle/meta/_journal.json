@@ -8,6 +8,13 @@
       "when": 1727252369250,
       "tag": "0000_outgoing_penance",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1727257136951,
+      "tag": "0001_regular_electro",
+      "breakpoints": true
     }
   ]
 }

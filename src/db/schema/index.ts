@@ -87,10 +87,7 @@ export const blockedStudents = pgTable('blocked_students', {
   id: varchar('id', { length: 21 })
     .$defaultFn(() => nanoid())
     .primaryKey(),
-  stdNo: varchar('std_no', { length: 9 })
-    .notNull()
-    .references(() => students.stdNo, { onDelete: 'no action' }),
-
+  stdNo: varchar('std_no', { length: 9 }).notNull(),
   blockedBy: blockedByEnum('blocked_by').notNull(),
   reason: text('reason'),
   createdAt: timestamp('created_at').defaultNow(),
