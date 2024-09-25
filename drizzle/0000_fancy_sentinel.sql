@@ -141,12 +141,6 @@ CREATE TABLE IF NOT EXISTS "verification_tokens" (
 );
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "blocked_students" ADD CONSTRAINT "blocked_students_std_no_students_std_no_fk" FOREIGN KEY ("std_no") REFERENCES "public"."students"("std_no") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
  ALTER TABLE "enrollments" ADD CONSTRAINT "enrollments_std_no_students_std_no_fk" FOREIGN KEY ("std_no") REFERENCES "public"."students"("std_no") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;

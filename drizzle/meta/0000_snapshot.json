@@ -1,5 +1,5 @@
 {
-  "id": "47525aa7-7826-45e1-8f0d-5fa0c6733fc7",
+  "id": "f10d431e-11c3-426c-80d4-a4578a0b3800",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -42,21 +42,7 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "blocked_students_std_no_students_std_no_fk": {
-          "name": "blocked_students_std_no_students_std_no_fk",
-          "tableFrom": "blocked_students",
-          "tableTo": "students",
-          "columnsFrom": [
-            "std_no"
-          ],
-          "columnsTo": [
-            "std_no"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
