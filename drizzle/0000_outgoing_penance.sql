@@ -62,6 +62,13 @@ CREATE TABLE IF NOT EXISTS "graduating_students" (
 	"created_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "graduation_confirmations" (
+	"std_no" varchar(9) PRIMARY KEY NOT NULL,
+	"cleared" boolean DEFAULT false NOT NULL,
+	"confirmed" boolean DEFAULT false NOT NULL,
+	"created_at" timestamp DEFAULT now()
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "signup_requests" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"user_id" text NOT NULL,
@@ -165,6 +172,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "graduating_students" ADD CONSTRAINT "graduating_students_std_no_students_std_no_fk" FOREIGN KEY ("std_no") REFERENCES "public"."students"("std_no") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "graduation_confirmations" ADD CONSTRAINT "graduation_confirmations_std_no_students_std_no_fk" FOREIGN KEY ("std_no") REFERENCES "public"."students"("std_no") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

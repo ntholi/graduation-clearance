@@ -1,5 +1,5 @@
 {
-  "id": "0d7f93d7-c317-4703-aff1-d75267073fb1",
+  "id": "47525aa7-7826-45e1-8f0d-5fa0c6733fc7",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -279,6 +279,57 @@
         "graduating_students_std_no_students_std_no_fk": {
           "name": "graduating_students_std_no_students_std_no_fk",
           "tableFrom": "graduating_students",
+          "tableTo": "students",
+          "columnsFrom": [
+            "std_no"
+          ],
+          "columnsTo": [
+            "std_no"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.graduation_confirmations": {
+      "name": "graduation_confirmations",
+      "schema": "",
+      "columns": {
+        "std_no": {
+          "name": "std_no",
+          "type": "varchar(9)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "cleared": {
+          "name": "cleared",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "confirmed": {
+          "name": "confirmed",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "graduation_confirmations_std_no_students_std_no_fk": {
+          "name": "graduation_confirmations_std_no_students_std_no_fk",
+          "tableFrom": "graduation_confirmations",
           "tableTo": "students",
           "columnsFrom": [
             "std_no"

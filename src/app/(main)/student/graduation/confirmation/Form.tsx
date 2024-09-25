@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useTransition } from 'react';
 import {
   Card,
   CardContent,
@@ -11,19 +11,30 @@ import {
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
+import saveConfirmation from './actions';
+import { Loader2 } from 'lucide-react';
 
 type Props = {
   student: {
+    stdNo: string;
     name: string | null;
     program: string | null;
   };
 };
 export default function Form({ student }: Props) {
   const [confirmed, setConfirmed] = React.useState(false);
+  const [pending, startTransition] = useTransition();
 
   const handleCheckboxChange = (checked: boolean | 'indeterminate') => {
     setConfirmed(checked === true);
   };
+
+  function handleSubmit() {
+    startTransition(async () => {
+      await saveConfirmation(student.stdNo);
+    });
+  }
+
   return (
     <Card className='w-full max-w-md -translate-y-20'>
       <CardHeader>
@@ -60,8 +71,13 @@ export default function Form({ student }: Props) {
         </div>
       </CardContent>
       <CardFooter>
-        <Button className='w-full' disabled={!confirmed}>
-          Submit
+        <Button
+          className='w-full'
+          disabled={!confirmed || pending}
+          onClick={handleSubmit}
+        >
+          {pending && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+          Confirm
         </Button>
       </CardFooter>
     </Card>

@@ -1,5 +1,6 @@
 import { relations } from 'drizzle-orm';
 import {
+  boolean,
   char,
   decimal,
   integer,
@@ -120,5 +121,15 @@ export const graduatingStudents = pgTable('graduating_students', {
     .primaryKey()
     .notNull()
     .references(() => students.stdNo, { onDelete: 'cascade' }),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
+export const graduationConfirmation = pgTable('graduation_confirmations', {
+  stdNo: varchar('std_no', { length: 9 })
+    .primaryKey()
+    .notNull()
+    .references(() => students.stdNo, { onDelete: 'cascade' }),
+  cleared: boolean('cleared').notNull().default(false),
+  confirmed: boolean('confirmed').notNull().default(false),
   createdAt: timestamp('created_at').defaultNow(),
 });
