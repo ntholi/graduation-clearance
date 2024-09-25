@@ -51,15 +51,11 @@ export default function Form({ student }: Props) {
       </CardHeader>
       <CardContent className='space-y-4'>
         <div>
-          <Label className='font-semibold text-muted-foreground'>
-            Student Name
-          </Label>
+          <Label className='font-semibold'>Student Name</Label>
           <p>{student.name}</p>
         </div>
         <div>
-          <Label className='font-semibold text-muted-foreground'>
-            Program of Study
-          </Label>
+          <Label className='font-semibold'>Program of Study</Label>
           <p>{student.program}</p>
         </div>
         <div className='flex items-center space-x-2'>
