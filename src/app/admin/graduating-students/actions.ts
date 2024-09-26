@@ -58,13 +58,6 @@ export async function saveGraduationList(stdNumbers: string[]) {
 export async function createGraduatingStudent(
   values: Clearance,
 ): Promise<Clearance> {
-  await db
-    .insert(students)
-    .values({
-      stdNo: values.stdNo,
-    })
-    .onConflictDoNothing();
-
   const res = await db
     .insert(graduatingStudents)
     .values(values)
