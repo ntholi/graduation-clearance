@@ -70,16 +70,20 @@ def approve_signup_requests():
     )
     print(f"Found {len(requests)} requests to approve")
     scrapper = Scrapper()
-    for signup in requests:
-        student, enrollments = scrapper.get_student_data(signup.std_no)
-        student.user_id = signup.user_id
-        save_student(student)
-        mark_user_as_student(signup.user_id)
-        create_clearance_request(student)
-        for enrollment in enrollments:
-            save_enrollment(student.std_no, enrollment)
-        signup.status = SignUpRequestStatus.approved
-        db_session.commit()
+    for i, signup in enumerate(requests):
+        try:
+            print(f"Processing signup request {i+1}/{len(requests)}")
+            student, enrollments = scrapper.get_student_data(signup.std_no)
+            student.user_id = signup.user_id
+            save_student(student)
+            mark_user_as_student(signup.user_id)
+            create_clearance_request(student)
+            for enrollment in enrollments:
+                save_enrollment(student.std_no, enrollment)
+            signup.status = SignUpRequestStatus.approved
+            db_session.commit()
+        except Exception as e:
+            print(f"Error approving signup request for {signup.std_no}: {e}")
 
 
 def main():
