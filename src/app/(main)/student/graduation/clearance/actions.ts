@@ -1,7 +1,6 @@
 'use server';
 
 import {
-  blockedByEnum,
   blockedStudents,
   clearanceRequest,
   clearanceResponse,

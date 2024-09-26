@@ -16,7 +16,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-BASE_URL = "https://cmslesothosandbox.limkokwing.net/campus/registry"
+BASE_URL = "https://cmslesotho.limkokwing.net/campus/registry"
 
 urllib3.disable_warnings(InsecureRequestWarning)
 

@@ -92,6 +92,9 @@ export const blockedStudents = pgTable('blocked_students', {
   blockedBy: responderEnum('blocked_by').notNull(),
   reason: text('reason'),
   createdAt: timestamp('created_at').defaultNow(),
+  createdBy: varchar('created_by', { length: 21 })
+    .notNull()
+    .references(() => users.id),
 });
 
 export const clearanceRequestStatusEnum = pgEnum('clearance_request_status', [
@@ -124,6 +127,9 @@ export const clearanceResponse = pgTable(
     ),
     responder: responderEnum('responder').notNull(),
     createdAt: timestamp('created_at').defaultNow(),
+    createdBy: varchar('created_by', { length: 21 })
+      .notNull()
+      .references(() => users.id),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.clearanceRequestId, table.responder] }),

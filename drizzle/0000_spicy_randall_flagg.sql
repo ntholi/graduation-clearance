@@ -17,7 +17,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "public"."role" AS ENUM('student', 'registry', 'finance', 'faculty', 'it', 'resource', 'library', 'admin');
+ CREATE TYPE "public"."role" AS ENUM('student', 'finance', 'library', 'admin', 'it', 'registry', 'resource', 'faculty');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -27,7 +27,8 @@ CREATE TABLE IF NOT EXISTS "blocked_students" (
 	"std_no" varchar(9) NOT NULL,
 	"blocked_by" "responder" NOT NULL,
 	"reason" text,
-	"created_at" timestamp DEFAULT now()
+	"created_at" timestamp DEFAULT now(),
+	"created_by" varchar(21) NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "clearance_requests" (
@@ -43,6 +44,7 @@ CREATE TABLE IF NOT EXISTS "clearance_responses" (
 	"blocked_student_id" varchar(21),
 	"responder" "responder" NOT NULL,
 	"created_at" timestamp DEFAULT now(),
+	"created_by" varchar(21) NOT NULL,
 	CONSTRAINT "clearance_responses_clearance_request_id_responder_pk" PRIMARY KEY("clearance_request_id","responder")
 );
 --> statement-breakpoint
@@ -149,6 +151,12 @@ CREATE TABLE IF NOT EXISTS "verification_tokens" (
 );
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "blocked_students" ADD CONSTRAINT "blocked_students_created_by_users_id_fk" FOREIGN KEY ("created_by") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "clearance_requests" ADD CONSTRAINT "clearance_requests_std_no_students_std_no_fk" FOREIGN KEY ("std_no") REFERENCES "public"."students"("std_no") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -168,6 +176,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "clearance_responses" ADD CONSTRAINT "clearance_responses_blocked_student_id_blocked_students_id_fk" FOREIGN KEY ("blocked_student_id") REFERENCES "public"."blocked_students"("id") ON DELETE set null ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "clearance_responses" ADD CONSTRAINT "clearance_responses_created_by_users_id_fk" FOREIGN KEY ("created_by") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

@@ -1,5 +1,6 @@
 'use server';
 
+import { auth } from '@/auth';
 import db from '@/db';
 import {
   blockedStudents,
@@ -121,6 +122,10 @@ export async function respondToRequest(
     reasonBlocked?: string | null;
   },
 ): Promise<void> {
+  const session = await auth();
+  if (!session || !session.user?.id) {
+    throw new Error('Unauthorized');
+  }
   if (response.status === 'blocked') {
     const blockedStudent = await db
       .insert(blockedStudents)
@@ -128,6 +133,7 @@ export async function respondToRequest(
         stdNo,
         reason: response.reasonBlocked,
         blockedBy: response.responder,
+        createdBy: session.user.id,
       })
       .returning()
       .then((it) => it[0]);
@@ -135,11 +141,13 @@ export async function respondToRequest(
       clearanceRequestId,
       responder: response.responder,
       blockedStudentId: blockedStudent.id,
+      createdBy: session.user.id,
     });
   } else {
     await db.insert(clearanceResponse).values({
       clearanceRequestId,
       responder: response.responder,
+      createdBy: session.user.id,
     });
   }
   revalidatePath(`/admin/clearance-requests/${stdNo}`);
