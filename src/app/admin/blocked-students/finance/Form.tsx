@@ -1,12 +1,11 @@
 'use client';
 import { blockedStudents } from '@/db/schema';
 import FormHeader from '@admin/components/FormHeader';
-import { NumberInput, Stack, Textarea } from '@mantine/core';
+import { Stack, Textarea, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import useFormAction from '../../hooks/useFormAction';
-import StudentNumInput from '../../base/StudentNumInput';
 
 type Student = typeof blockedStudents.$inferSelect;
 
@@ -40,7 +39,7 @@ export default function Form({ onSubmit, value }: Props) {
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <FormHeader title='Blocked Student' isLoading={pending} />
       <Stack p={'xl'}>
-        <StudentNumInput {...form.getInputProps('stdNo')} />
+        <TextInput label='Student Number' {...form.getInputProps('stdNo')} />
         <Textarea
           rows={4}
           label='Reason'

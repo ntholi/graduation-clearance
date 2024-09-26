@@ -17,9 +17,14 @@ import ClearanceStatus from './ClearanceStatus';
 interface Props {
   step: Step;
   isLast: boolean;
+  setStatus: (status: ClearanceStatus['status'] | null) => void;
 }
 
-export default function ClearanceStep({ step, isLast }: Props) {
+export default function ClearanceStep({
+  step,
+  isLast,
+  setStatus: setParentStatus,
+}: Props) {
   const [status, setStatus] = useState<ClearanceStatus | null>(null);
   const [isChecking, setIsChecking] = useState(false);
 
@@ -29,9 +34,11 @@ export default function ClearanceStep({ step, isLast }: Props) {
       try {
         const result = await queryClearanceStatus(step.id);
         setStatus(result);
+        setParentStatus(result?.status);
       } catch (error) {
         console.error('Error checking clearance:', error);
         setStatus(null);
+        setParentStatus(null);
       } finally {
         setIsChecking(false);
       }

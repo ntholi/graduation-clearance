@@ -17,6 +17,7 @@ export async function createBlockedStudent(values: Student) {
     .values({
       ...values,
       blockedBy: 'library',
+      createdBy: session.user.id,
     })
     .returning()
     .then((it) => it[0]);

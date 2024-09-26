@@ -1,47 +1,14 @@
 'use client';
-import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { getClearanceQuery } from './actions';
-import { steps } from './steps';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
-import saveConfirmation from '../confirmation/actions';
-import { useSession } from 'next-auth/react';
-import { getStudentByUserId } from '@/app/admin/students/actions';
 
 type Props = {
   className?: string;
+  state: 'processing' | 'cleared' | 'blocked';
 };
-export default function NextButton({ className }: Props) {
-  const [isCleared, setIsCleared] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+export default function NextButton({ className, state }: Props) {
   const router = useRouter();
-  const session = useSession();
-
-  useEffect(() => {
-    const checkAllClearances = async () => {
-      setIsLoading(true);
-      const student = await getStudentByUserId(session.data?.user?.id);
-      if (!student) {
-        return;
-      }
-      try {
-        const results = await Promise.all(
-          steps.map((step) => getClearanceQuery(step.id)),
-        );
-        const cleared = results.every((result) => result.status === 'cleared');
-        await saveConfirmation({ stdNo: student.stdNo, cleared });
-        setIsCleared(cleared);
-      } catch (error) {
-        console.error('Error checking clearances:', error);
-        setIsCleared(false);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    checkAllClearances();
-  }, []);
 
   return (
     <div
@@ -51,14 +18,14 @@ export default function NextButton({ className }: Props) {
       )}
     >
       <p>
-        {isLoading
+        {state === 'processing'
           ? 'Checking clearance...'
-          : isCleared
+          : state === 'cleared'
             ? 'Cleared'
             : 'Not Cleared'}
       </p>
       <Button
-        disabled={!isCleared || isLoading}
+        disabled={state !== 'cleared'}
         onClick={() => router.push('/student/graduation/confirmation')}
       >
         Next

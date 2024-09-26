@@ -1,10 +1,9 @@
-import Container from '@/components/ui/container';
-import Body from './Body';
-import ClearanceStatusButton from './NextButton';
-import { auth } from '@/auth';
-import { getStudentByUserId } from '@/app/admin/students/actions';
 import { getGraduationConfirmation } from '@/app/admin/graduating/confirmations/actions';
+import { getStudentByUserId } from '@/app/admin/students/actions';
+import { auth } from '@/auth';
+import Container from '@/components/ui/container';
 import { redirect } from 'next/navigation';
+import Body from './Body';
 
 export default async function ClearancePage() {
   const session = await auth();
@@ -24,7 +23,6 @@ export default async function ClearancePage() {
           <h1 className='py-8 text-center text-3xl font-semibold text-gray-800 dark:text-gray-200'>
             Graduation Clearance
           </h1>
-          <ClearanceStatusButton className='my-4' />
           <Body />
         </div>
       </Container>
