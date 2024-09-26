@@ -137,10 +137,7 @@ export const clearanceResponse = pgTable(
 );
 
 export const graduatingStudents = pgTable('graduating_students', {
-  stdNo: varchar('std_no', { length: 9 })
-    .primaryKey()
-    .notNull()
-    .references(() => students.stdNo, { onDelete: 'cascade' }),
+  stdNo: varchar('std_no', { length: 9 }).primaryKey().notNull(),
   createdAt: timestamp('created_at').defaultNow(),
 });
 

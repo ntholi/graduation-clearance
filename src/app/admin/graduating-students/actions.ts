@@ -45,14 +45,6 @@ export async function getStudent(stdNo: string) {
 
 export async function saveGraduationList(stdNumbers: string[]) {
   await db
-    .insert(students)
-    .values(
-      stdNumbers.map((stdNo) => ({
-        stdNo,
-      })),
-    )
-    .onConflictDoNothing();
-  await db
     .insert(graduatingStudents)
     .values(
       stdNumbers.map((stdNo) => ({
