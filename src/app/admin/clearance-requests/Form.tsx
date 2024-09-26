@@ -64,11 +64,11 @@ export default function Form({ onSubmit, student, requestId }: Props) {
         <FieldView label='Student Number'>{student.stdNo}</FieldView>
 
         <Radio.Group label='Responder' {...form.getInputProps('responder')}>
-          <Group>
+          <Stack gap={'xs'}>
             {responderEnum.enumValues.map((value) => (
               <Radio label={formatResponder(value)} key={value} value={value} />
             ))}
-          </Group>
+          </Stack>
         </Radio.Group>
         <Chip.Group {...form.getInputProps('status')}>
           <Group>

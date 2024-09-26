@@ -7,7 +7,7 @@ import { getClearanceList } from './actions';
 export default function Layout({ children }: PropsWithChildren) {
   return (
     <ListLayout
-      getItems={(page, search) => getClearanceList('library', page, search)}
+      getItems={(page, search) => getClearanceList('finance', page, search)}
       path='/admin/clearance-requests'
       renderItem={(item, path) => (
         <ListItem
