@@ -76,7 +76,7 @@ export const gradeRelations = relations(grades, ({ one }) => ({
   }),
 }));
 
-export const blockedByEnum = pgEnum('blocked_by', [
+export const responderEnum = pgEnum('responder', [
   'finance',
   'library',
   'resource',
@@ -88,7 +88,7 @@ export const blockedStudents = pgTable('blocked_students', {
     .$defaultFn(() => nanoid())
     .primaryKey(),
   stdNo: varchar('std_no', { length: 9 }).notNull(),
-  blockedBy: blockedByEnum('blocked_by').notNull(),
+  blockedBy: responderEnum('blocked_by').notNull(),
   reason: text('reason'),
   createdAt: timestamp('created_at').defaultNow(),
 });
@@ -110,13 +110,6 @@ export const clearanceRequest = pgTable('clearance_requests', {
   ),
   createdAt: timestamp('created_at').defaultNow(),
 });
-
-export const responderEnum = pgEnum('responder', [
-  'finance',
-  'library',
-  'resource',
-  'it',
-]);
 
 export const clearanceResponse = pgTable(
   'clearance_responses',

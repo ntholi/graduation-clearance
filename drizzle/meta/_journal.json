@@ -15,6 +15,13 @@
       "when": 1727331519444,
       "tag": "0001_flat_freak",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1727333101064,
+      "tag": "0002_wakeful_zarek",
+      "breakpoints": true
     }
   ]
 }

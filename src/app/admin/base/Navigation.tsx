@@ -22,6 +22,7 @@ import {
   Cctv,
   Coins,
   GraduationCap,
+  ListCheck,
 } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -49,11 +50,11 @@ export default function Navigation() {
           rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
         />
         <NavLink
-          label='Finance Clearance'
+          label='Clearance Requests'
           component={Link}
-          active={pathname.startsWith('/admin/finance-clearance')}
-          href={'/admin/finance-clearance'}
-          leftSection={<Landmark size='1.1rem' />}
+          active={pathname.startsWith('/admin/clearance-requests')}
+          href={'/admin/clearance-requests'}
+          leftSection={<ListCheck size='1.1rem' />}
           rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
         />
         <NavLink

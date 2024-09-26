@@ -1,0 +1,1 @@
+ALTER TABLE "blocked_students" ALTER COLUMN "blocked_by" SET DATA TYPE responder;

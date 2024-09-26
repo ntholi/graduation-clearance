@@ -1,8 +1,8 @@
 import HeaderDisplay from '@admin/components/HeaderDisplay';
 import { Box, Title } from '@mantine/core';
 import { notFound } from 'next/navigation';
-import { blockStudent, getClearance, updateClearanceStatus } from '../actions';
 import Form from '../Form';
+import { getRequest, respondToRequest } from '../actions';
 
 type Props = {
   params: {
@@ -11,7 +11,7 @@ type Props = {
 };
 
 export default async function Page({ params: { id } }: Props) {
-  const item = await getClearance(id);
+  const item = await getRequest(id, 'finance');
   if (!item) {
     return notFound();
   }
@@ -19,13 +19,15 @@ export default async function Page({ params: { id } }: Props) {
   return (
     <Box p={'lg'}>
       <Form
+        requestId={item.id}
         student={{ stdNo: item.stdNo, name: item.student?.name }}
         onSubmit={async (value) => {
           'use server';
-          if (value.status === 'blocked') {
-            await blockStudent(item.stdNo, value.reason);
-          }
-          await updateClearanceStatus(item.stdNo, value.status);
+          await respondToRequest(item.stdNo, item.id, {
+            responder: value.responder,
+            status: value.status,
+            reasonBlocked: value.reasonBlocked,
+          });
         }}
       />
     </Box>
