@@ -81,6 +81,7 @@ export const responderEnum = pgEnum('responder', [
   'library',
   'resource',
   'it',
+  'admin',
 ]);
 
 export const blockedStudents = pgTable('blocked_students', {

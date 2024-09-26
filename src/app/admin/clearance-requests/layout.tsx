@@ -2,12 +2,16 @@
 import ListItem from '@admin/components/ListItem';
 import ListLayout from '@admin/components/ListLayout';
 import { PropsWithChildren } from 'react';
-import { getClearanceList } from './actions';
+import { getClearanceList, Responder } from './actions';
+import { useSession } from 'next-auth/react';
 
 export default function Layout({ children }: PropsWithChildren) {
+  const { data: session } = useSession();
+  let responder: Responder = session?.user?.role as Responder;
+
   return (
     <ListLayout
-      getItems={(page, search) => getClearanceList('finance', page, search)}
+      getItems={(page, search) => getClearanceList(responder, page, search)}
       path='/admin/clearance-requests'
       renderItem={(item, path) => (
         <ListItem

@@ -1,25 +1,12 @@
 'use client';
+import { responderEnum } from '@/db/schema';
 import FormHeader from '@admin/components/FormHeader';
 import useFormAction from '@admin/hooks/useFormAction';
-import {
-  Badge,
-  Box,
-  Chip,
-  Divider,
-  Fieldset,
-  Group,
-  SegmentedControl,
-  Stack,
-  Textarea,
-  TextInput,
-  Text,
-  Radio,
-} from '@mantine/core';
+import { Chip, Group, Radio, Stack, Textarea } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import FieldView from '../components/FieldView';
-import { responderEnum } from '@/db/schema';
 import { Responder } from './actions';
 
 export const ClearanceResponseSchema = z.object({
@@ -31,7 +18,7 @@ export const ClearanceResponseSchema = z.object({
 type Response = z.infer<typeof ClearanceResponseSchema>;
 
 type Props = {
-  requestId: number;
+  responder: Responder;
   student: {
     stdNo: string;
     name?: string | null;
@@ -39,7 +26,7 @@ type Props = {
   onSubmit: (values: Response) => Promise<void>;
 };
 
-export default function Form({ onSubmit, student, requestId }: Props) {
+export default function Form({ onSubmit, student, responder }: Props) {
   const router = useRouter();
   const [pending, submitForm] = useFormAction();
 
@@ -66,7 +53,13 @@ export default function Form({ onSubmit, student, requestId }: Props) {
         <Radio.Group label='Responder' {...form.getInputProps('responder')}>
           <Stack gap={'xs'}>
             {responderEnum.enumValues.map((value) => (
-              <Radio label={formatResponder(value)} key={value} value={value} />
+              <Radio
+                label={formatResponder(value)}
+                key={value}
+                value={value}
+                checked={value === responder}
+                disabled={responder !== 'admin' && value !== responder}
+              />
             ))}
           </Stack>
         </Radio.Group>
