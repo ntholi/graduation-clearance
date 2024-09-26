@@ -121,7 +121,7 @@ class Grade(Base):
     )
     course_code: Mapped[str] = mapped_column(String, nullable=False)
     course_name: Mapped[str] = mapped_column(String, nullable=False)
-    grade: Mapped[str] = mapped_column(String(2), nullable=False)
+    grade: Mapped[str] = mapped_column(String(3), nullable=False)
     credits: Mapped[int] = mapped_column(Integer, nullable=False)
 
     enrollment: Mapped["Enrollment"] = relationship(back_populates="grades")

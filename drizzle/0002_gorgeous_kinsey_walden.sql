@@ -1,0 +1,1 @@
+ALTER TABLE "grades" ALTER COLUMN "grade" SET DATA TYPE char(3);

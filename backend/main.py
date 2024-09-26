@@ -12,6 +12,7 @@ from database.models import (
 )
 from rich import print
 from scrapper import Scrapper
+from sqlalchemy.exc import IntegrityError
 
 
 def read_student(std_no: int):
@@ -82,8 +83,12 @@ def approve_signup_requests():
                 save_enrollment(student.std_no, enrollment)
             signup.status = SignUpRequestStatus.approved
             db_session.commit()
+        except IntegrityError as e:
+            db_session.rollback()
+            print(f"Database integrity error for {signup.std_no}: {e}")
         except Exception as e:
-            print(f"Error approving signup request for {signup.std_no}: {e}")
+            db_session.rollback()
+            print(f"Unexpected error approving signup request for {signup.std_no}: {e}")
 
 
 def main():

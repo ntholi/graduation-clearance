@@ -65,7 +65,7 @@ export const grades = pgTable('grades', {
     .references(() => enrollments.id, { onDelete: 'cascade' }),
   courseCode: text('course_code').notNull(),
   courseName: text('course_name').notNull(),
-  grade: char('grade', { length: 2 }).notNull(),
+  grade: char('grade', { length: 3 }).notNull(),
   credits: integer('credits').notNull(),
 });
 
