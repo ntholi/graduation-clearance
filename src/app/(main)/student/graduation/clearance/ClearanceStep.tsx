@@ -88,9 +88,9 @@ function Status({
 
   if (status?.status === 'pending') {
     return (
-      <div className='flex items-center text-yellow-600 dark:text-yellow-400'>
+      <div className='flex items-center text-orange-600 dark:text-orange-400'>
         <Circle className='mr-2 h-5 w-5' />
-        <span className='text-sm'>Pending, check back later</span>
+        <span className='text-sm'>Pending review, might take a day or two</span>
       </div>
     );
   }

@@ -20,7 +20,7 @@ export default function StepIcon({ step, isChecking, status, isLast }: Props) {
   } else if (status === 'not cleared') {
     bgColor = 'bg-red-500';
   } else {
-    bgColor = 'bg-yellow-500';
+    bgColor = 'bg-orange-500';
   }
 
   return (

@@ -124,6 +124,10 @@ export const clearanceResponse = pgTable(
     clearanceRequestId: integer('clearance_request_id')
       .notNull()
       .references(() => clearanceRequest.id, { onDelete: 'cascade' }),
+    blockedStudentId: varchar('blocked_student_id', { length: 21 }).references(
+      () => blockedStudents.id,
+      { onDelete: 'set null' },
+    ),
     responder: responderEnum('responder').notNull(),
     createdAt: timestamp('created_at').defaultNow(),
   },

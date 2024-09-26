@@ -3,8 +3,10 @@
 import {
   blockedByEnum,
   blockedStudents,
-  financeClearance,
+  clearanceRequest,
+  clearanceResponse,
   graduatingStudents,
+  responderEnum,
   students,
 } from '@/db/schema';
 import { eq, and } from 'drizzle-orm';
@@ -31,11 +33,11 @@ export async function getClearanceQuery(
     case 1:
       return isGraduatingStudent(student.stdNo);
     case 2:
-      return isBlocked(student.stdNo, 'library');
+      return isCleared(student.stdNo, 'library');
     case 3:
       return isBlocked(student.stdNo, 'resource');
     case 4:
-      return isFinanceCleared(student.stdNo);
+      return isCleared(student.stdNo, 'finance');
     default:
       throw new Error('Unknown step');
   }
@@ -51,26 +53,51 @@ async function isGraduatingStudent(stdNo: string): Promise<ClearanceStatus> {
   }
   return { status: 'not cleared', message: 'Consult your faculty' };
 }
+type Responder = (typeof responderEnum.enumValues)[number];
 
-async function isFinanceCleared(stdNo: string): Promise<ClearanceStatus> {
+async function isCleared(
+  stdNo: string,
+  responder: Responder,
+): Promise<ClearanceStatus> {
+  const request = await db.query.clearanceRequest.findFirst({
+    where: and(eq(clearanceRequest.stdNo, stdNo)),
+  });
+  if (!request) {
+    return { status: 'not cleared', message: 'Request not found' };
+  }
   const res = await db
     .select()
-    .from(financeClearance)
-    .where(eq(financeClearance.stdNo, stdNo))
-    .limit(1)
-    .then((it) => it[0]);
-  if (res?.status === 'pending') {
+    .from(clearanceResponse)
+    .leftJoin(
+      blockedStudents,
+      eq(blockedStudents.id, clearanceResponse.blockedStudentId),
+    )
+    .where(
+      and(
+        eq(clearanceResponse.clearanceRequestId, request.id),
+        eq(clearanceResponse.responder, responder),
+      ),
+    );
+  if (!res.length) {
     return {
       status: 'pending',
     };
   }
-  return isBlocked(stdNo, 'finance');
+  const blocked = res[0].blocked_students;
+  if (blocked) {
+    return {
+      status: 'not cleared',
+      message: blocked.reason,
+    };
+  }
+  return {
+    status: 'cleared',
+  };
 }
 
-type BlockedBy = (typeof blockedByEnum.enumValues)[number];
 async function isBlocked(
   stdNo: string,
-  blockedBy: BlockedBy,
+  blockedBy: Responder,
 ): Promise<ClearanceStatus> {
   const res = await db
     .select()
