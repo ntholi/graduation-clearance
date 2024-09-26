@@ -10,7 +10,7 @@ connection_string = URL.create(
     "postgresql",
     username="registry_owner",
     password=os.getenv("DATABASE_PASSWORD"),
-    host="ep-flat-water-a2a5rbh0.eu-central-1.aws.neon.tech",
+    host="ep-raspy-shadow-a2awrlka.eu-central-1.aws.neon.tech",
     database="registry",
     query={"sslmode": "require"},
 )

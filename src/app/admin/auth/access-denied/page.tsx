@@ -18,7 +18,7 @@ export default async function AccessDenied() {
   }
   const hasAccess = ADMIN_ROLES.includes(session?.user?.role || '');
   if (hasAccess) {
-    return redirect('/admin/students');
+    return redirect('/admin');
   }
 
   return (
