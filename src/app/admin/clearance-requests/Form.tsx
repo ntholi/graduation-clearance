@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import FieldView from '../components/FieldView';
 import { Responder } from './actions';
+import { useEffect } from 'react';
 
 export const ClearanceResponseSchema = z.object({
   status: z.enum(['cleared', 'blocked']),
@@ -34,6 +35,12 @@ export default function Form({ onSubmit, student, responder }: Props) {
     validate: zodResolver(ClearanceResponseSchema),
   });
 
+  useEffect(() => {
+    setValues({
+      responder: responder,
+    });
+  }, [responder]);
+
   async function handleSubmit(values: Response) {
     submitForm(async () => {
       await onSubmit(values);
@@ -57,7 +64,6 @@ export default function Form({ onSubmit, student, responder }: Props) {
                 label={formatResponder(value)}
                 key={value}
                 value={value}
-                checked={value === responder}
                 disabled={responder !== 'admin' && value !== responder}
               />
             ))}
