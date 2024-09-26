@@ -1,5 +1,5 @@
 {
-  "id": "c5a360ba-2f24-4693-86b4-34fde55740a5",
+  "id": "2afb272a-c905-4f99-b94e-2e68a12226f1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -22,7 +22,7 @@
         },
         "blocked_by": {
           "name": "blocked_by",
-          "type": "blocked_by",
+          "type": "responder",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -126,6 +126,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "blocked_student_id": {
+          "name": "blocked_student_id",
+          "type": "varchar(21)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "responder": {
           "name": "responder",
           "type": "responder",
@@ -154,6 +160,19 @@
             "id"
           ],
           "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "clearance_responses_blocked_student_id_blocked_students_id_fk": {
+          "name": "clearance_responses_blocked_student_id_blocked_students_id_fk",
+          "tableFrom": "clearance_responses",
+          "tableTo": "blocked_students",
+          "columnsFrom": [
+            "blocked_student_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
@@ -841,16 +860,6 @@
     }
   },
   "enums": {
-    "public.blocked_by": {
-      "name": "blocked_by",
-      "schema": "public",
-      "values": [
-        "finance",
-        "library",
-        "resource",
-        "it"
-      ]
-    },
     "public.clearance_request_status": {
       "name": "clearance_request_status",
       "schema": "public",
@@ -866,7 +875,8 @@
         "finance",
         "library",
         "resource",
-        "it"
+        "it",
+        "admin"
       ]
     },
     "public.sign_up_request": {
@@ -886,6 +896,9 @@
         "registry",
         "finance",
         "faculty",
+        "it",
+        "resource",
+        "library",
         "admin"
       ]
     }

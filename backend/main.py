@@ -51,7 +51,7 @@ def create_clearance_request(student: Student):
     print(f"Clearance request for {student.std_no} created")
 
 
-def save_enrollment(data: tuple[Enrollment, list[Grade]]):
+def save_enrollment(std_no: int, data: tuple[Enrollment, list[Grade]]):
     enrollment, grades = data
     db_session.add(enrollment)
     db_session.commit()
@@ -59,7 +59,7 @@ def save_enrollment(data: tuple[Enrollment, list[Grade]]):
         grade.enrollment_id = enrollment.id
         db_session.add(grade)
     db_session.commit()
-    print(f"Enrollment saved: id={enrollment.id}")
+    print(f"Enrollment for {std_no} saved: id={enrollment.id}")
 
 
 def approve_signup_requests():
@@ -77,7 +77,7 @@ def approve_signup_requests():
         mark_user_as_student(signup.user_id)
         create_clearance_request(student)
         for enrollment in enrollments:
-            save_enrollment(enrollment)
+            save_enrollment(student.std_no, enrollment)
         signup.status = SignUpRequestStatus.approved
         db_session.commit()
 

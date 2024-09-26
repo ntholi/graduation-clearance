@@ -17,7 +17,7 @@ export default async function LoginForm() {
   const session = await auth();
 
   if (session) {
-    return redirect('/admin');
+    return redirect('/');
   }
 
   const handleSignIn = async () => {
