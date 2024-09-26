@@ -3,6 +3,7 @@ import { Anchor, Button, Stack, Text, Title } from '@mantine/core';
 import { ShieldAlert } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import { ADMIN_ROLES } from '../adminRoles';
 
 export default async function AccessDenied() {
   const session = await auth();
@@ -14,6 +15,10 @@ export default async function AccessDenied() {
 
   if (!session) {
     return redirect('/admin/auth/login');
+  }
+  const hasAccess = ADMIN_ROLES.includes(session?.user?.role || '');
+  if (hasAccess) {
+    return redirect('/admin/students');
   }
 
   return (

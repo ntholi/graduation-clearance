@@ -13,6 +13,7 @@ import { useSession } from 'next-auth/react';
 import { redirect, usePathname } from 'next/navigation';
 import { PropsWithChildren } from 'react';
 import Logo from './Logo';
+import { ADMIN_ROLES } from '../auth/adminRoles';
 import Navigation from './Navigation';
 
 export default function AdminShell({ children }: PropsWithChildren) {
@@ -22,13 +23,7 @@ export default function AdminShell({ children }: PropsWithChildren) {
   const { data: session } = useSession();
   const pathname = usePathname();
 
-  const hasAccess = [
-    'student',
-    'registry',
-    'finance',
-    'faculty',
-    'admin',
-  ].includes(session?.user?.role || '');
+  const hasAccess = ADMIN_ROLES.includes(session?.user?.role || '');
 
   if (status == 'loading') {
     return (

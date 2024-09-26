@@ -1,3 +1,4 @@
+'use client';
 import {
   ActionIcon,
   AppShell,
@@ -12,17 +13,16 @@ import {
 } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import {
+  Cctv,
   ChevronRight,
+  Computer,
+  Construction,
+  GraduationCap,
+  Landmark,
+  LibraryBig,
+  ListCheck,
   LogOutIcon,
   UserIcon,
-  Landmark,
-  Construction,
-  LibraryBig,
-  Computer,
-  Cctv,
-  Coins,
-  GraduationCap,
-  ListCheck,
 } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -30,25 +30,41 @@ import { usePathname } from 'next/navigation';
 
 export default function Navigation() {
   const pathname = usePathname();
+  const { data: session } = useSession();
+
+  const isRegistry =
+    session?.user?.role === 'registry' || session?.user?.role === 'admin';
+  const isFinance =
+    session?.user?.role === 'finance' || session?.user?.role === 'admin';
+  const isLibrary =
+    session?.user?.role === 'library' || session?.user?.role === 'admin';
+  const isIT = session?.user?.role === 'it' || session?.user?.role === 'admin';
+  const isResource =
+    session?.user?.role === 'resource' || session?.user?.role === 'admin';
+
   return (
     <AppShell.Navbar p='xs'>
       <AppShell.Section grow component={ScrollArea}>
-        <NavLink
-          label='Students'
-          component={Link}
-          active={pathname.startsWith('/admin/students')}
-          href={'/admin/students'}
-          leftSection={<UserIcon size='1.1rem' />}
-          rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
-        />
-        <NavLink
-          label='Graduating Students'
-          component={Link}
-          active={pathname.startsWith('/admin/graduating-students')}
-          href={'/admin/graduating-students'}
-          leftSection={<GraduationCap size='1.1rem' />}
-          rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
-        />
+        {isRegistry && (
+          <>
+            <NavLink
+              label='Students'
+              component={Link}
+              active={pathname.startsWith('/admin/students')}
+              href={'/admin/students'}
+              leftSection={<UserIcon size='1.1rem' />}
+              rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
+            />
+            <NavLink
+              label='Graduating Students'
+              component={Link}
+              active={pathname.startsWith('/admin/graduating-students')}
+              href={'/admin/graduating-students'}
+              leftSection={<GraduationCap size='1.1rem' />}
+              rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
+            />{' '}
+          </>
+        )}
         <NavLink
           label='Clearance Requests'
           component={Link}
@@ -61,38 +77,46 @@ export default function Navigation() {
           label='Blocked Students'
           leftSection={<Construction size={'1rem'} />}
         >
-          <NavLink
-            label='Finance'
-            component={Link}
-            active={pathname.startsWith('/admin/blocked-students/finance')}
-            href={'/admin/blocked-students/finance'}
-            leftSection={<Landmark size='1.1rem' />}
-            rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
-          />
-          <NavLink
-            label='Library'
-            component={Link}
-            active={pathname.startsWith('/admin/blocked-students/library')}
-            href={'/admin/blocked-students/library'}
-            leftSection={<LibraryBig size='1.1rem' />}
-            rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
-          />
-          <NavLink
-            label='IT'
-            component={Link}
-            active={pathname.startsWith('/admin/blocked-students/it')}
-            href={'/admin/blocked-students/it'}
-            leftSection={<Computer size='1.1rem' />}
-            rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
-          />
-          <NavLink
-            label='Resource'
-            component={Link}
-            active={pathname.startsWith('/admin/blocked-students/resource')}
-            href={'/admin/blocked-students/resource'}
-            leftSection={<Cctv size='1.1rem' />}
-            rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
-          />
+          {isFinance && (
+            <NavLink
+              label='Finance'
+              component={Link}
+              active={pathname.startsWith('/admin/blocked-students/finance')}
+              href={'/admin/blocked-students/finance'}
+              leftSection={<Landmark size='1.1rem' />}
+              rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
+            />
+          )}
+          {isLibrary && (
+            <NavLink
+              label='Library'
+              component={Link}
+              active={pathname.startsWith('/admin/blocked-students/library')}
+              href={'/admin/blocked-students/library'}
+              leftSection={<LibraryBig size='1.1rem' />}
+              rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
+            />
+          )}
+          {isIT && (
+            <NavLink
+              label='IT'
+              component={Link}
+              active={pathname.startsWith('/admin/blocked-students/it')}
+              href={'/admin/blocked-students/it'}
+              leftSection={<Computer size='1.1rem' />}
+              rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
+            />
+          )}
+          {isResource && (
+            <NavLink
+              label='Resource'
+              component={Link}
+              active={pathname.startsWith('/admin/blocked-students/resource')}
+              href={'/admin/blocked-students/resource'}
+              leftSection={<Cctv size='1.1rem' />}
+              rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
+            />
+          )}
         </NavLink>
       </AppShell.Section>
       <AppShell.Section>
