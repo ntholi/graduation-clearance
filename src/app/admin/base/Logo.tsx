@@ -10,8 +10,8 @@ export default function Logo() {
         src='/logo-white.png'
         h={50}
         component={NextImage}
-        width={100}
-        height={100}
+        width={150}
+        height={150}
       />
     </NextLink>
   );

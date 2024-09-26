@@ -25,7 +25,7 @@ export default function RootLayout({
       </head>
       <body>
         <Providers>
-          <AdminShell>{children}</AdminShell>;
+          <AdminShell>{children}</AdminShell>
         </Providers>
       </body>
     </html>

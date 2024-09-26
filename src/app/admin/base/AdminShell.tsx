@@ -10,8 +10,8 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 
 import { useSession } from 'next-auth/react';
+import { redirect, usePathname } from 'next/navigation';
 import { PropsWithChildren } from 'react';
-import AccessDenied from './AccessDenied';
 import Logo from './Logo';
 import Navigation from './Navigation';
 
@@ -19,6 +19,16 @@ export default function AdminShell({ children }: PropsWithChildren) {
   const [opened, { toggle }] = useDisclosure();
   const { status } = useSession();
   const colorScheme = useComputedColorScheme('dark');
+  const { data: session } = useSession();
+  const pathname = usePathname();
+
+  const hasAccess = [
+    'student',
+    'registry',
+    'finance',
+    'faculty',
+    'admin',
+  ].includes(session?.user?.role || '');
 
   if (status == 'loading') {
     return (
@@ -28,7 +38,13 @@ export default function AdminShell({ children }: PropsWithChildren) {
     );
   }
 
-  const hasAccess = true; //user?.role === 'admin';
+  if (!hasAccess && !pathname.startsWith('/admin/auth')) {
+    return redirect('/admin/auth/access-denied');
+  }
+
+  if (pathname.startsWith('/admin/auth')) {
+    return <>{children}</>;
+  }
 
   return (
     <AppShell
@@ -55,7 +71,7 @@ export default function AdminShell({ children }: PropsWithChildren) {
       </AppShell.Header>
       {hasAccess && <Navigation />}
       <AppShell.Main bg={colorScheme === 'dark' ? 'dark.8' : 'gray.0'}>
-        {hasAccess ? children : <AccessDenied />}
+        {children}
       </AppShell.Main>
     </AppShell>
   );

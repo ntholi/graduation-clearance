@@ -1,26 +1,17 @@
-import { Image, Stack, Title, Text, Button, Anchor } from '@mantine/core';
+import { Button, Stack, Text, Title } from '@mantine/core';
+import { ShieldAlert } from 'lucide-react';
 import Link from 'next/link';
-import React from 'react';
+import { signOut } from 'next-auth/react';
 
 export default function AccessDenied() {
   return (
-    <Stack align='center' justify='center' h={'100vh'}>
+    <Stack align='center' justify='center' h={'80vh'}>
       <div>
-        <Image
-          src='/images/access-denied.png'
-          h={300}
-          w='auto'
-          fit='contain'
-          alt='Access Denied'
-        />
+        <ShieldAlert className='text-red-500' size={100} />
       </div>
       <Title>Access Denied</Title>
-      <Text>
-        {/* You are logged in as {user?.displayName},{' '} */}
-        <Anchor component='button' onClick={() => {}}>
-          Sign Out
-        </Anchor>
-      </Text>
+      <Text>You don't have permission to access this page.</Text>
+      <Button onClick={() => signOut({ callbackUrl: '/' })}>Sign Out</Button>
       <Button component={Link} href={'/'}>
         Home Page
       </Button>
