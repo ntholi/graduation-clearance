@@ -8,6 +8,7 @@ import {
   Group,
   Paper,
   ScrollArea,
+  Skeleton,
 } from '@mantine/core';
 import { PlusIcon } from 'lucide-react';
 import Link from 'next/link';
@@ -37,13 +38,17 @@ export default function ListLayout<T>({
   const [items, setItems] = useState<T[]>([]);
   const [pages, setPages] = useState(0);
   const searchParams = useSearchParams();
+  const [loading, setLoading] = useState(false);
 
   const page = Number(searchParams.get('page')) || 1;
   const search = searchParams.get('search') || '';
 
   useEffect(() => {
     const fetchItems = async () => {
-      const result = await getItems(page, search);
+      setLoading(true);
+      const result = await getItems(page, search).finally(() => {
+        setLoading(false);
+      });
       setItems(result.items);
       setPages(result.pages);
     };
@@ -74,11 +79,17 @@ export default function ListLayout<T>({
             </Flex>
             <Divider />
             <ScrollArea type='always' style={{ flex: 1 }} p={'sm'}>
-              {items.map((item: T, index: number) => (
-                <React.Fragment key={index}>
-                  {renderItem(item, path)}
-                </React.Fragment>
-              ))}
+              {loading ? (
+                <Loader />
+              ) : (
+                <>
+                  {items.map((item: T, index: number) => (
+                    <React.Fragment key={index}>
+                      {renderItem(item, path)}
+                    </React.Fragment>
+                  ))}
+                </>
+              )}
             </ScrollArea>
 
             <Divider />
@@ -96,4 +107,10 @@ export default function ListLayout<T>({
       </GridCol>
     </Grid>
   );
+}
+
+function Loader() {
+  return Array.from({ length: 10 }).map((_, index) => (
+    <Skeleton key={index} h={40} w={'90%'} mt={'xs'} mx={'xs'} />
+  ));
 }
