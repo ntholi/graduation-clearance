@@ -1,3 +1,5 @@
+import time
+
 from database import db_session, init_db
 from database.models import (
     ClearanceRequest,
@@ -112,7 +114,10 @@ def approve_signup_requests():
 
 def main():
     init_db()
-    approve_signup_requests()
+    while True:
+        approve_signup_requests()
+        print("Sleeping for 10 minutes...")
+        time.sleep(60 * 10)
 
 
 if __name__ == "__main__":
