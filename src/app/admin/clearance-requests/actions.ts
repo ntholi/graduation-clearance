@@ -46,7 +46,7 @@ export async function getClearanceList(
       ),
     )
     .leftJoin(students, eq(students.stdNo, clearanceRequest.stdNo))
-    .orderBy(desc(clearanceRequest.createdAt))
+    .orderBy(clearanceRequest.createdAt)
     .limit(ITEMS_PER_PAGE)
     .offset(offset);
 
