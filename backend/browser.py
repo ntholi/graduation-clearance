@@ -1,4 +1,6 @@
 import logging
+import os
+import pickle
 from urllib.parse import quote_plus
 
 import requests
@@ -17,6 +19,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 BASE_URL = "https://cmslesotho.limkokwing.net/campus/registry"
+SESSION_FILE = "session.pkl"
 
 urllib3.disable_warnings(InsecureRequestWarning)
 
@@ -47,9 +50,23 @@ class Browser:
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super(Browser, cls).__new__(cls)
-            cls._instance.session = requests.Session()
-            cls._instance.session.verify = False
+            cls._instance.load_session()
         return cls._instance
+
+    def load_session(self):
+        if os.path.exists(SESSION_FILE):
+            with open(SESSION_FILE, "rb") as f:
+                self.session = pickle.load(f)
+            logger.info("Loaded existing session")
+        else:
+            self.session = requests.Session()
+            self.session.verify = False
+            logger.info("Created new session")
+
+    def save_session(self):
+        with open(SESSION_FILE, "wb") as f:
+            pickle.dump(self.session, f)
+        logger.info("Saved session")
 
     def login(self):
         logger.info("Logging in...")
@@ -75,6 +92,8 @@ class Browser:
             self.session.cookies.set(
                 cookie["name"], cookie["value"], domain=cookie["domain"]
             )
+
+        self.save_session()
 
     def fetch(self, url: str) -> Response:
         if self.session is None:

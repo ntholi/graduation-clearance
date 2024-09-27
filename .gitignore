@@ -96,3 +96,4 @@ next-env.d.ts
 
 # misc
 *.pem
+backend/session.pkl
