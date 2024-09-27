@@ -1,10 +1,9 @@
 'use client';
 import { ActionIcon, FileButton } from '@mantine/core';
-import { Upload } from 'lucide-react';
-import { useTransition, useState } from 'react';
-import * as XLSX from 'xlsx';
-import { saveGraduationList } from '../graduating-students/actions';
 import { notifications } from '@mantine/notifications';
+import { Upload } from 'lucide-react';
+import { useState, useTransition } from 'react';
+import * as XLSX from 'xlsx';
 
 type Action = (studentNumbers: string[]) => Promise<void>;
 

@@ -58,6 +58,10 @@ async function isCleared(
   stdNo: string,
   responder: Responder,
 ): Promise<ClearanceStatus> {
+  const checkBlocked = await isBlocked(stdNo, responder);
+  if (checkBlocked.status === 'not cleared') {
+    return checkBlocked;
+  }
   const request = await db.query.clearanceRequest.findFirst({
     where: and(eq(clearanceRequest.stdNo, stdNo)),
   });
