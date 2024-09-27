@@ -7,9 +7,9 @@ import { SessionProvider } from 'next-auth/react';
 import { AppProgressBar } from 'next-nprogress-bar';
 import React, { Suspense } from 'react';
 
-export default function Providers({ children }: { children: React.ReactNode }) {
-  const queryClient = new QueryClient();
+const queryClient = new QueryClient();
 
+export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <Suspense>
       <ColorSchemeScript defaultColorScheme='dark' />

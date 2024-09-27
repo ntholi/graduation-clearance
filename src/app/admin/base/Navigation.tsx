@@ -42,7 +42,7 @@ export default function Navigation() {
   const { data: pending } = useQuery({
     queryKey: ['unattended-requests'],
     queryFn: () => getUnattendedRequestsCount(session?.user?.role as Responder),
-    refetchInterval: 10 * 1000,
+    refetchInterval: 5 * 60 * 1000,
     enabled: !!session?.user?.role,
   });
 

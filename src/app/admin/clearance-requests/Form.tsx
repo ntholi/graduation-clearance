@@ -9,6 +9,7 @@ import { z } from 'zod';
 import FieldView from '../components/FieldView';
 import { Responder } from './actions';
 import { useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const ClearanceResponseSchema = z.object({
   status: z.enum(['cleared', 'blocked']),
@@ -30,6 +31,7 @@ type Props = {
 export default function Form({ onSubmit, student, responder }: Props) {
   const router = useRouter();
   const [pending, submitForm] = useFormAction();
+  const queryClient = useQueryClient();
 
   const { setValues, ...form } = useForm<Response>({
     validate: zodResolver(ClearanceResponseSchema),
@@ -44,6 +46,7 @@ export default function Form({ onSubmit, student, responder }: Props) {
   async function handleSubmit(values: Response) {
     submitForm(async () => {
       await onSubmit(values);
+      queryClient.invalidateQueries({ queryKey: ['unattended-requests'] });
       router.push('/admin/clearance-requests');
     });
   }
