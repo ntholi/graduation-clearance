@@ -30,7 +30,7 @@ export async function getBlockedStudents(
     .where(
       and(
         eq(blockedStudents.blockedBy, blockedBy),
-        like(students.name, `%${search}%`),
+        like(blockedStudents.stdNo, `%${search}%`),
       ),
     )
     .leftJoin(students, eq(students.stdNo, blockedStudents.stdNo))
