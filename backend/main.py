@@ -13,6 +13,7 @@ from database.models import (
 from rich import print
 from scrapper import Scrapper
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session, scoped_session
 
 
 def read_student(std_no: int):
@@ -52,15 +53,32 @@ def create_clearance_request(student: Student):
     print(f"Clearance request for {student.std_no} created")
 
 
-def save_enrollment(std_no: int, data: tuple[Enrollment, list[Grade]]):
-    enrollment, grades = data
-    db_session.add(enrollment)
-    db_session.commit()
-    for grade in grades:
-        grade.enrollment_id = enrollment.id
-        db_session.add(grade)
-    db_session.commit()
-    print(f"Enrollment for {std_no} saved: id={enrollment.id}")
+def batch_save_enrollments(
+    session: scoped_session[Session],
+    std_no: int,
+    enrollments_data: list[tuple[Enrollment, list[Grade]]],
+):
+    enrollments = []
+    all_grades = []
+
+    for enrollment, grades in enrollments_data:
+        enrollment.std_no = std_no
+        enrollments.append(enrollment)
+        all_grades.extend(grades)
+
+    session.add_all(enrollments)
+    session.flush()
+
+    for enrollment, (_, grades) in zip(enrollments, enrollments_data):
+        for grade in grades:
+            grade.enrollment_id = enrollment.id
+
+    session.add_all(all_grades)
+    session.commit()
+
+    print(
+        f"Saved {len(enrollments)} enrollments with {len(all_grades)} grades for student {std_no}"
+    )
 
 
 def approve_signup_requests():
@@ -79,8 +97,9 @@ def approve_signup_requests():
             save_student(student)
             mark_user_as_student(signup.user_id)
             create_clearance_request(student)
-            for enrollment in enrollments:
-                save_enrollment(student.std_no, enrollment)
+
+            batch_save_enrollments(db_session, student.std_no, enrollments)
+
             signup.status = SignUpRequestStatus.approved
             db_session.commit()
         except IntegrityError as e:
