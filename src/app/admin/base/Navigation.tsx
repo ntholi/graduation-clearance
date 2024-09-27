@@ -153,7 +153,7 @@ function UserButton() {
       children: 'Are you sure you want to logout?',
       confirmProps: { color: 'dark' },
       labels: { confirm: 'Logout', cancel: 'Cancel' },
-      onConfirm: () => signOut(),
+      onConfirm: async () => await signOut(),
     });
 
   return (
