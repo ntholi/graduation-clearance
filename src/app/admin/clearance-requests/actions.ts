@@ -40,7 +40,7 @@ export async function getClearanceList(
     .from(clearanceRequest)
     .where(
       and(
-        like(students.name, `%${search}%`),
+        like(clearanceRequest.stdNo, `%${search}%`),
         eq(clearanceRequest.status, 'pending'),
         not(inArray(clearanceRequest.id, sq)),
       ),
