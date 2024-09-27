@@ -6,6 +6,7 @@ import {
   Divider,
   Flex,
   Group,
+  Indicator,
   NavLink,
   ScrollArea,
   Stack,
@@ -27,10 +28,23 @@ import {
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import {
+  getUnattendedRequestsCount,
+  Responder,
+} from '../clearance-requests/actions';
+import { useQuery } from '@tanstack/react-query';
+import { PropsWithChildren } from 'react';
 
 export default function Navigation() {
   const pathname = usePathname();
+
   const { data: session } = useSession();
+  const { data: pending } = useQuery({
+    queryKey: ['unattended-requests'],
+    queryFn: () => getUnattendedRequestsCount(session?.user?.role as Responder),
+    refetchInterval: 5 * 60 * 1000,
+    enabled: !!session?.user?.role,
+  });
 
   const isRegistry =
     session?.user?.role === 'registry' || session?.user?.role === 'admin';
@@ -65,14 +79,16 @@ export default function Navigation() {
             />{' '}
           </>
         )}
-        <NavLink
-          label='Clearance Requests'
-          component={Link}
-          active={pathname.startsWith('/admin/clearance-requests')}
-          href={'/admin/clearance-requests'}
-          leftSection={<ListCheck size='1.1rem' />}
-          rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
-        />
+        <NotificationIndicator label={pending}>
+          <NavLink
+            label='Clearance Requests'
+            component={Link}
+            active={pathname.startsWith('/admin/clearance-requests')}
+            href={'/admin/clearance-requests'}
+            leftSection={<ListCheck size='1.1rem' />}
+            rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
+          />
+        </NotificationIndicator>
         <NavLink
           label='Blocked Students'
           leftSection={<Construction size={'1rem'} />}
@@ -155,5 +171,23 @@ function UserButton() {
         <LogOutIcon size='1rem' onClick={openModal} />
       </ActionIcon>
     </Flex>
+  );
+}
+
+function NotificationIndicator({
+  children,
+  label,
+}: PropsWithChildren<{ label: React.ReactNode }>) {
+  return (
+    <Indicator
+      position='middle-end'
+      color='red'
+      offset={20}
+      size={23}
+      label={label}
+      disabled={!label}
+    >
+      {children}
+    </Indicator>
   );
 }

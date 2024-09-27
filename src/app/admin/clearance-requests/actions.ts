@@ -70,6 +70,23 @@ export async function getClearanceList(
   };
 }
 
+export async function getUnattendedRequestsCount(responder: Responder) {
+  const sq = db
+    .select({ id: clearanceResponse.clearanceRequestId })
+    .from(clearanceResponse)
+    .where(eq(clearanceResponse.responder, responder));
+  const number = await db
+    .select({ count: count() })
+    .from(clearanceRequest)
+    .where(
+      and(
+        eq(clearanceRequest.status, 'pending'),
+        not(inArray(clearanceRequest.id, sq)),
+      ),
+    );
+  return number[0].count;
+}
+
 export async function getRequest(stdNo: string, responder: Responder) {
   const res = await db
     .select({
