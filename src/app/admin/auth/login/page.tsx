@@ -19,7 +19,7 @@ export default async function SignInPage() {
   return (
     <Stack p={'md'} h={'100vh'} w={'100vw'} align={'center'} justify='center'>
       <Paper p={60} withBorder shadow='sm'>
-        <Logo />
+        <Logo size='lg' />
         <form action={handleSignIn}>
           <Stack mt={'lg'} align={'center'} justify={'center'}>
             <Button
