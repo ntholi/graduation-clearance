@@ -45,18 +45,22 @@ export default function Form({ student }: Props) {
           Graduation Clearance
         </CardTitle>
         <CardDescription>
-          Your clearance has been completed successfully, please confirm the
-          details below
+          Please confirm the details below to complete your graduation
+          clearance, if there are any discrepancies, please contact the registry
+          department
         </CardDescription>
       </CardHeader>
       <CardContent className='space-y-4'>
         <div>
-          <Label className='font-semibold'>Student Name</Label>
-          <p>{student.name}</p>
+          <Label>Your Name</Label>
+          <p className='text-sm text-green-500 dark:text-green-400'>
+            As will be printed on your certificate
+          </p>
+          <p className='text-xl'>{student.name}</p>
         </div>
         <div>
-          <Label className='font-semibold'>Program of Study</Label>
-          <p>{student.program}</p>
+          <Label>Program of Study</Label>
+          <p className='text-lg'>{student.program}</p>
         </div>
         <div className='flex items-center space-x-2'>
           <Checkbox
@@ -64,8 +68,9 @@ export default function Form({ student }: Props) {
             checked={confirmed}
             onCheckedChange={handleCheckboxChange}
           />
-          <Label htmlFor='confirmation' className='text-sm'>
-            I confirm that the information above is correct
+          <Label htmlFor='confirmation' className='text-sm font-light'>
+            I confirm that the information above is correct and there will be no
+            changes to the information provided after I submit this form
           </Label>
         </div>
       </CardContent>
