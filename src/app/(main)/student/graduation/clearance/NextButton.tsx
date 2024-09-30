@@ -1,6 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { ArrowRightIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 type Props = {
@@ -27,8 +28,10 @@ export default function NextButton({ className, state }: Props) {
       <Button
         disabled={state !== 'cleared'}
         onClick={() => router.push('/student/graduation/confirmation')}
+        className='flex items-center gap-2'
       >
-        Next
+        <span>Next</span>
+        <ArrowRightIcon className='size-4' />
       </Button>
     </div>
   );
