@@ -10,10 +10,13 @@ import {
   serial,
   text,
   timestamp,
+  date,
   varchar,
 } from 'drizzle-orm/pg-core';
 import { nanoid } from 'nanoid';
 import { users } from './auth';
+
+export const genderEnum = pgEnum('gender', ['male', 'female']);
 
 export const students = pgTable('students', {
   stdNo: varchar('std_no', { length: 9 }).notNull().primaryKey(),
@@ -21,6 +24,9 @@ export const students = pgTable('students', {
   name: text('name'),
   nationalId: text('national_id'),
   program: text('program'),
+  gender: genderEnum('gender'),
+  nationality: varchar('nationality', { length: 50 }),
+  dateOfBirth: date('date_of_birth'),
   createdAt: timestamp('created_at').defaultNow(),
 });
 
