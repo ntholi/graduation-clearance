@@ -5,7 +5,7 @@ from os import name
 from typing import List, Tuple
 
 from browser import BASE_URL, Browser
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 from database.models import Enrollment, Grade, Student
 
 logging.basicConfig(
@@ -129,3 +129,19 @@ class Scrapper:
         student.enrollments = [enrollment for enrollment, _ in enrollments_with_grades]
 
         return student, enrollments_with_grades
+
+    def get_student_program(self, std_no: int) -> str | None:
+        url = f"{BASE_URL}/r_stdprogramlist.php?showmaster=1&StudentID={std_no}"
+        response = self.browser.fetch(url)
+        soup = BeautifulSoup(response.text, "html.parser")
+        main_table = soup.select_one("table#ewlistmain")
+        if not main_table:
+            logger.error("Could not find the main table with class 'ewlistmain'")
+            return None
+
+        rows: List[Tag] = main_table.find_all("tr")
+        for row in rows:
+            if "Active" in row.text:
+                program = row.find_all("td")[0].text
+                chunks = program.split()
+                return " ".join(chunks[1:])

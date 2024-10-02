@@ -95,6 +95,9 @@ def approve_signup_requests():
         try:
             print(f"Processing signup request {i+1}/{len(requests)}")
             student, enrollments = scrapper.get_student_data(signup.std_no)
+            program = scrapper.get_student_program(signup.std_no)
+            if program:
+                student.program = program
             student.user_id = signup.user_id
             save_student(student)
             mark_user_as_student(signup.user_id)
@@ -112,7 +115,16 @@ def approve_signup_requests():
             print(f"Unexpected error approving signup request for {signup.std_no}: {e}")
 
 
+def test_get_student_program():
+    scrapper = Scrapper()
+    program = scrapper.get_student_program(901010874)
+    print(program)
+
+
 def main():
+    test_get_student_program()
+    return
+
     init_db()
     while True:
         approve_signup_requests()
