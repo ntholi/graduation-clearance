@@ -120,10 +120,28 @@ def approve_signup_requests():
             print(f"Unexpected error approving signup request for {signup.std_no}: {e}")
 
 
+def update_saved_students():
+    students = db_session.query(Student).all()
+    scrapper = Scrapper()
+    for i, student in enumerate(students):
+        print(f"Updating student {i+1}/{len(students)}")
+        student_details = scrapper.get_student_details(student.std_no)
+        program_name = scrapper.get_student_program(student.std_no)
+        if program_name:
+            student.program = program_name
+        student.nationality = student_details["Nationality"]
+        student.gender = student_details["Sex"]
+        student.date_of_birth = datetime.strptime(
+            student_details["Birthdate"], "%Y-%m-%d"
+        )
+        db_session.commit()
+
+
 def main():
     init_db()
     while True:
-        approve_signup_requests()
+        # approve_signup_requests()
+        update_saved_students()
         print("Sleeping for 10 minutes...")
         time.sleep(60 * 10)
 
