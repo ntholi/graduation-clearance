@@ -36,6 +36,13 @@
       "when": 1727879397141,
       "tag": "0004_curvy_redwing",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1727893093261,
+      "tag": "0005_strange_millenium_guard",
+      "breakpoints": true
     }
   ]
 }
