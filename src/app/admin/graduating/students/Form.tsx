@@ -30,7 +30,7 @@ export default function Form({ onSubmit, value }: Props) {
   async function handleSubmit(values: GraduatingStudent) {
     submitForm(async () => {
       const { stdNo } = await onSubmit(values);
-      router.push(`/admin/graduating-students/${stdNo}`);
+      router.push(`/admin/graduating/students/${stdNo}`);
     });
   }
 

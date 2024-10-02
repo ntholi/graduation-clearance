@@ -72,8 +72,8 @@ export default function Navigation() {
             <NavLink
               label='Graduating Students'
               component={Link}
-              active={pathname.startsWith('/admin/graduating-students')}
-              href={'/admin/graduating-students'}
+              active={pathname.startsWith('/admin/graduating/students')}
+              href={'/admin/graduating/students'}
               leftSection={<GraduationCap size='1.1rem' />}
               rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
             />{' '}

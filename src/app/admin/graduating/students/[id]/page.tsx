@@ -1,7 +1,7 @@
 import {
   deleteStudent,
   getStudent,
-} from '@/app/admin/graduating-students/actions';
+} from '@/app/admin/graduating/students/actions';
 import { dateTime } from '@/lib/format';
 import DeleteIconButton from '@admin/components/DeleteIconButton';
 import FieldView from '@admin/components/FieldView';

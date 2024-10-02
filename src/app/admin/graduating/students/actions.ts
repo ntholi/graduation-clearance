@@ -52,7 +52,7 @@ export async function saveGraduationList(stdNumbers: string[]) {
       })),
     )
     .onConflictDoNothing();
-  revalidatePath('/admin/graduating-students');
+  revalidatePath('/admin/graduating/students');
 }
 
 export async function createGraduatingStudent(
@@ -63,7 +63,7 @@ export async function createGraduatingStudent(
     .values(values)
     .returning()
     .then((data) => data[0]);
-  revalidatePath('/admin/graduating-students');
+  revalidatePath('/admin/graduating/students');
   return res;
 }
 
@@ -71,7 +71,7 @@ export async function deleteStudent(stdNo: string) {
   await db
     .delete(graduatingStudents)
     .where(eq(graduatingStudents.stdNo, stdNo));
-  revalidatePath('/admin/graduating-students');
+  revalidatePath('/admin/graduating/students');
 }
 
 export async function updateStudent(
@@ -83,6 +83,6 @@ export async function updateStudent(
     .set(values)
     .where(eq(graduatingStudents.stdNo, id))
     .returning();
-  revalidatePath(`/admin/graduating-students/${id}`);
+  revalidatePath(`/admin/graduating/students/${id}`);
   return res[0];
 }
