@@ -36,6 +36,9 @@ class Student(Base):
     name: Mapped[Optional[str]] = mapped_column(String)
     national_id: Mapped[str] = mapped_column(String, nullable=False)
     program: Mapped[str] = mapped_column(String, nullable=False)
+    gender: Mapped[str] = mapped_column(String, nullable=False)
+    nationality: Mapped[str] = mapped_column(String, nullable=False)
+    date_of_birth: Mapped[datetime] = mapped_column(TIMESTAMP, nullable=False)
     created_at: Mapped[datetime] = mapped_column(TIMESTAMP, server_default=func.now())
 
     enrollments: Mapped[List["Enrollment"]] = relationship(

@@ -16,7 +16,7 @@ import {
 import { nanoid } from 'nanoid';
 import { users } from './auth';
 
-export const genderEnum = pgEnum('gender', ['male', 'female']);
+export const genderEnum = pgEnum('gender', ['Male', 'Female']);
 
 export const students = pgTable('students', {
   stdNo: varchar('std_no', { length: 9 }).notNull().primaryKey(),

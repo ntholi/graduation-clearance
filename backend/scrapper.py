@@ -145,3 +145,21 @@ class Scrapper:
                 program = row.find_all("td")[0].text
                 chunks = program.split()
                 return " ".join(chunks[1:])
+
+    def get_student_details(self, std_no: int) -> dict[str, str]:
+        url = f"{BASE_URL}/r_stdpersonalview.php?StudentID={std_no}"
+        response = self.browser.fetch(url)
+        soup = BeautifulSoup(response.text, "html.parser")
+        main_table = soup.select_one("table.ewTable")
+        if not main_table:
+            raise Exception("Could not find the main table with class 'ewTable'")
+
+        rows: List[Tag] = main_table.find_all("tr")
+        details = {}
+        for row in rows:
+            cells = row.find_all("td")
+            if len(cells) >= 2:
+                label = cells[0].text.strip()
+                value = cells[1].text.strip()
+                details[label] = value
+        return details

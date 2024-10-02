@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 
 from database import db_session, init_db
 from database.models import (
@@ -51,7 +52,6 @@ def create_clearance_request(student: Student):
         status=ClearanceRequestStatus.pending,
     )
     db_session.add(clearance)
-    db_session.commit()
     print(f"Clearance request for {student.std_no} created")
 
 
@@ -99,11 +99,16 @@ def approve_signup_requests():
             if program:
                 student.program = program
             student.user_id = signup.user_id
+            student_details = scrapper.get_student_details(signup.std_no)
+            student.nationality = student_details["Nationality"]
+            student.gender = student_details["Sex"]
+            student.date_of_birth = datetime.strptime(
+                student_details["Birthdate"], "%Y-%m-%d"
+            )
             save_student(student)
             mark_user_as_student(signup.user_id)
-            create_clearance_request(student)
-
             batch_save_enrollments(db_session, student.std_no, enrollments)
+            create_clearance_request(student)
 
             signup.status = SignUpRequestStatus.approved
             db_session.commit()
@@ -115,16 +120,7 @@ def approve_signup_requests():
             print(f"Unexpected error approving signup request for {signup.std_no}: {e}")
 
 
-def test_get_student_program():
-    scrapper = Scrapper()
-    program = scrapper.get_student_program(901010874)
-    print(program)
-
-
 def main():
-    test_get_student_program()
-    return
-
     init_db()
     while True:
         approve_signup_requests()

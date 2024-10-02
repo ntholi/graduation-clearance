@@ -29,6 +29,13 @@
       "when": 1727871901221,
       "tag": "0003_smart_chimera",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1727879397141,
+      "tag": "0004_curvy_redwing",
+      "breakpoints": true
     }
   ]
 }
