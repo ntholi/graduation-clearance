@@ -121,27 +121,34 @@ def approve_signup_requests():
 
 
 def update_saved_students():
-    students = db_session.query(Student).all()
+    students = db_session.query(Student).filter(Student.gender == None).all()
     scrapper = Scrapper()
     for i, student in enumerate(students):
-        print(f"Updating student {i+1}/{len(students)}")
-        student_details = scrapper.get_student_details(student.std_no)
-        program_name = scrapper.get_student_program(student.std_no)
-        if program_name:
-            student.program = program_name
-        student.nationality = student_details["Nationality"]
-        student.gender = student_details["Sex"]
-        student.date_of_birth = datetime.strptime(
-            student_details["Birthdate"], "%Y-%m-%d"
-        )
-        db_session.commit()
+        try:
+            print(f"Updating student {i+1}/{len(students)}")
+            student_details = scrapper.get_student_details(student.std_no)
+            program_name = scrapper.get_student_program(student.std_no)
+            if program_name:
+                student.program = program_name
+            student.nationality = student_details["Nationality"]
+            student.gender = student_details["Sex"]
+            date_of_birth = student_details["Birthdate"]
+            if date_of_birth:
+                student.date_of_birth = datetime.strptime(date_of_birth, "%Y-%m-%d")
+            db_session.commit()
+        except IntegrityError as e:
+            db_session.rollback()
+            print(f"Database integrity error for {student.std_no}: {e}")
+        except Exception as e:
+            db_session.rollback()
+            print(f"Unexpected error updating student {student.std_no}: {e}")
 
 
 def main():
     init_db()
     while True:
-        # approve_signup_requests()
-        update_saved_students()
+        approve_signup_requests()
+        # update_saved_students()
         print("Sleeping for 10 minutes...")
         time.sleep(60 * 10)
 
