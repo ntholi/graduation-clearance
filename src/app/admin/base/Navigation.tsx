@@ -19,6 +19,7 @@ import {
   Computer,
   Construction,
   GraduationCap,
+  HandCoins,
   Landmark,
   LibraryBig,
   ListCheck,
@@ -76,7 +77,7 @@ export default function Navigation() {
               href={'/admin/graduating/students'}
               leftSection={<GraduationCap size='1.1rem' />}
               rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
-            />{' '}
+            />
           </>
         )}
         <NotificationIndicator label={pending}>
@@ -134,6 +135,16 @@ export default function Navigation() {
             />
           )}
         </NavLink>
+        {isFinance && (
+          <NavLink
+            label='Payments'
+            component={Link}
+            active={pathname.startsWith('/admin/payments')}
+            href={'/admin/payments'}
+            leftSection={<HandCoins size='1.1rem' />}
+            rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
+          />
+        )}
       </AppShell.Section>
       <AppShell.Section>
         <Divider />

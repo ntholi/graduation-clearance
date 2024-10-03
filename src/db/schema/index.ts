@@ -32,9 +32,7 @@ export const students = pgTable('students', {
 
 export const financePayments = pgTable('finance_payments', {
   id: serial('id').notNull().primaryKey(),
-  stdNo: varchar('std_no', { length: 9 })
-    .notNull()
-    .references(() => students.stdNo, { onDelete: 'cascade' }),
+  stdNo: varchar('std_no', { length: 9 }).notNull(),
   amount: decimal('amount', { precision: 10, scale: 2 }).notNull(),
   receiptNo: varchar('receipt_no', { length: 10 }).notNull(),
   item: text('item').notNull(),

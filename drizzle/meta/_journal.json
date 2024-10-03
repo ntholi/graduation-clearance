@@ -43,6 +43,13 @@
       "when": 1727893093261,
       "tag": "0005_strange_millenium_guard",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1727894850186,
+      "tag": "0006_special_dagger",
+      "breakpoints": true
     }
   ]
 }
