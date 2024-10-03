@@ -5,7 +5,7 @@ import { Stack, Textarea, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
-import useFormAction from '../../hooks/useFormAction';
+import useFormAction from '../hooks/useFormAction';
 
 type Student = typeof blockedStudents.$inferSelect;
 

@@ -1,7 +1,10 @@
 import { Box } from '@mantine/core';
 import { notFound } from 'next/navigation';
-import Form from '../../Form';
-import { getBlockedStudent, updateBlockedStudent } from '../../../actions';
+import Form from '@admin/blocked-students/Form';
+import {
+  getBlockedStudent,
+  updateBlockedStudent,
+} from '@admin/blocked-students/actions';
 
 type Props = {
   params: {
