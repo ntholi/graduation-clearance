@@ -21,8 +21,8 @@ export default function Logo({ size = 'sm' }: Props) {
         src='/logo-white.png'
         h={height}
         component={NextImage}
-        width={height * 3}
-        height={height * 3}
+        width={height * 5}
+        height={height * 5}
       />
     </NextLink>
   );
