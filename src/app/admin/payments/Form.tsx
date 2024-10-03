@@ -2,8 +2,9 @@
 import { financePayments } from '@/db/schema';
 import FormHeader from '@admin/components/FormHeader';
 import useFormAction from '@admin/hooks/useFormAction';
-import { NumberInput, Stack, TextInput } from '@mantine/core';
+import { Button, NumberInput, Stack, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
+import { SaveIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 
@@ -39,12 +40,18 @@ export default function Form({ onSubmit, value }: Props) {
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
-      <FormHeader title='Payment' isLoading={pending} />
       <Stack p={'xl'}>
         <TextInput label='Student Number' {...form.getInputProps('stdNo')} />
         <NumberInput label='Amount' {...form.getInputProps('amount')} />
         <TextInput label='Receipt No' {...form.getInputProps('receiptNo')} />
         <TextInput label='Item' {...form.getInputProps('item')} />
+        <Button
+          type='submit'
+          loading={pending}
+          leftSection={<SaveIcon size={'1.2rem'} />}
+        >
+          Save
+        </Button>
       </Stack>
     </form>
   );

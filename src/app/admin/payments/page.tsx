@@ -15,6 +15,7 @@ import RowActions from './RowActions';
 import { getPayments } from './actions';
 import { FilePlusIcon, PlusIcon } from 'lucide-react';
 import Link from 'next/link';
+import AddButton from './AddButton';
 
 export default async function PaymentsPage() {
   const data = await getPayments();
@@ -41,14 +42,7 @@ export default async function PaymentsPage() {
           </Title>
           <Divider orientation='vertical' />
           <Group>
-            <Button
-              variant='default'
-              component={Link}
-              href='/admin/payments/new'
-              leftSection={<PlusIcon size={'0.9rem'} />}
-            >
-              Add
-            </Button>
+            <AddButton />
             <Button
               variant='default'
               leftSection={<FilePlusIcon size={'0.9rem'} />}
