@@ -1,5 +1,6 @@
 'use server';
 
+import { auth } from '@/auth';
 import db from '@/db';
 import { blockedStudents, students } from '@/db/schema';
 import { and, count, desc, eq, like } from 'drizzle-orm';
@@ -30,7 +31,7 @@ export async function getBlockedStudents(
     .where(
       and(
         eq(blockedStudents.department, department),
-        eq(blockedStudents.status, 'unblocked'),
+        eq(blockedStudents.status, 'blocked'),
         like(blockedStudents.stdNo, `%${search}%`),
       ),
     )
@@ -68,6 +69,25 @@ export async function getBlockedStudent(id: string, department: Department) {
     ...data.blocked_students,
     student: data?.students || null,
   };
+}
+
+export async function updateStatus(
+  id: string,
+  status: 'blocked' | 'unblocked',
+) {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error('Unauthorized');
+  const payload =
+    status === 'blocked'
+      ? { status }
+      : { status, unBlockedBy: session.user.id, unBlockedAt: new Date() };
+  const res = await db
+    .update(blockedStudents)
+    .set(payload)
+    .where(eq(blockedStudents.id, id))
+    .returning()
+    .then((it) => it[0]);
+  revalidatePath(`/admin/blocked-students/${res.department}`);
 }
 
 export async function deleteBlockedStudent(id: string) {

@@ -116,6 +116,10 @@ export const blockedStudents = pgTable('blocked_students', {
   createdBy: varchar('created_by', { length: 21 })
     .notNull()
     .references(() => users.id),
+  unBlockedAt: timestamp('unblocked_at'),
+  unBlockedBy: varchar('unblocked_by', { length: 21 }).references(
+    () => users.id,
+  ),
 });
 
 export const clearanceRequestStatusEnum = pgEnum('clearance_request_status', [

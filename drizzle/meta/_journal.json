@@ -64,6 +64,13 @@
       "when": 1727947671529,
       "tag": "0008_vengeful_blizzard",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1727956736386,
+      "tag": "0009_chilly_stick",
+      "breakpoints": true
     }
   ]
 }

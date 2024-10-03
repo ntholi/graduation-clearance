@@ -168,4 +168,5 @@ export async function respondToRequest(
     });
   }
   revalidatePath(`/admin/clearance-requests/${stdNo}`);
+  revalidatePath('/admin/blocked-students');
 }

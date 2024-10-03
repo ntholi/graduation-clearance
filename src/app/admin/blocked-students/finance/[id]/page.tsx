@@ -1,10 +1,11 @@
 import { dateTime } from '@/lib/format';
 import FieldView from '@admin/components/FieldView';
 import HeaderDisplay from '@admin/components/HeaderDisplay';
-import { Box, Stack, Text } from '@mantine/core';
+import { Box, Divider, Stack, Text } from '@mantine/core';
 import { notFound } from 'next/navigation';
 import { deleteBlockedStudent, getBlockedStudent } from '../../actions';
 import DeleteIconButton from '@admin/components/DeleteIconButton';
+import PublishSwitch from '../../UnblockSwitch';
 
 type Props = {
   params: {
@@ -27,6 +28,8 @@ export default async function Page({ params: { id } }: Props) {
       />
 
       <Stack p={'xl'}>
+        <PublishSwitch blockedStudent={item} />
+        <Divider />
         <FieldView label='Student Number'>{item.stdNo}</FieldView>
         <FieldView label='Name'>{item.student?.name}</FieldView>
         <FieldView label='Reason'>
