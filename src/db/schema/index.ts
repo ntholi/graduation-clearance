@@ -91,7 +91,7 @@ export const gradeRelations = relations(grades, ({ one }) => ({
   }),
 }));
 
-export const responderEnum = pgEnum('responder', [
+export const departmentEnum = pgEnum('department', [
   'finance',
   'library',
   'resource',
@@ -99,13 +99,19 @@ export const responderEnum = pgEnum('responder', [
   'admin',
 ]);
 
+export const blockedStudentStatus = pgEnum('blocked_student_status', [
+  'blocked',
+  'unblocked',
+]);
+
 export const blockedStudents = pgTable('blocked_students', {
   id: varchar('id', { length: 21 })
     .$defaultFn(() => nanoid())
     .primaryKey(),
   stdNo: varchar('std_no', { length: 9 }).notNull(),
-  blockedBy: responderEnum('blocked_by').notNull(),
+  department: departmentEnum('department').notNull(),
   reason: text('reason'),
+  status: blockedStudentStatus('status').notNull().default('blocked'),
   createdAt: timestamp('created_at').defaultNow(),
   createdBy: varchar('created_by', { length: 21 })
     .notNull()
@@ -140,7 +146,7 @@ export const clearanceResponse = pgTable(
       () => blockedStudents.id,
       { onDelete: 'set null' },
     ),
-    responder: responderEnum('responder').notNull(),
+    responder: departmentEnum('responder').notNull(),
     createdAt: timestamp('created_at').defaultNow(),
     createdBy: varchar('created_by', { length: 21 })
       .notNull()

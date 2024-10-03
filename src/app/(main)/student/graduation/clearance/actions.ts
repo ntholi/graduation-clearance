@@ -5,7 +5,7 @@ import {
   clearanceRequest,
   clearanceResponse,
   graduatingStudents,
-  responderEnum,
+  departmentEnum,
   students,
 } from '@/db/schema';
 import { eq, and } from 'drizzle-orm';
@@ -52,7 +52,7 @@ async function isGraduatingStudent(stdNo: string): Promise<ClearanceStatus> {
   }
   return { status: 'not cleared', message: 'Consult your faculty' };
 }
-type Responder = (typeof responderEnum.enumValues)[number];
+type Responder = (typeof departmentEnum.enumValues)[number];
 
 async function isCleared(
   stdNo: string,
@@ -100,7 +100,7 @@ async function isCleared(
 
 async function isBlocked(
   stdNo: string,
-  blockedBy: Responder,
+  department: Responder,
 ): Promise<ClearanceStatus> {
   const res = await db
     .select()
@@ -108,7 +108,7 @@ async function isBlocked(
     .where(
       and(
         eq(blockedStudents.stdNo, stdNo),
-        eq(blockedStudents.blockedBy, blockedBy),
+        eq(blockedStudents.department, department),
       ),
     )
     .limit(1)

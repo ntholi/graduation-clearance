@@ -5,13 +5,13 @@ import { blockedStudents, students } from '@/db/schema';
 import { and, count, desc, eq, like } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
-type BlockedBy = (typeof blockedStudents.$inferSelect)['blockedBy'];
+type Department = (typeof blockedStudents.$inferSelect)['department'];
 type Student = typeof blockedStudents.$inferInsert;
 
 const ITEMS_PER_PAGE = 15;
 
 export async function getBlockedStudents(
-  blockedBy: BlockedBy,
+  department: Department,
   page = 1,
 
   search = '',
@@ -29,7 +29,8 @@ export async function getBlockedStudents(
     .from(blockedStudents)
     .where(
       and(
-        eq(blockedStudents.blockedBy, blockedBy),
+        eq(blockedStudents.department, department),
+        eq(blockedStudents.status, 'unblocked'),
         like(blockedStudents.stdNo, `%${search}%`),
       ),
     )
@@ -51,12 +52,15 @@ export async function getBlockedStudents(
   };
 }
 
-export async function getBlockedStudent(id: string, blockedBy: BlockedBy) {
+export async function getBlockedStudent(id: string, department: Department) {
   const data = await db
     .select()
     .from(blockedStudents)
     .where(
-      and(eq(blockedStudents.id, id), eq(blockedStudents.blockedBy, blockedBy)),
+      and(
+        eq(blockedStudents.id, id),
+        eq(blockedStudents.department, department),
+      ),
     )
     .leftJoin(students, eq(students.stdNo, blockedStudents.stdNo))
     .then((res) => res[0]);
@@ -72,7 +76,7 @@ export async function deleteBlockedStudent(id: string) {
     .where(eq(blockedStudents.id, id))
     .returning()
     .then((it) => it[0]);
-  revalidatePath(`/admin/blocked-students/${res.blockedBy}`);
+  revalidatePath(`/admin/blocked-students/${res.department}`);
 }
 
 export async function updateBlockedStudent(id: string, values: Student) {
@@ -82,7 +86,7 @@ export async function updateBlockedStudent(id: string, values: Student) {
     .where(eq(blockedStudents.id, id))
     .returning()
     .then((it) => it[0]);
-  revalidatePath(`/admin/blocked-students/${res.blockedBy}`);
-  revalidatePath(`/admin/blocked-students/${res.blockedBy}/${id}`);
+  revalidatePath(`/admin/blocked-students/${res.department}`);
+  revalidatePath(`/admin/blocked-students/${res.department}/${id}`);
   return res;
 }

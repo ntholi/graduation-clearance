@@ -16,7 +16,7 @@ export async function createBlockedStudent(values: Student) {
     .insert(blockedStudents)
     .values({
       ...values,
-      blockedBy: 'it',
+      department: 'it',
       createdBy: session.user.id,
     })
     .returning()

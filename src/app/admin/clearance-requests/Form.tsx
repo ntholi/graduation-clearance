@@ -1,5 +1,5 @@
 'use client';
-import { responderEnum } from '@/db/schema';
+import { departmentEnum } from '@/db/schema';
 import FormHeader from '@admin/components/FormHeader';
 import useFormAction from '@admin/hooks/useFormAction';
 import { Chip, Group, Radio, Stack, Textarea } from '@mantine/core';
@@ -13,7 +13,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 export const ClearanceResponseSchema = z.object({
   status: z.enum(['cleared', 'blocked']),
-  responder: z.enum(responderEnum.enumValues),
+  responder: z.enum(departmentEnum.enumValues),
   reasonBlocked: z.string().optional(),
 });
 
@@ -62,7 +62,7 @@ export default function Form({ onSubmit, student, responder }: Props) {
 
         <Radio.Group label='Responder' {...form.getInputProps('responder')}>
           <Stack gap={'xs'}>
-            {responderEnum.enumValues.map((value) => (
+            {departmentEnum.enumValues.map((value) => (
               <Radio
                 label={formatResponder(value)}
                 key={value}

@@ -108,7 +108,7 @@ export async function getRequest(stdNo: string, responder: Responder) {
       blockedStudents,
       and(
         eq(students.stdNo, blockedStudents.stdNo),
-        eq(blockedStudents.blockedBy, responder),
+        eq(blockedStudents.department, responder),
       ),
     )
     .then((it) => it[0]);
@@ -149,7 +149,7 @@ export async function respondToRequest(
       .values({
         stdNo,
         reason: response.reasonBlocked,
-        blockedBy: response.responder,
+        department: response.responder,
         createdBy: session.user.id,
       })
       .returning()
