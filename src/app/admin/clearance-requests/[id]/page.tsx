@@ -3,6 +3,7 @@ import { Box } from '@mantine/core';
 import { notFound } from 'next/navigation';
 import Form from '../Form';
 import { getRequest, Responder, respondToRequest } from '../actions';
+import PaymentsDisplay from './PaymentsDisplay';
 
 type Props = {
   params: {
@@ -32,6 +33,11 @@ export default async function Page({ params: { id } }: Props) {
           });
         }}
       />
+      {responder === 'finance' || responder === 'admin' ? (
+        <Box px={'xl'}>
+          <PaymentsDisplay stdNo={item.stdNo} />
+        </Box>
+      ) : null}
     </Box>
   );
 }

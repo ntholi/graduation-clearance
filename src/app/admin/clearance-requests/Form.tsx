@@ -82,7 +82,7 @@ export default function Form({ onSubmit, student, responder }: Props) {
           disabled={form.values.status !== 'blocked'}
           label='Reason Blocked'
           placeholder='Optional'
-          rows={5}
+          rows={3}
           {...form.getInputProps('reasonBlocked')}
         />
       </Stack>

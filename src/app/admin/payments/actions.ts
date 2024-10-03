@@ -1,6 +1,6 @@
 'use server';
 
-import { eq, like } from 'drizzle-orm';
+import { eq, like, desc } from 'drizzle-orm';
 import db from '@/db';
 import { financePayments, students } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
@@ -22,12 +22,24 @@ export async function getPayments(page: number = 1, search = '') {
     .from(financePayments)
     .where(like(financePayments.stdNo, `%${search}%`))
     .leftJoin(students, eq(financePayments.stdNo, students.stdNo))
+    .orderBy(desc(financePayments.createdAt))
     .limit(ITEMS_PER_PAGE)
     .offset(offset);
   return {
     items: list,
     pages: Math.ceil(list.length / ITEMS_PER_PAGE),
   };
+}
+
+export async function getPaymentForStudent(stdNo: string) {
+  return await db
+    .select({
+      amount: financePayments.amount,
+      receiptNo: financePayments.receiptNo,
+      item: financePayments.item,
+    })
+    .from(financePayments)
+    .where(eq(financePayments.stdNo, stdNo));
 }
 
 export async function createPayment(data: typeof financePayments.$inferInsert) {
