@@ -40,3 +40,10 @@ export async function deletePayment(id: number) {
   await db.delete(financePayments).where(eq(financePayments.id, id));
   revalidatePath('/admin/payments');
 }
+
+export async function importPayments(
+  payments: (typeof financePayments.$inferInsert)[],
+) {
+  await db.insert(financePayments).values(payments).onConflictDoNothing();
+  revalidatePath('/admin/payments');
+}

@@ -9,13 +9,11 @@ import {
   TableThead,
   TableTr,
   Title,
-  Button,
 } from '@mantine/core';
-import RowActions from './RowActions';
-import { getPayments } from './actions';
-import { FilePlusIcon, PlusIcon } from 'lucide-react';
-import Link from 'next/link';
 import AddButton from './AddButton';
+import ImportButton from './ImportButton';
+import RowActions from './RowActions';
+import { getPayments, importPayments } from './actions';
 
 export default async function PaymentsPage() {
   const data = await getPayments();
@@ -42,13 +40,8 @@ export default async function PaymentsPage() {
           </Title>
           <Divider orientation='vertical' />
           <Group>
+            <ImportButton action={importPayments} />
             <AddButton />
-            <Button
-              variant='default'
-              leftSection={<FilePlusIcon size={'0.9rem'} />}
-            >
-              Import
-            </Button>
           </Group>
         </Group>
       </Paper>

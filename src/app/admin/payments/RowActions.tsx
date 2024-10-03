@@ -3,7 +3,7 @@
 import { financePayments } from '@/db/schema';
 import { ActionIcon, Menu, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import { DeleteIcon, EllipsisVertical } from 'lucide-react';
+import { EllipsisVertical, TrashIcon } from 'lucide-react';
 import { deletePayment } from './actions';
 
 type Payment = typeof financePayments.$inferSelect;
@@ -20,7 +20,7 @@ export default function RowActions({ payment }: Props) {
       title: 'Please confirm your action',
       children: (
         <Text size='sm'>
-          Are you sure you want to {actionName.toLowerCase()} this user?
+          Are you sure you want to {actionName.toLowerCase()} this payment?
         </Text>
       ),
       labels: { confirm: 'Confirm', cancel: 'Cancel' },
@@ -42,7 +42,7 @@ export default function RowActions({ payment }: Props) {
       <Menu.Dropdown>
         <Menu.Label>Actions</Menu.Label>
         <Menu.Item
-          leftSection={<DeleteIcon size={'0.9rem'} />}
+          leftSection={<TrashIcon size={'0.9rem'} color='red' />}
           onClick={handleDelete}
         >
           <Text size='xs'>Delete</Text>

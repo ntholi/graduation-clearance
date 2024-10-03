@@ -1,5 +1,5 @@
 'use client';
-import { ActionIcon, Modal } from '@mantine/core';
+import { ActionIcon, Button, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import React from 'react';
 import { createPayment } from './actions';
@@ -21,9 +21,13 @@ export default function AddButton() {
         />
       </Modal>
 
-      <ActionIcon onClick={open} variant='default' size={'lg'}>
-        <PlusIcon size={'1.2rem'} />
-      </ActionIcon>
+      <Button
+        leftSection={<PlusIcon size={'1rem'} />}
+        onClick={open}
+        variant='default'
+      >
+        New
+      </Button>
     </>
   );
 }
