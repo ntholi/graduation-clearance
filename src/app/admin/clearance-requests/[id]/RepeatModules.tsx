@@ -65,8 +65,8 @@ const StudentModuleHistory = ({ modules }: { modules: Module[] }) => {
       <Table striped highlightOnHover verticalSpacing='sm'>
         <TableThead>
           <TableTr>
-            <TableTh>Course</TableTh>
             <TableTh>Code</TableTh>
+            <TableTh>Course Name</TableTh>
             <TableTh>Attempts</TableTh>
           </TableTr>
         </TableThead>
@@ -78,10 +78,10 @@ const StudentModuleHistory = ({ modules }: { modules: Module[] }) => {
             return (
               <TableTr key={initialModule.courseCode}>
                 <TableTd style={{ verticalAlign: 'top' }}>
-                  {initialModule.courseName}
+                  {initialModule.courseCode}
                 </TableTd>
                 <TableTd style={{ verticalAlign: 'top' }}>
-                  {initialModule.courseCode}
+                  {initialModule.courseName}
                 </TableTd>
                 <TableTd style={{ verticalAlign: 'top' }}>
                   <Stack gap='xs'>
@@ -92,12 +92,11 @@ const StudentModuleHistory = ({ modules }: { modules: Module[] }) => {
                         module={attempt}
                       />
                     ))}
-                    {repeatAttempts.length === 0 &&
-                      initialModule.grade.trim() !== 'F' && (
-                        <Text size='sm' c='dimmed'>
-                          No repeats
-                        </Text>
-                      )}
+                    {repeatAttempts.length === 0 && (
+                      <Text c='red' size='sm'>
+                        Did not repeat
+                      </Text>
+                    )}
                   </Stack>
                 </TableTd>
               </TableTr>
