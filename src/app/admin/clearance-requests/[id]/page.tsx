@@ -48,9 +48,11 @@ export default async function Page({ params: { id } }: Props) {
             });
           }}
         />
-        {responder === 'finance' || responder === 'admin' ? (
-          <PaymentsDisplay stdNo={item.stdNo} />
-        ) : null}
+        <Box mt={'xl'}>
+          {responder === 'finance' || responder === 'admin' ? (
+            <PaymentsDisplay stdNo={item.stdNo} />
+          ) : null}
+        </Box>
       </TabsPanel>
       <TabsPanel value='repeat-modules' p={'lg'}>
         <RepeatModules stdNo={item.stdNo} />

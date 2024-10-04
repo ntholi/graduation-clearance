@@ -70,12 +70,9 @@ export default function Form({ onSubmit, student, responder }: Props) {
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
-      <FormHeader
-        title={`${student.stdNo} (${student.name})`}
-        isLoading={pending}
-      />
+      <FormHeader title={`${student.name}`} isLoading={pending} />
       <Stack pt={'lg'}>
-        <FieldView label='Student Number'>{student.stdNo}</FieldView>
+        <FieldView label='Student No.'>{student.stdNo}</FieldView>
         <FieldView label='Program'>{student.program}</FieldView>
         <Chip.Group {...form.getInputProps('status')}>
           <Group>
@@ -94,13 +91,13 @@ export default function Form({ onSubmit, student, responder }: Props) {
             ))}
           </Stack>
         </Radio.Group>
-        <Textarea
-          disabled={form.values.status !== 'blocked'}
-          label='Reason Blocked'
-          placeholder='Optional'
-          rows={3}
-          {...form.getInputProps('reasonBlocked')}
-        />
+        {form.values.status === 'blocked' ? (
+          <Textarea
+            label='Reason Blocked'
+            placeholder='Optional'
+            {...form.getInputProps('reasonBlocked')}
+          />
+        ) : null}
       </Stack>
     </form>
   );

@@ -46,6 +46,12 @@ const ModuleAttempt = ({ module }: { module: Module }) => (
   </Group>
 );
 
+export default async function RepeatModules({ stdNo }: Props) {
+  const repeatModules = await getRepeatModules(stdNo);
+
+  return <StudentModuleHistory modules={repeatModules} />;
+}
+
 const StudentModuleHistory = ({ modules }: { modules: Module[] }) => {
   const groupedModules = React.useMemo(() => {
     return modules.reduce(
@@ -107,16 +113,3 @@ const StudentModuleHistory = ({ modules }: { modules: Module[] }) => {
     </Card>
   );
 };
-
-export default async function RepeatModules({ stdNo }: Props) {
-  const repeatModules = await getRepeatModules(stdNo);
-
-  return (
-    <Box>
-      <Title order={5} fw='normal'>
-        Repeat Modules
-      </Title>
-      <StudentModuleHistory modules={repeatModules} />
-    </Box>
-  );
-}
