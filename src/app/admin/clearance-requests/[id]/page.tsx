@@ -15,6 +15,7 @@ export default async function Page({ params: { id } }: Props) {
   const session = await auth();
   let responder: Responder = session?.user?.role as Responder;
   const item = await getRequest(id, responder);
+
   if (!item) {
     return notFound();
   }
@@ -23,7 +24,7 @@ export default async function Page({ params: { id } }: Props) {
     <Box p={'lg'}>
       <Form
         responder={responder}
-        student={{ stdNo: item.stdNo, name: item.student?.name }}
+        student={{ stdNo: item.stdNo, ...item.student }}
         onSubmit={async (value) => {
           'use server';
           await respondToRequest(item.stdNo, item.id, {

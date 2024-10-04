@@ -2,7 +2,7 @@
 import { departmentEnum } from '@/db/schema';
 import FormHeader from '@admin/components/FormHeader';
 import useFormAction from '@admin/hooks/useFormAction';
-import { Chip, Group, Radio, Stack, Textarea } from '@mantine/core';
+import { Chip, Divider, Group, Radio, Stack, Textarea } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
@@ -24,6 +24,7 @@ type Props = {
   student: {
     stdNo: string;
     name?: string | null;
+    program?: string | null;
   };
   onSubmit: (values: Response) => Promise<void>;
 };
@@ -57,9 +58,15 @@ export default function Form({ onSubmit, student, responder }: Props) {
         title={`${student.stdNo} (${student.name})`}
         isLoading={pending}
       />
-      <Stack p={'xl'}>
+      <Stack p={'xl'} pt={'lg'}>
         <FieldView label='Student Number'>{student.stdNo}</FieldView>
-
+        <FieldView label='Program'>{student.program}</FieldView>
+        <Chip.Group {...form.getInputProps('status')}>
+          <Group>
+            <Chip value='cleared'>Cleared</Chip>
+            <Chip value='blocked'>Blocked</Chip>
+          </Group>
+        </Chip.Group>
         <Radio.Group
           hidden={responder !== 'admin'}
           label='Responder'
@@ -71,12 +78,6 @@ export default function Form({ onSubmit, student, responder }: Props) {
             ))}
           </Stack>
         </Radio.Group>
-        <Chip.Group {...form.getInputProps('status')}>
-          <Group>
-            <Chip value='cleared'>Cleared</Chip>
-            <Chip value='blocked'>Blocked</Chip>
-          </Group>
-        </Chip.Group>
         <Textarea
           disabled={form.values.status !== 'blocked'}
           label='Reason Blocked'

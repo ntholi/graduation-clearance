@@ -1,29 +1,29 @@
 import React from 'react';
-import { Box, Divider, Text, TextProps } from '@mantine/core';
+import { Box, BoxProps, Divider, Text, TextProps } from '@mantine/core';
 import { dateTime } from '@/lib/format';
 
 type Props = {
   label: string;
   children: React.ReactNode;
-};
+} & BoxProps;
 
-export default function FieldView({ label, children }: Props) {
+export default function FieldView({ label, children, ...props }: Props) {
   return (
-    <Box>
+    <Box {...props}>
       {children ? (
         <>
           {React.isValidElement(children) ? (
             children
           ) : (
-            <Text size="sm" fw={500}>
+            <Text size='sm' fw={500}>
               {children}
             </Text>
           )}
         </>
       ) : (
-        <Text size="sm">Empty</Text>
+        <Text size='sm'>Empty</Text>
       )}
-      <Text size="sm" c="dimmed">
+      <Text size='sm' c='dimmed'>
         {label}
       </Text>
       <Divider />

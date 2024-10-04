@@ -94,6 +94,7 @@ export async function getRequest(stdNo: string, responder: Responder) {
       stdNo: clearanceRequest.stdNo,
       student: {
         name: students.name,
+        program: students.program,
       },
       blockedStudent: {
         reason: blockedStudents.reason,
