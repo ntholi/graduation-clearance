@@ -4,7 +4,7 @@ from typing import List, Optional
 
 from sqlalchemy import DECIMAL, TIMESTAMP, Boolean
 from sqlalchemy import Enum as SQLAlchemyEnum
-from sqlalchemy import ForeignKey, Integer, String
+from sqlalchemy import ForeignKey, Integer, String, Text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 
@@ -49,6 +49,13 @@ class Student(Base):
         return f"Student(std_no={self.std_no}, user_id={self.user_id}, name={self.name}, national_id={self.national_id}, program={self.program}, created_at={self.created_at})"
 
 
+class GraduatingStudent(Base):
+    __tablename__ = "graduating_students"
+
+    std_no: Mapped[int] = mapped_column(Integer, primary_key=True)
+    created_at: Mapped[datetime] = mapped_column(TIMESTAMP, server_default=func.now())
+
+
 class ClearanceRequestStatus(Enum):
     pending = "pending"
     processed = "processed"
@@ -67,6 +74,69 @@ class ClearanceRequest(Base):
         default=ClearanceRequestStatus.pending,
     )
     created_at: Mapped[datetime] = mapped_column(TIMESTAMP, server_default=func.now())
+
+
+class DepartmentEnum(Enum):
+    finance = "finance"
+    library = "library"
+    resource = "resource"
+    it = "it"
+    admin = "admin"
+
+
+class ClearanceResponse(Base):
+    __tablename__ = "clearance_responses"
+
+    clearance_request_id: Mapped[int] = mapped_column(
+        Integer,
+        ForeignKey("clearance_requests.id", ondelete="CASCADE"),
+        primary_key=True,
+    )
+    blocked_student_id: Mapped[Optional[str]] = mapped_column(
+        String(21), ForeignKey("blocked_students.id", ondelete="SET NULL")
+    )
+    responder: Mapped[DepartmentEnum] = mapped_column(
+        SQLAlchemyEnum(DepartmentEnum), primary_key=True
+    )
+    created_at: Mapped[datetime] = mapped_column(TIMESTAMP, server_default=func.now())
+    created_by: Mapped[str] = mapped_column(
+        String(21), ForeignKey("users.id"), nullable=False
+    )
+
+    def __repr__(self) -> str:
+        return f"ClearanceResponse(clearance_request_id={self.clearance_request_id}, blocked_student_id={self.blocked_student_id}, responder={self.responder}, created_at={self.created_at}, created_by={self.created_by})"
+
+
+class BlockedStudentStatus(Enum):
+    blocked = "blocked"
+    unblocked = "unblocked"
+
+
+class BlockedStudent(Base):
+    __tablename__ = "blocked_students"
+
+    id: Mapped[str] = mapped_column(String(21), primary_key=True)
+    std_no: Mapped[str] = mapped_column(String(9), nullable=False)
+    department: Mapped[DepartmentEnum] = mapped_column(
+        SQLAlchemyEnum(DepartmentEnum), nullable=False
+    )
+    reason: Mapped[Optional[str]] = mapped_column(Text)
+    status: Mapped[BlockedStudentStatus] = mapped_column(
+        SQLAlchemyEnum(BlockedStudentStatus),
+        nullable=False,
+        default=BlockedStudentStatus.blocked,
+    )
+    created_at: Mapped[datetime] = mapped_column(TIMESTAMP, server_default=func.now())
+    created_by: Mapped[str] = mapped_column(
+        String(21), ForeignKey("users.id"), nullable=False
+    )
+    unblocked_at: Mapped[Optional[datetime]] = mapped_column(TIMESTAMP)
+    unblocked_by: Mapped[Optional[str]] = mapped_column(
+        String(21), ForeignKey("users.id")
+    )
+
+    def __repr__(self) -> str:
+        return f"BlockedStudent(id={self.id}, std_no={self.std_no}, department={self.department}, status={self.status}, created_at={self.created_at}, created_by={self.created_by}, unblocked_at={self.unblocked_at}, unblocked_by={self.unblocked_by})"
 
 
 class SignUpRequestStatus(Enum):
