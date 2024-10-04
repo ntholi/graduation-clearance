@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation';
 import { deleteBlockedStudent, getBlockedStudent } from '../../actions';
 import DeleteIconButton from '@admin/components/DeleteIconButton';
 import PublishSwitch from '../../UnblockSwitch';
+import StudentDisplay from '../../StudentDisplay';
 
 type Props = {
   params: {
@@ -18,25 +19,5 @@ export default async function Page({ params: { id } }: Props) {
     return notFound();
   }
 
-  return (
-    <Box p={'lg'}>
-      <HeaderDisplay
-        title={item.student?.name || item.stdNo.toString()}
-        actionButtons={[
-          <DeleteIconButton action={deleteBlockedStudent} id={id} />,
-        ]}
-      />
-
-      <Stack p={'xl'}>
-        <PublishSwitch blockedStudent={item} />
-        <Divider />
-        <FieldView label='Student Number'>{item.stdNo}</FieldView>
-        <FieldView label='Name'>{item.student?.name}</FieldView>
-        <FieldView label='Reason'>
-          <Text size='sm'>{item.reason}</Text>
-        </FieldView>
-        <FieldView label='Created At'>{dateTime(item.createdAt)}</FieldView>
-      </Stack>
-    </Box>
-  );
+  return <StudentDisplay blockedStudent={item} />;
 }
