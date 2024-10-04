@@ -41,7 +41,6 @@ export async function getClearanceList(
     .where(
       and(
         like(clearanceRequest.stdNo, `%${search}%`),
-        eq(clearanceRequest.status, 'pending'),
         not(inArray(clearanceRequest.id, sq)),
       ),
     )
@@ -54,12 +53,7 @@ export async function getClearanceList(
   const totalCount = await db
     .select({ count: count() })
     .from(clearanceRequest)
-    .where(
-      and(
-        eq(clearanceRequest.status, 'pending'),
-        not(inArray(clearanceRequest.id, sq)),
-      ),
-    )
+    .where(not(inArray(clearanceRequest.id, sq)))
     .then((it) => it[0].count);
 
   return {
@@ -78,12 +72,7 @@ export async function getUnattendedRequestsCount(responder: Responder) {
   const number = await db
     .select({ count: count() })
     .from(clearanceRequest)
-    .where(
-      and(
-        eq(clearanceRequest.status, 'pending'),
-        not(inArray(clearanceRequest.id, sq)),
-      ),
-    );
+    .where(not(inArray(clearanceRequest.id, sq)));
   return number[0].count;
 }
 
@@ -99,7 +88,6 @@ export async function getRequest(stdNo: string, responder: Responder) {
       blockedStudent: {
         reason: blockedStudents.reason,
       },
-      status: clearanceRequest.status,
       createdAt: clearanceRequest.createdAt,
     })
     .from(clearanceRequest)

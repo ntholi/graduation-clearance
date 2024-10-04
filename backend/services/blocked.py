@@ -1,5 +1,5 @@
 from database import db_session
-from database.models import ClearanceRequest, ClearanceRequestStatus, GraduatingStudent
+from database.models import ClearanceRequest, GraduatingStudent
 
 
 def block_not_graduating(std_no: int):
@@ -17,6 +17,5 @@ def block_not_graduating(std_no: int):
         if clearance_request:
             response = ClearanceRequest(
                 std_no=std_no,
-                status=ClearanceRequestStatus.pending,  # TODO: REMOVE THIS
                 reason="Not Graduating",
             )

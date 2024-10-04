@@ -56,22 +56,12 @@ class GraduatingStudent(Base):
     created_at: Mapped[datetime] = mapped_column(TIMESTAMP, server_default=func.now())
 
 
-class ClearanceRequestStatus(Enum):
-    pending = "pending"
-    processed = "processed"
-
-
 class ClearanceRequest(Base):
     __tablename__ = "clearance_requests"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     std_no: Mapped[int] = mapped_column(
         Integer, ForeignKey("students.std_no", ondelete="CASCADE"), nullable=False
-    )
-    status: Mapped[ClearanceRequestStatus] = mapped_column(
-        SQLAlchemyEnum(ClearanceRequestStatus),
-        nullable=False,
-        default=ClearanceRequestStatus.pending,
     )
     created_at: Mapped[datetime] = mapped_column(TIMESTAMP, server_default=func.now())
 

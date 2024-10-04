@@ -122,17 +122,11 @@ export const blockedStudents = pgTable('blocked_students', {
   ),
 });
 
-export const clearanceRequestStatusEnum = pgEnum('clearance_request_status', [
-  'pending',
-  'processed',
-]);
-
 export const clearanceRequest = pgTable('clearance_requests', {
   id: serial('id').notNull().primaryKey(),
   stdNo: varchar('std_no', { length: 9 })
     .notNull()
     .references(() => students.stdNo, { onDelete: 'cascade' }),
-  status: clearanceRequestStatusEnum('status').notNull().default('pending'),
   blockedStudentId: varchar('blocked_student_id', { length: 21 }).references(
     () => blockedStudents.id,
     { onDelete: 'set null' },
