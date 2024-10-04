@@ -60,15 +60,14 @@ export default function Form({ onSubmit, student, responder }: Props) {
       <Stack p={'xl'}>
         <FieldView label='Student Number'>{student.stdNo}</FieldView>
 
-        <Radio.Group label='Responder' {...form.getInputProps('responder')}>
+        <Radio.Group
+          hidden={responder !== 'admin'}
+          label='Responder'
+          {...form.getInputProps('responder')}
+        >
           <Stack gap={'xs'}>
             {departmentEnum.enumValues.map((value) => (
-              <Radio
-                label={formatResponder(value)}
-                key={value}
-                value={value}
-                disabled={responder !== 'admin' && value !== responder}
-              />
+              <Radio label={formatResponder(value)} key={value} value={value} />
             ))}
           </Stack>
         </Radio.Group>
