@@ -117,20 +117,6 @@ export async function getRequest(stdNo: string, responder: Responder) {
   return res;
 }
 
-// export async function updateClearanceStatus(
-//   stdNo: string,
-//   status: ClearanceRequest['status'],
-// ) {
-//   await db
-//     .update(clearanceRequest)
-//     .set({ status })
-//     .where(eq(clearanceRequest.stdNo, stdNo))
-//     .returning()
-//     .then((it) => it[0]);
-//   revalidatePath('/admin/clearance-requests');
-//   revalidatePath(`/admin/clearance-requests/${stdNo}`);
-// }
-
 export async function respondToRequest(
   stdNo: string,
   clearanceRequestId: number,

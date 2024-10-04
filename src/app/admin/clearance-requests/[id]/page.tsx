@@ -1,9 +1,11 @@
 import { auth } from '@/auth';
-import { Box } from '@mantine/core';
+import { Box, Tabs, TabsList, TabsPanel, TabsTab } from '@mantine/core';
 import { notFound } from 'next/navigation';
 import Form from '../Form';
 import { getRequest, Responder, respondToRequest } from '../actions';
 import PaymentsDisplay from './PaymentsDisplay';
+import { GraduationCap, ListCheck, SquareArrowOutUpRight } from 'lucide-react';
+import RepeatModules from './RepeatModules';
 
 type Props = {
   params: {
@@ -21,24 +23,38 @@ export default async function Page({ params: { id } }: Props) {
   }
 
   return (
-    <Box p={'lg'}>
-      <Form
-        responder={responder}
-        student={{ stdNo: item.stdNo, ...item.student }}
-        onSubmit={async (value) => {
-          'use server';
-          await respondToRequest(item.stdNo, item.id, {
-            responder: value.responder,
-            status: value.status,
-            reasonBlocked: value.reasonBlocked,
-          });
-        }}
-      />
-      {responder === 'finance' || responder === 'admin' ? (
-        <Box px={'xl'}>
+    <Tabs p={'xl'} defaultValue='clearance'>
+      <TabsList>
+        <TabsTab value='clearance' leftSection={<ListCheck size='1rem' />}>
+          Clearance
+        </TabsTab>
+        <TabsTab
+          value='repeat-modules'
+          leftSection={<GraduationCap size='1rem' />}
+        >
+          Repeat Modules
+        </TabsTab>
+      </TabsList>
+      <TabsPanel value='clearance' p={'lg'}>
+        <Form
+          responder={responder}
+          student={{ stdNo: item.stdNo, ...item.student }}
+          onSubmit={async (value) => {
+            'use server';
+            await respondToRequest(item.stdNo, item.id, {
+              responder: value.responder,
+              status: value.status,
+              reasonBlocked: value.reasonBlocked,
+            });
+          }}
+        />
+        {responder === 'finance' || responder === 'admin' ? (
           <PaymentsDisplay stdNo={item.stdNo} />
-        </Box>
-      ) : null}
-    </Box>
+        ) : null}
+      </TabsPanel>
+      <TabsPanel value='repeat-modules' p={'lg'}>
+        <RepeatModules stdNo={item.stdNo} />
+      </TabsPanel>
+    </Tabs>
   );
 }

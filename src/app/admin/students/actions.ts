@@ -1,7 +1,7 @@
 'use server';
 
 import db from '@/db';
-import { students } from '@/db/schema';
+import { enrollments, grades, students } from '@/db/schema';
 import { eq, like } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
@@ -60,4 +60,25 @@ export async function updateStudent(
   revalidatePath(`/admin/students/${id}`);
   revalidatePath('/admin/students');
   return res[0];
+}
+
+export async function getRepeatModules(stdNo: string) {
+  const res = await db
+    .select({
+      courseCode: grades.courseCode,
+      courseName: grades.courseName,
+      grade: grades.grade,
+      term: enrollments.term,
+      semester: enrollments.semester,
+    })
+    .from(grades)
+    .innerJoin(enrollments, eq(grades.enrollmentId, enrollments.id))
+    .where(eq(enrollments.stdNo, stdNo));
+  const failedModules = res.filter((it) => it.grade.trim() === 'F');
+  const repeatModules = res.filter(
+    (it) =>
+      failedModules.map((it) => it.courseCode).includes(it.courseCode) ||
+      failedModules.map((it) => it.courseName).includes(it.courseName),
+  );
+  return repeatModules;
 }

@@ -2,7 +2,15 @@
 import { departmentEnum } from '@/db/schema';
 import FormHeader from '@admin/components/FormHeader';
 import useFormAction from '@admin/hooks/useFormAction';
-import { Chip, Divider, Group, Radio, Stack, Textarea } from '@mantine/core';
+import {
+  Button,
+  Chip,
+  Divider,
+  Group,
+  Radio,
+  Stack,
+  Textarea,
+} from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
@@ -10,6 +18,14 @@ import FieldView from '../components/FieldView';
 import { Responder } from './actions';
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import {
+  GraduationCap,
+  LinkIcon,
+  SquareArrowDownRight,
+  SquareArrowOutDownRight,
+  SquareArrowOutUpRight,
+} from 'lucide-react';
+import Link from 'next/link';
 
 export const ClearanceResponseSchema = z.object({
   status: z.enum(['cleared', 'blocked']),
@@ -58,7 +74,7 @@ export default function Form({ onSubmit, student, responder }: Props) {
         title={`${student.stdNo} (${student.name})`}
         isLoading={pending}
       />
-      <Stack p={'xl'} pt={'lg'}>
+      <Stack pt={'lg'}>
         <FieldView label='Student Number'>{student.stdNo}</FieldView>
         <FieldView label='Program'>{student.program}</FieldView>
         <Chip.Group {...form.getInputProps('status')}>
