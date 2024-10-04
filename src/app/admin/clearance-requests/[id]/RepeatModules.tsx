@@ -35,14 +35,12 @@ const formatSemester = (semesterCode: string) => {
 };
 
 const ModuleAttempt = ({ module }: { module: Module }) => (
-  <Group grow>
-    <Text size='sm'>{formatSemester(module.semester)}</Text>
-    <Text size='sm'>{module.term}</Text>
-    <Badge
-      maw={50}
-      size='sm'
-      color={module.grade.trim() === 'F' ? 'red' : 'green'}
-    >
+  <Group align='start'>
+    <Text size='sm'>{module.term.trim()}</Text>
+    <Text size='sm' style={{ whiteSpace: 'nowrap' }}>
+      {formatSemester(module.semester)}
+    </Text>
+    <Badge size='sm' color={module.grade.trim() === 'F' ? 'red' : 'green'}>
       {module.grade.trim()}
     </Badge>
   </Group>
@@ -64,7 +62,7 @@ const StudentModuleHistory = ({ modules }: { modules: Module[] }) => {
 
   return (
     <Card shadow='sm' padding='lg' radius='md' withBorder mt='md'>
-      <Table striped highlightOnHover>
+      <Table striped highlightOnHover verticalSpacing='sm'>
         <TableThead>
           <TableTr>
             <TableTh>Course</TableTh>
@@ -79,9 +77,13 @@ const StudentModuleHistory = ({ modules }: { modules: Module[] }) => {
 
             return (
               <TableTr key={initialModule.courseCode}>
-                <TableTd>{initialModule.courseName}</TableTd>
-                <TableTd>{initialModule.courseCode}</TableTd>
-                <TableTd>
+                <TableTd style={{ verticalAlign: 'top' }}>
+                  {initialModule.courseName}
+                </TableTd>
+                <TableTd style={{ verticalAlign: 'top' }}>
+                  {initialModule.courseCode}
+                </TableTd>
+                <TableTd style={{ verticalAlign: 'top' }}>
                   <Stack gap='xs'>
                     <ModuleAttempt module={initialModule} />
                     {repeatAttempts.map((attempt, index) => (
@@ -93,7 +95,7 @@ const StudentModuleHistory = ({ modules }: { modules: Module[] }) => {
                     {repeatAttempts.length === 0 &&
                       initialModule.grade.trim() !== 'F' && (
                         <Text size='sm' c='dimmed'>
-                          No repeats necessary
+                          No repeats
                         </Text>
                       )}
                   </Stack>
