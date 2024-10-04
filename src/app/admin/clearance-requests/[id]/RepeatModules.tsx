@@ -13,6 +13,7 @@ import {
   TableTh,
   Stack,
   Group,
+  Paper,
 } from '@mantine/core';
 import { getRepeatModules } from '../../students/actions';
 
@@ -67,7 +68,7 @@ const StudentModuleHistory = ({ modules }: { modules: Module[] }) => {
   }, [modules]);
 
   return (
-    <Card shadow='sm' padding='lg' radius='md' withBorder mt='md'>
+    <Paper shadow='sm' p='lg' radius='md' withBorder mt='md'>
       <Table striped highlightOnHover verticalSpacing='sm'>
         <TableThead>
           <TableTr>
@@ -110,6 +111,6 @@ const StudentModuleHistory = ({ modules }: { modules: Module[] }) => {
           })}
         </TableTbody>
       </Table>
-    </Card>
+    </Paper>
   );
 };

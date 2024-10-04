@@ -71,7 +71,7 @@ export default function Form({ onSubmit, student, responder }: Props) {
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <FormHeader title={`${student.name}`} isLoading={pending} />
-      <Stack pt={'lg'}>
+      <Stack pt={'md'} gap={'lg'}>
         <FieldView label='Student No.'>{student.stdNo}</FieldView>
         <FieldView label='Program'>{student.program}</FieldView>
         <Chip.Group {...form.getInputProps('status')}>
@@ -95,6 +95,7 @@ export default function Form({ onSubmit, student, responder }: Props) {
           <Textarea
             label='Reason Blocked'
             placeholder='Optional'
+            rows={3}
             {...form.getInputProps('reasonBlocked')}
           />
         ) : null}
