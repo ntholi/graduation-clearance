@@ -11,6 +11,8 @@ import {
   TableTbody,
   TableThead,
   TableTh,
+  Stack,
+  Group,
 } from '@mantine/core';
 import { getRepeatModules } from '../../students/actions';
 
@@ -32,64 +34,69 @@ const formatSemester = (semesterCode: string) => {
   return `Year ${year} Sem ${sem}`;
 };
 
+const ModuleAttempt = ({ module }: { module: Module }) => (
+  <Group grow>
+    <Text size='sm'>{formatSemester(module.semester)}</Text>
+    <Text size='sm'>{module.term}</Text>
+    <Badge
+      maw={50}
+      size='sm'
+      color={module.grade.trim() === 'F' ? 'red' : 'green'}
+    >
+      {module.grade.trim()}
+    </Badge>
+  </Group>
+);
+
 const StudentModuleHistory = ({ modules }: { modules: Module[] }) => {
-  const groupedModules = modules.reduce(
-    (acc, module) => {
-      if (!acc[module.courseCode]) {
-        acc[module.courseCode] = [];
-      }
-      acc[module.courseCode].push(module);
-      return acc;
-    },
-    {} as Record<string, Module[]>,
-  );
+  const groupedModules = React.useMemo(() => {
+    return modules.reduce(
+      (acc, module) => {
+        if (!acc[module.courseCode]) {
+          acc[module.courseCode] = [];
+        }
+        acc[module.courseCode].push(module);
+        return acc;
+      },
+      {} as Record<string, Module[]>,
+    );
+  }, [modules]);
 
   return (
     <Card shadow='sm' padding='lg' radius='md' withBorder mt='md'>
-      <Table>
+      <Table striped highlightOnHover>
         <TableThead>
           <TableTr>
-            <TableTh>Course Code</TableTh>
-            <TableTh>Course Name</TableTh>
-            <TableTh>Initial Semester</TableTh>
-            <TableTh>Initial Term</TableTh>
-            <TableTh>Grade</TableTh>
-            <TableTh>Repeat Info</TableTh>
+            <TableTh>Course</TableTh>
+            <TableTh>Code</TableTh>
+            <TableTh>Attempts</TableTh>
           </TableTr>
         </TableThead>
         <TableTbody>
           {Object.values(groupedModules).map((moduleInstances) => {
             const initialModule = moduleInstances[0];
-            const isRepeated = moduleInstances.length > 1;
-            const latestModule = moduleInstances[moduleInstances.length - 1];
+            const repeatAttempts = moduleInstances.slice(1);
 
             return (
               <TableTr key={initialModule.courseCode}>
-                <TableTd>{initialModule.courseCode}</TableTd>
                 <TableTd>{initialModule.courseName}</TableTd>
-                <TableTd>{formatSemester(initialModule.semester)}</TableTd>
-                <TableTd>{initialModule.term}</TableTd>
+                <TableTd>{initialModule.courseCode}</TableTd>
                 <TableTd>
-                  <Badge
-                    color={initialModule.grade.trim() === 'F' ? 'red' : 'green'}
-                  >
-                    {initialModule.grade.trim()}
-                  </Badge>
-                </TableTd>
-                <TableTd>
-                  {isRepeated ? (
-                    <Text size='sm'>
-                      Repeated in {formatSemester(latestModule.semester)} (Term:{' '}
-                      {latestModule.term})
-                      <br />
-                      Latest Grade:{' '}
-                      <Badge color='green'>{latestModule.grade.trim()}</Badge>
-                    </Text>
-                  ) : initialModule.grade.trim() === 'F' ? (
-                    <Badge color='yellow'>Not Repeated</Badge>
-                  ) : (
-                    'N/A'
-                  )}
+                  <Stack gap='xs'>
+                    <ModuleAttempt module={initialModule} />
+                    {repeatAttempts.map((attempt, index) => (
+                      <ModuleAttempt
+                        key={`${attempt.courseCode}-${attempt.term}`}
+                        module={attempt}
+                      />
+                    ))}
+                    {repeatAttempts.length === 0 &&
+                      initialModule.grade.trim() !== 'F' && (
+                        <Text size='sm' c='dimmed'>
+                          No repeats necessary
+                        </Text>
+                      )}
+                  </Stack>
                 </TableTd>
               </TableTr>
             );
