@@ -28,7 +28,7 @@ async function PageSwitch() {
   if (session?.user?.role && ADMIN_ROLES.includes(session?.user?.role)) {
     return redirect('/admin');
   }
-  if (session?.user?.role === 'student') {
+  if (session?.user?.student) {
     return redirect('/student');
   } else {
     return redirect('/signup');
