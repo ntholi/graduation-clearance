@@ -4,7 +4,6 @@ from datetime import datetime
 from database import db_session, init_db
 from database.models import (
     ClearanceRequest,
-    ClearanceRequestStatus,
     Enrollment,
     Grade,
     SignUpRequest,
@@ -50,7 +49,6 @@ def mark_user_as_student(user_id: str | None):
 def create_clearance_request(student: Student):
     clearance = ClearanceRequest(
         std_no=student.std_no,
-        status=ClearanceRequestStatus.pending,
     )
     db_session.add(clearance)
     print(f"Clearance request for {student.std_no} created")
