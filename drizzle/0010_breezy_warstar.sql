@@ -1,0 +1,1 @@
+ALTER TABLE "clearance_requests" DROP COLUMN IF EXISTS "status";
