@@ -123,3 +123,11 @@ async function isBlocked(
     status: 'cleared',
   };
 }
+
+export async function getClearanceRequest(stdNo?: string) {
+  if (!stdNo) return null;
+  const request = await db.query.clearanceRequest.findFirst({
+    where: and(eq(clearanceRequest.stdNo, stdNo)),
+  });
+  return request;
+}
