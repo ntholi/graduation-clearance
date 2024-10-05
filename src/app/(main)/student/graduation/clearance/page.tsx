@@ -1,5 +1,4 @@
 import { getGraduationConfirmation } from '@/app/admin/graduating/confirmations/actions';
-import { getStudentByUserId } from '@/app/admin/students/actions';
 import { auth } from '@/auth';
 import Container from '@/components/ui/container';
 import { redirect } from 'next/navigation';
@@ -7,8 +6,7 @@ import Body from './Body';
 
 export default async function ClearancePage() {
   const session = await auth();
-  const student = await getStudentByUserId(session?.user?.id);
-  const confirmation = await getGraduationConfirmation(student?.stdNo);
+  const confirmation = await getGraduationConfirmation(session?.user?.stdNo);
 
   if (confirmation?.cleared && confirmation.confirmed) {
     return redirect('/student/graduation/success');

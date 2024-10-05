@@ -8,6 +8,7 @@ import {
   users,
   verificationTokens,
 } from './db/schema/auth';
+import { getStudentByUserId } from './app/admin/students/actions';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [Google],
@@ -18,7 +19,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     verificationTokensTable: verificationTokens,
   }) as any,
   callbacks: {
-    session({ session, user }) {
+    async session({ session, user }) {
+      const student = await getStudentByUserId(user.id);
+      if (student) {
+        session.user.student = {
+          stdNo: student.stdNo,
+          name: student.name,
+          program: student.program,
+        };
+      }
       session.user.role = user.role;
       return session;
     },

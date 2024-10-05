@@ -1,5 +1,4 @@
 import React from 'react';
-import { getStudentByUserId } from '@admin/students/actions';
 import { auth } from '@/auth';
 import Container from '@/components/ui/container';
 import db from '@/db';
@@ -29,7 +28,7 @@ async function getTranscriptData(stdNo: string) {
 
 export default async function TranscriptPage() {
   const session = await auth();
-  const student = await getStudentByUserId(session?.user?.id);
+  const student = session?.user?.student;
 
   if (!student) {
     return (

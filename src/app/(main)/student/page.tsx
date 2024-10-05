@@ -8,7 +8,6 @@ import {
 import Container from '@/components/ui/container';
 import { FileText, GraduationCap, User } from 'lucide-react';
 import Link from 'next/link';
-import { getStudentByUserId } from '@admin/students/actions';
 
 const links = [
   {
@@ -27,7 +26,7 @@ const links = [
 
 export default async function Home() {
   const session = await auth();
-  const student = await getStudentByUserId(session?.user?.id);
+  const student = session?.user?.student;
 
   return (
     <Container className='mx-auto mt-10 max-w-4xl'>

@@ -6,15 +6,12 @@ import Gradient from '@/components/ui/Gradient';
 import { redirect } from 'next/navigation';
 import Logo from '../student/base/Logo';
 import { SignUpForm } from './form';
-import { getStudentByUserId } from '@admin/students/actions';
 
 export default async function RegistrationPage() {
   const session = await auth();
-  const student = await getStudentByUserId(session?.user?.id);
 
   if (!session) return redirect('/login');
-
-  if (student) return redirect('/student');
+  if (session.user?.student) return redirect('/student');
 
   async function handleLogout() {
     'use server';
