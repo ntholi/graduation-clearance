@@ -87,7 +87,7 @@ async function isCleared(
     };
   }
   const blocked = res[0].blocked_students;
-  if (blocked) {
+  if (blocked && blocked.status === 'blocked') {
     return {
       status: 'not cleared',
       message: blocked.reason,
@@ -113,7 +113,7 @@ async function isBlocked(
     )
     .limit(1)
     .then((it) => it[0]);
-  if (res) {
+  if (res && res.status === 'blocked') {
     return {
       status: 'not cleared',
       message: res.reason,
