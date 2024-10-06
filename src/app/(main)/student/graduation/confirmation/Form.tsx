@@ -34,7 +34,7 @@ export default function Form({ student }: Props) {
   function handleSubmit() {
     startTransition(async () => {
       await saveConfirmation({ stdNo: student.stdNo, confirmed });
-      router.push('/student/graduation/success');
+      router.push('/student/graduation/success?ref=confirmation');
     });
   }
 
