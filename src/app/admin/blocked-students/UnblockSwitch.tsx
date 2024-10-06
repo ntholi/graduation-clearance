@@ -2,7 +2,7 @@
 
 import { blockedStudents } from '@/db/schema';
 import { Flex, Switch, rem, useMantineTheme } from '@mantine/core';
-import { Check, CircleAlert, CircleCheck, X, XIcon } from 'lucide-react';
+import { Check, ShieldAlert, CircleCheck, X } from 'lucide-react';
 import { useTransition } from 'react';
 import { updateStatus } from './actions';
 
@@ -27,9 +27,9 @@ export default function UnblockSwitch({ blockedStudent }: Props) {
   return (
     <Flex justify={'space-between'}>
       <Switch
-        checked={status === 'blocked'}
+        checked={status === 'unblocked'}
         onChange={update}
-        color='red'
+        color='teal'
         size='sm'
         label={
           isPending
@@ -54,7 +54,7 @@ export default function UnblockSwitch({ blockedStudent }: Props) {
       />
       <>
         {status === 'blocked' ? (
-          <CircleAlert size={'2rem'} color={theme.colors.red[5]} />
+          <ShieldAlert size={'2rem'} color={theme.colors.red[5]} />
         ) : (
           <CircleCheck size={'2rem'} color={theme.colors.green[5]} />
         )}

@@ -14,7 +14,7 @@ export default function NextButton({ className, state }: Props) {
   return (
     <div
       className={cn(
-        'flex items-center justify-between rounded-lg bg-background p-4',
+        'flex items-center justify-between rounded-lg bg-background p-4 text-sm',
         className,
       )}
     >
