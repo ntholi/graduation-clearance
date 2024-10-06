@@ -1,6 +1,7 @@
-import React from 'react';
 import { isGraduating } from '@/app/admin/graduating/students/actions';
 import { auth } from '@/auth';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -9,11 +10,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { CircleCheck, AlertTriangle, ArrowLeft } from 'lucide-react';
-import RequestButton from './RequestButton';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
+import { AlertTriangle, ArrowLeft, CircleHelp } from 'lucide-react';
 import Link from 'next/link';
+import RequestButton from './RequestButton';
 
 export default async function RequestClearance() {
   const session = await auth();
@@ -56,7 +55,7 @@ export default async function RequestClearance() {
               {['Faculty', 'Library', 'Finance', 'Resource'].map(
                 (dept, index) => (
                   <li key={index} className='flex items-center space-x-3'>
-                    <CircleCheck className='size-4' />
+                    <CircleHelp className='size-4' />
                     <span className='text-sm'>{dept}</span>
                   </li>
                 ),
