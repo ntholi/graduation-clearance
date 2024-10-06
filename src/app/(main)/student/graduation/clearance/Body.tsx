@@ -5,6 +5,9 @@ import { steps } from './steps';
 import ClearanceStep from './ClearanceStep';
 import NextButton from './NextButton';
 import ClearanceStatus from './ClearanceStatus';
+import { Button } from '@/components/ui/button';
+import { ArrowRightIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 type ProcessStatus = {
   step: number;
@@ -16,6 +19,7 @@ export default function Body() {
     'processing',
   );
   const [status, setStatus] = useState<ProcessStatus[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     if (status.length === steps.length) {
@@ -39,6 +43,16 @@ export default function Body() {
             }}
           />
         ))}
+      </div>
+      <div className='ml-[4.5rem] mt-6'>
+        <Button
+          disabled={state !== 'cleared'}
+          className='w-full'
+          onClick={() => router.push('/student/graduation/confirmation')}
+          variant={'outline'}
+        >
+          Next <ArrowRightIcon className='ml-2 size-4' />
+        </Button>
       </div>
     </>
   );
