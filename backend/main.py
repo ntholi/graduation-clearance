@@ -35,8 +35,8 @@ def save_student(student: Student):
         existing_student.program = student.program
     else:
         db_session.add(student)
+    print(f"Saving student {student.std_no}...")
     db_session.commit()
-    print(f"Student {student.std_no} saved")
 
 
 def mark_user_as_student(user_id: str | None):
