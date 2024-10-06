@@ -23,8 +23,12 @@ export default function RequestButton({ stdNo }: Props) {
   }
 
   return (
-    <Button className='w-full' onClick={handleRequestClearance}>
-      {isPending && <Loader2 className='size-4 animate-spin' />}
+    <Button
+      className='w-full'
+      onClick={handleRequestClearance}
+      disabled={isPending}
+    >
+      {isPending && <Loader2 className='mr-2 size-4 animate-spin' />}
       Request Clearance
     </Button>
   );
