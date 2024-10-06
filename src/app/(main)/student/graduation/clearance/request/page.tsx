@@ -1,3 +1,4 @@
+import React from 'react';
 import { isGraduating } from '@/app/admin/graduating/students/actions';
 import { auth } from '@/auth';
 import {
@@ -8,12 +9,35 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { CircleCheck } from 'lucide-react';
+import { CircleCheck, AlertTriangle, ArrowLeft } from 'lucide-react';
 import RequestButton from './RequestButton';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default async function RequestClearance() {
   const session = await auth();
   const graduating = await isGraduating(session?.user?.student?.stdNo);
+
+  if (!graduating) {
+    return (
+      <div className='flex h-[80vh] flex-col items-center justify-center p-4'>
+        <Alert variant='destructive' className='w-full max-w-md'>
+          <AlertTriangle className='h-4 w-4' />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            Your name was not found in the graduation list. Please consult your
+            faculty or registry department for more information.
+          </AlertDescription>
+        </Alert>
+        <Button asChild className='mt-4 w-full max-w-md'>
+          <Link href='/student' className='flex items-center gap-2'>
+            <ArrowLeft className='size-4' /> <span>Back</span>
+          </Link>
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className='flex h-[80vh] items-center justify-center p-4'>
@@ -43,7 +67,7 @@ export default async function RequestClearance() {
         <CardFooter className='mt-6'>
           <RequestButton
             stdNo={session?.user?.student?.stdNo}
-            disabled={graduating}
+            disabled={!graduating}
           />
         </CardFooter>
       </Card>
