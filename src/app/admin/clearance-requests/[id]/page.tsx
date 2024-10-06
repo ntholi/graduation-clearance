@@ -17,6 +17,8 @@ export default async function Page({ params: { id } }: Props) {
   const session = await auth();
   let responder: Responder = session?.user?.role as Responder;
   const item = await getRequest(id, responder);
+  const isFinance =
+    session?.user?.role === 'finance' || session?.user?.role === 'admin';
 
   if (!item) {
     return notFound();
@@ -28,14 +30,16 @@ export default async function Page({ params: { id } }: Props) {
         <TabsTab value='clearance' leftSection={<ListCheck size='1rem' />}>
           Clearance
         </TabsTab>
-        <TabsTab
-          value='repeat-modules'
-          leftSection={<GraduationCap size='1rem' />}
-        >
-          Repeat Modules
-        </TabsTab>
+        {isFinance && (
+          <TabsTab
+            value='repeat-modules'
+            leftSection={<GraduationCap size='1rem' />}
+          >
+            Repeat Modules
+          </TabsTab>
+        )}
       </TabsList>
-      <TabsPanel value='clearance' p={'lg'}>
+      <TabsPanel value='clearance' py={'md'} px={'lg'}>
         <Form
           responder={responder}
           student={{ stdNo: item.stdNo, ...item.student }}
@@ -54,9 +58,11 @@ export default async function Page({ params: { id } }: Props) {
           ) : null}
         </Box>
       </TabsPanel>
-      <TabsPanel value='repeat-modules' p={'lg'}>
-        <RepeatModules stdNo={item.stdNo} />
-      </TabsPanel>
+      {isFinance && (
+        <TabsPanel value='repeat-modules' p={'lg'}>
+          <RepeatModules stdNo={item.stdNo} />
+        </TabsPanel>
+      )}
     </Tabs>
   );
 }

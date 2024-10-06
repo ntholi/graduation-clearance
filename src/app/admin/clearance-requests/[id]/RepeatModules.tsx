@@ -1,20 +1,17 @@
-import React from 'react';
 import {
-  Box,
-  Title,
-  Table,
-  Card,
   Badge,
-  Text,
-  TableTd,
-  TableTr,
-  TableTbody,
-  TableThead,
-  TableTh,
-  Stack,
   Group,
   Paper,
+  Stack,
+  Table,
+  TableTbody,
+  TableTd,
+  TableTh,
+  TableThead,
+  TableTr,
+  Text,
 } from '@mantine/core';
+import React from 'react';
 import { getRepeatModules } from '../../students/actions';
 
 type Props = {
