@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
-import { CheckCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -9,15 +8,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import type { ConfettiRef } from '@/components/ui/confetti';
-import Confetti from '@/components/ui/confetti';
-import { useSearchParams } from 'next/navigation';
 import confetti from 'canvas-confetti';
+import { CheckCircle } from 'lucide-react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useRef } from 'react';
 
 export default function GraduationClearanceSuccess() {
-  const confettiRef = useRef<ConfettiRef>(null);
   const searchParams = useSearchParams();
   const cardRef = useRef<HTMLDivElement>(null);
 
