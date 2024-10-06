@@ -3,7 +3,6 @@ from datetime import datetime
 
 from database import db_session, init_db
 from database.models import (
-    ClearanceRequest,
     Enrollment,
     Grade,
     SignUpRequest,
@@ -45,14 +44,6 @@ def mark_user_as_student(user_id: str | None):
     if user:
         user.role = UserRole.student
         db_session.commit()
-
-
-def create_clearance_request(student: Student):
-    clearance = ClearanceRequest(
-        std_no=student.std_no,
-    )
-    db_session.add(clearance)
-    print(f"Clearance request for {student.std_no} created")
 
 
 def batch_save_enrollments(
@@ -108,10 +99,10 @@ def approve_signup_requests():
             save_student(student)
             mark_user_as_student(signup.user_id)
             batch_save_enrollments(db_session, student.std_no, enrollments)
-            create_clearance_request(student)
 
             signup.status = SignUpRequestStatus.approved
             db_session.commit()
+            print(f"Approved signup request for {signup.std_no}")
         except IntegrityError as e:
             db_session.rollback()
             print(f"Database integrity error for {signup.std_no}: {e}")
@@ -147,9 +138,9 @@ def update_saved_students():
 def main():
     init_db()
     while True:
-        # approve_signup_requests()
+        approve_signup_requests()
         # update_saved_students()
-        delete_non_graduating_requests()
+        # delete_non_graduating_requests()
         print("Sleeping for 10 minutes...")
         time.sleep(60 * 10)
 
