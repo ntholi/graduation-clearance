@@ -15,6 +15,7 @@ from database.models import (
 from rich import print
 from scrapper import Scrapper
 from services.blocked import block_not_graduating
+from services.cleanup import delete_non_graduating_requests
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, scoped_session
 
@@ -146,8 +147,9 @@ def update_saved_students():
 def main():
     init_db()
     while True:
-        approve_signup_requests()
+        # approve_signup_requests()
         # update_saved_students()
+        delete_non_graduating_requests()
         print("Sleeping for 10 minutes...")
         time.sleep(60 * 10)
 
