@@ -1,7 +1,7 @@
 import { Box } from '@mantine/core';
 import { notFound } from 'next/navigation';
 import Form from '../../Form';
-import { getStudent, updateStudent } from '../../actions';
+import { getGraduatingStudent, updateStudent } from '../../actions';
 
 type Props = {
   params: {
@@ -10,7 +10,7 @@ type Props = {
 };
 
 export default async function EditPage({ params: { id } }: Props) {
-  const item = await getStudent(id);
+  const item = await getGraduatingStudent(id);
   if (!item) return notFound();
 
   return (

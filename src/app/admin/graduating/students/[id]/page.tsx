@@ -1,6 +1,6 @@
 import {
   deleteStudent,
-  getStudent,
+  getGraduatingStudent,
 } from '@/app/admin/graduating/students/actions';
 import { dateTime } from '@/lib/format';
 import DeleteIconButton from '@admin/components/DeleteIconButton';
@@ -15,7 +15,7 @@ type Props = {
   };
 };
 export default async function Page({ params: { id } }: Props) {
-  const item = await getStudent(id);
+  const item = await getGraduatingStudent(id);
   if (!item) {
     return notFound();
   }

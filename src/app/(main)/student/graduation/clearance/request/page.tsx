@@ -1,7 +1,5 @@
-'use client';
-
-import React, { useTransition } from 'react';
-import { Button } from '@/components/ui/button';
+import { isGraduating } from '@/app/admin/graduating/students/actions';
+import { auth } from '@/auth';
 import {
   Card,
   CardContent,
@@ -11,21 +9,11 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { CircleCheck } from 'lucide-react';
-import { requestClearance } from './actions';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import RequestButton from './RequestButton';
 
-export default function RequestClearance() {
-  const [isPending, startTransition] = useTransition();
-  const { data: session } = useSession();
-  const router = useRouter();
-
-  function handleRequestClearance() {
-    startTransition(async () => {
-      await requestClearance(session?.user?.student?.stdNo);
-      router.push('/student/graduation/clearance/');
-    });
-  }
+export default async function RequestClearance() {
+  const session = await auth();
+  const graduating = await isGraduating(session?.user?.student?.stdNo);
 
   return (
     <div className='flex h-[80vh] items-center justify-center p-4'>
@@ -53,9 +41,10 @@ export default function RequestClearance() {
           </div>
         </CardContent>
         <CardFooter className='mt-6'>
-          <Button className='w-full' onClick={handleRequestClearance}>
-            {isPending ? 'Requesting...' : 'Request Clearance'}
-          </Button>
+          <RequestButton
+            stdNo={session?.user?.student?.stdNo}
+            disabled={graduating}
+          />
         </CardFooter>
       </Card>
     </div>

@@ -34,13 +34,21 @@ export async function getGraduatingStudents(page: number = 1, search = '') {
   };
 }
 
-export async function getStudent(stdNo: string) {
+export async function getGraduatingStudent(stdNo: string) {
+  const student = await db.query.graduatingStudents.findFirst({
+    where: eq(graduatingStudents.stdNo, stdNo),
+  });
+  return student;
+}
+
+export async function isGraduating(stdNo?: string | null) {
+  if (!stdNo) return false;
   const student = await db
     .select()
     .from(graduatingStudents)
     .where(eq(graduatingStudents.stdNo, stdNo))
-    .then((data) => data[0]);
-  return student;
+    .limit(1);
+  return student.length > 0;
 }
 
 export async function saveGraduationList(stdNumbers: string[]) {
