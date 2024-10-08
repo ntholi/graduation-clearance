@@ -20,7 +20,7 @@ export const genderEnum = pgEnum('gender', ['Male', 'Female']);
 
 export const students = pgTable('students', {
   stdNo: varchar('std_no', { length: 9 }).notNull().primaryKey(),
-  userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
+  userId: text('user_id').references(() => users.id, { onDelete: 'set null' }),
   name: text('name'),
   nationalId: text('national_id'),
   program: text('program'),
