@@ -90,12 +90,15 @@ def approve_signup_requests():
             if program:
                 student.program = program
             student.user_id = signup.user_id
-            student_details = scrapper.get_student_details(signup.std_no)
-            student.nationality = student_details["Nationality"]
-            student.gender = student_details["Sex"]
-            student.date_of_birth = datetime.strptime(
-                student_details["Birthdate"], "%Y-%m-%d"
-            )
+            try:
+                student_details = scrapper.get_student_details(signup.std_no)
+                student.nationality = student_details["Nationality"]
+                student.gender = student_details["Sex"]
+                student.date_of_birth = datetime.strptime(
+                    student_details["Birthdate"], "%Y-%m-%d"
+                )
+            except Exception as e:
+                print(f"Error getting student details for {signup.std_no}: {e}")
             save_student(student)
             mark_user_as_student(signup.user_id)
             batch_save_enrollments(db_session, student.std_no, enrollments)
