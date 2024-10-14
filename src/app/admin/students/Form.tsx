@@ -4,6 +4,7 @@ import FormHeader from '@admin/components/FormHeader';
 import useFormAction from '@admin/hooks/useFormAction';
 import { NumberInput, Stack, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 
@@ -21,6 +22,7 @@ const UserSchema = z.object({
 });
 
 export default function Form({ onSubmit, value }: Props) {
+  const { data: session } = useSession();
   const router = useRouter();
   const [pending, submitForm] = useFormAction();
 
@@ -45,7 +47,11 @@ export default function Form({ onSubmit, value }: Props) {
         <TextInput label='Email' {...form.getInputProps('email')} />
         <TextInput label='National ID' {...form.getInputProps('nationalId')} />
         <TextInput label='Program' {...form.getInputProps('program')} />
-        <TextInput label='User ID' {...form.getInputProps('userId')} />
+        <TextInput
+          label='User ID'
+          {...form.getInputProps('userId')}
+          disabled={session?.user?.role !== 'admin'}
+        />
       </Stack>
     </form>
   );

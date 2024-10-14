@@ -4,8 +4,10 @@ import ListLayout from '@admin/components/ListLayout';
 import { PropsWithChildren } from 'react';
 import { getGraduatingStudents, saveGraduationList } from './actions';
 import SheetReader from '../../base/SheetReader';
+import { useSession } from 'next-auth/react';
 
 export default function Layout({ children }: PropsWithChildren) {
+  const { data: session } = useSession();
   return (
     <ListLayout
       getItems={(page, search) => getGraduatingStudents(page, search)}
@@ -19,11 +21,13 @@ export default function Layout({ children }: PropsWithChildren) {
         />
       )}
       actionIcons={[
-        <SheetReader
-          action={async (items) => {
-            await saveGraduationList(items);
-          }}
-        />,
+        session?.user?.role === 'admin' && (
+          <SheetReader
+            action={async (items) => {
+              await saveGraduationList(items);
+            }}
+          />
+        ),
       ]}
     >
       {children}
