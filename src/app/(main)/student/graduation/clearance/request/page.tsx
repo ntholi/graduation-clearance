@@ -23,7 +23,7 @@ export default async function RequestClearance() {
       <div className='flex h-[80vh] flex-col items-center justify-center p-4'>
         <Alert variant='destructive' className='w-full max-w-md'>
           <AlertTriangle className='h-4 w-4' />
-          <AlertTitle>Error</AlertTitle>
+          <AlertTitle>Not Found</AlertTitle>
           <AlertDescription>
             Your name was not found in the graduation list. Please consult your
             faculty or registry department for more information.
