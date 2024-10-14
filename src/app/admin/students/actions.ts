@@ -1,5 +1,6 @@
 'use server';
 
+import { auth } from '@/auth';
 import db from '@/db';
 import { enrollments, grades, students } from '@/db/schema';
 import { eq, like } from 'drizzle-orm';
@@ -52,8 +53,12 @@ export async function updateStudent(
   id: string,
   values: Student,
 ): Promise<Student> {
+  const session = await auth();
+  if (!session || !session.user?.id) {
+    throw new Error('Unauthorized');
+  }
   const res = await db
-    .update(students)
+    .update({ ...students, updatedBy: session.user.id, updatedAt: new Date() })
     .set(values)
     .where(eq(students.stdNo, id))
     .returning();

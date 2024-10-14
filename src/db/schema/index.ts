@@ -28,6 +28,8 @@ export const students = pgTable('students', {
   nationality: varchar('nationality', { length: 50 }),
   dateOfBirth: date('date_of_birth'),
   createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at'),
+  updatedBy: varchar('updated_by', { length: 21 }).references(() => users.id),
 });
 
 export const financePayments = pgTable('finance_payments', {
