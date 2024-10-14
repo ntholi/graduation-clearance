@@ -160,6 +160,9 @@ export const clearanceResponse = pgTable(
 export const graduatingStudents = pgTable('graduating_students', {
   stdNo: varchar('std_no', { length: 9 }).primaryKey().notNull(),
   createdAt: timestamp('created_at').defaultNow(),
+  createdBy: varchar('created_by', { length: 21 }).references(() => users.id),
+  updatedAt: timestamp('updated_at'),
+  updatedBy: varchar('updated_by', { length: 21 }).references(() => users.id),
 });
 
 export const graduationConfirmation = pgTable('graduation_confirmations', {
