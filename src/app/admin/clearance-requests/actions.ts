@@ -65,6 +65,10 @@ export async function getClearanceList(
 }
 
 export async function getUnattendedRequestsCount(responder: Responder) {
+  const validResponders = ['finance', 'library', 'resource', 'it'];
+  if (!validResponders.includes(responder)) {
+    return 0;
+  }
   const sq = db
     .select({ id: clearanceResponse.clearanceRequestId })
     .from(clearanceResponse)
