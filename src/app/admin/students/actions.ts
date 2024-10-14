@@ -58,8 +58,8 @@ export async function updateStudent(
     throw new Error('Unauthorized');
   }
   const res = await db
-    .update({ ...students, updatedBy: session.user.id, updatedAt: new Date() })
-    .set(values)
+    .update(students)
+    .set({ ...values, updatedBy: session.user.id, updatedAt: new Date() })
     .where(eq(students.stdNo, id))
     .returning();
   revalidatePath(`/admin/students/${id}`);

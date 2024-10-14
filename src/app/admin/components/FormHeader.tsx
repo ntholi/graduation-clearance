@@ -34,7 +34,7 @@ export default function FormHeader({ title, isLoading }: Props) {
           >
             Save
           </Button>
-          <CloseButton onClick={() => router.back()} />
+          <CloseButton size={'lg'} onClick={() => router.back()} />
         </Group>
       </Flex>
       <Divider my={15} />
