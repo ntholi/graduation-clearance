@@ -1,9 +1,9 @@
-import { getGraduationConfirmation } from '@/app/admin/graduating/confirmations/actions';
 import { auth } from '@/auth';
 import Container from '@/components/ui/container';
 import { redirect } from 'next/navigation';
 import Body from './Body';
 import { getClearanceRequest } from './actions';
+import { getGraduationConfirmation } from '@/app/admin/cleared-students/actions';
 
 export default async function ClearancePage() {
   const session = await auth();
