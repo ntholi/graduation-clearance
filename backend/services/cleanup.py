@@ -12,3 +12,30 @@ def delete_non_graduating_requests():
             db_session.delete(clearance_request)
     db_session.commit()
     print("Done")
+
+
+def delete_duplicate_requests():
+    clearance_requests = (
+        db_session.query(ClearanceRequest)
+        .order_by(ClearanceRequest.std_no, ClearanceRequest.created_at)
+        .all()
+    )
+
+    seen_std_nos = set()
+    duplicate_requests = []
+
+    for request in clearance_requests:
+        if request.std_no in seen_std_nos:
+            duplicate_requests.append(request)
+        else:
+            seen_std_nos.add(request.std_no)
+
+    # Delete duplicate requests
+    for duplicate in duplicate_requests:
+        print(
+            f"Deleting duplicate clearance request for student {duplicate.std_no} (ID: {duplicate.id})"
+        )
+        db_session.delete(duplicate)
+
+    db_session.commit()
+    print(f"Deleted {len(duplicate_requests)} duplicate clearance requests")
