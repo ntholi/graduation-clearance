@@ -13,6 +13,7 @@ import {
   Text,
 } from '@mantine/core';
 import { modals } from '@mantine/modals';
+import { useQuery } from '@tanstack/react-query';
 import {
   Cctv,
   ChevronRight,
@@ -24,17 +25,17 @@ import {
   LibraryBig,
   ListCheck,
   LogOutIcon,
+  SquareCheck,
   UserIcon,
 } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { PropsWithChildren } from 'react';
 import {
   getUnattendedRequestsCount,
   Responder,
 } from '../clearance-requests/actions';
-import { useQuery } from '@tanstack/react-query';
-import { PropsWithChildren } from 'react';
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -78,63 +79,89 @@ export default function Navigation() {
               leftSection={<GraduationCap size='1.1rem' />}
               rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
             />
+            <NavLink
+              label='Cleared Students'
+              component={Link}
+              active={pathname.startsWith('/admin/cleared-students')}
+              href={'/admin/cleared-students'}
+              leftSection={<SquareCheck size='1.1rem' />}
+              rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
+            />
           </>
         )}
-        <NotificationIndicator label={pending}>
-          <NavLink
-            label='Clearance Requests'
-            component={Link}
-            active={pathname.startsWith('/admin/clearance-requests')}
-            href={'/admin/clearance-requests'}
-            leftSection={<ListCheck size='1.1rem' />}
-            rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
-          />
-        </NotificationIndicator>
-        <NavLink
-          label='Blocked Students'
-          leftSection={<Construction size={'1rem'} />}
-        >
-          {isFinance && (
+        {(isLibrary || isIT || isResource || isFinance) && (
+          <>
+            <NotificationIndicator label={pending}>
+              <NavLink
+                label='Clearance Requests'
+                component={Link}
+                active={pathname.startsWith('/admin/clearance-requests')}
+                href={'/admin/clearance-requests'}
+                leftSection={<ListCheck size='1.1rem' />}
+                rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
+              />
+            </NotificationIndicator>
             <NavLink
-              label='Finance'
-              component={Link}
-              active={pathname.startsWith('/admin/blocked-students/finance')}
-              href={'/admin/blocked-students/finance'}
-              leftSection={<Landmark size='1.1rem' />}
-              rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
-            />
-          )}
-          {isLibrary && (
-            <NavLink
-              label='Library'
-              component={Link}
-              active={pathname.startsWith('/admin/blocked-students/library')}
-              href={'/admin/blocked-students/library'}
-              leftSection={<LibraryBig size='1.1rem' />}
-              rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
-            />
-          )}
-          {isIT && (
-            <NavLink
-              label='IT'
-              component={Link}
-              active={pathname.startsWith('/admin/blocked-students/it')}
-              href={'/admin/blocked-students/it'}
-              leftSection={<Computer size='1.1rem' />}
-              rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
-            />
-          )}
-          {isResource && (
-            <NavLink
-              label='Resource'
-              component={Link}
-              active={pathname.startsWith('/admin/blocked-students/resource')}
-              href={'/admin/blocked-students/resource'}
-              leftSection={<Cctv size='1.1rem' />}
-              rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
-            />
-          )}
-        </NavLink>
+              label='Blocked Students'
+              leftSection={<Construction size={'1rem'} />}
+            >
+              {isFinance && (
+                <NavLink
+                  label='Finance'
+                  component={Link}
+                  active={pathname.startsWith(
+                    '/admin/blocked-students/finance',
+                  )}
+                  href={'/admin/blocked-students/finance'}
+                  leftSection={<Landmark size='1.1rem' />}
+                  rightSection={
+                    <ChevronRight size='0.8rem' strokeWidth={1.5} />
+                  }
+                />
+              )}
+              {isLibrary && (
+                <NavLink
+                  label='Library'
+                  component={Link}
+                  active={pathname.startsWith(
+                    '/admin/blocked-students/library',
+                  )}
+                  href={'/admin/blocked-students/library'}
+                  leftSection={<LibraryBig size='1.1rem' />}
+                  rightSection={
+                    <ChevronRight size='0.8rem' strokeWidth={1.5} />
+                  }
+                />
+              )}
+              {isIT && (
+                <NavLink
+                  label='IT'
+                  component={Link}
+                  active={pathname.startsWith('/admin/blocked-students/it')}
+                  href={'/admin/blocked-students/it'}
+                  leftSection={<Computer size='1.1rem' />}
+                  rightSection={
+                    <ChevronRight size='0.8rem' strokeWidth={1.5} />
+                  }
+                />
+              )}
+              {isResource && (
+                <NavLink
+                  label='Resource'
+                  component={Link}
+                  active={pathname.startsWith(
+                    '/admin/blocked-students/resource',
+                  )}
+                  href={'/admin/blocked-students/resource'}
+                  leftSection={<Cctv size='1.1rem' />}
+                  rightSection={
+                    <ChevronRight size='0.8rem' strokeWidth={1.5} />
+                  }
+                />
+              )}
+            </NavLink>
+          </>
+        )}
         {isFinance && (
           <NavLink
             label='Payments'
