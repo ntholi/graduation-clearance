@@ -1,0 +1,1 @@
+ALTER TABLE "clearance_requests" ADD CONSTRAINT "clearance_requests_std_no_unique" UNIQUE("std_no");

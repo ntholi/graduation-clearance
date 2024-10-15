@@ -128,6 +128,7 @@ export const clearanceRequest = pgTable('clearance_requests', {
   id: serial('id').notNull().primaryKey(),
   stdNo: varchar('std_no', { length: 9 })
     .notNull()
+    .unique()
     .references(() => students.stdNo, { onDelete: 'cascade' }),
   blockedStudentId: varchar('blocked_student_id', { length: 21 }).references(
     () => blockedStudents.id,
