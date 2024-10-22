@@ -138,9 +138,73 @@ def update_saved_students():
             print(f"Unexpected error updating student {student.std_no}: {e}")
 
 
+def update_grades(std_no: int):
+    scrapper = Scrapper()
+    _, enrollments_with_grades = scrapper.get_student_data(std_no)
+    for enrollment_data, grades_data in enrollments_with_grades:
+        existing_enrollment = (
+            db_session.query(Enrollment)
+            .filter(
+                Enrollment.std_no == str(std_no),
+                Enrollment.term == enrollment_data.term,
+                Enrollment.semester == enrollment_data.semester,
+            )
+            .first()
+        )
+
+        if existing_enrollment:
+            existing_enrollment.gpa = enrollment_data.gpa
+            existing_enrollment.cgpa = enrollment_data.cgpa
+            existing_enrollment.credits = enrollment_data.credits
+        else:
+            new_enrollment = Enrollment(
+                std_no=std_no,
+                term=enrollment_data.term,
+                semester=enrollment_data.semester,
+                gpa=enrollment_data.gpa,
+                cgpa=enrollment_data.cgpa,
+                credits=enrollment_data.credits,
+            )
+            db_session.add(new_enrollment)
+            db_session.flush()
+            existing_enrollment = new_enrollment
+
+        for grade_data in grades_data:
+            existing_grade = (
+                db_session.query(Grade)
+                .filter(
+                    Grade.enrollment_id == existing_enrollment.id,
+                    Grade.course_code == grade_data.course_code,
+                )
+                .first()
+            )
+
+            if existing_grade:
+                existing_grade.course_name = grade_data.course_name
+                existing_grade.grade = grade_data.grade
+                existing_grade.credits = grade_data.credits
+            else:
+                new_grade = Grade(
+                    enrollment_id=existing_enrollment.id,
+                    course_code=grade_data.course_code,
+                    course_name=grade_data.course_name,
+                    grade=grade_data.grade,
+                    credits=grade_data.credits,
+                )
+                db_session.add(new_grade)
+
+    try:
+        db_session.commit()
+        print(f"Updated grades for student {std_no}")
+    except Exception as e:
+        db_session.rollback()
+        print(f"Error updating grades for student {std_no}: {e}")
+
+
 def main():
     init_db()
     while True:
+        # update_grades(901013975)
         approve_signup_requests()
         # update_saved_students()
         # delete_non_graduating_requests()
