@@ -79,16 +79,16 @@ export default function Navigation() {
               leftSection={<GraduationCap size='1.1rem' />}
               rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
             />
-            <NavLink
-              label='Cleared Students'
-              component={Link}
-              active={pathname.startsWith('/admin/cleared-students')}
-              href={'/admin/cleared-students'}
-              leftSection={<SquareCheck size='1.1rem' />}
-              rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
-            />
           </>
         )}
+        <NavLink
+          label='Cleared Students'
+          component={Link}
+          active={pathname.startsWith('/admin/cleared-students')}
+          href={'/admin/cleared-students'}
+          leftSection={<SquareCheck size='1.1rem' />}
+          rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
+        />
         {(isLibrary || isIT || isResource || isFinance) && (
           <>
             <NotificationIndicator label={pending}>

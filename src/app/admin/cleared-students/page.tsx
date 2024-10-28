@@ -2,25 +2,23 @@
 
 import { dateTime } from '@/lib/format';
 import {
+  Center,
+  Loader,
+  Pagination,
   Paper,
+  Stack,
   Table,
-  TableCaption,
   TableTbody,
   TableTd,
   TableTh,
   TableThead,
   TableTr,
-  Pagination,
-  Group,
-  Center,
-  Loader,
-  Stack,
   Title,
+  Text,
 } from '@mantine/core';
-import { getClearanceResponses } from './actions';
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
 import { parseAsInteger, useQueryState } from 'nuqs';
+import { getClearanceResponses } from './actions';
 
 export default function Page() {
   const [currentPage, setCurrentPage] = useQueryState('page', parseAsInteger);
@@ -32,9 +30,14 @@ export default function Page() {
 
   return (
     <Stack>
-      <Title fw={'lighter'} order={2}>
-        Cleared Students
-      </Title>
+      <Paper withBorder p='md'>
+        <Title fw={'lighter'} order={3}>
+          Cleared Students
+        </Title>
+        <Text size='sm' c='dimmed'>
+          Students cleared for graduation
+        </Text>
+      </Paper>
       <Table>
         <Paper withBorder p='md'>
           <Table>
