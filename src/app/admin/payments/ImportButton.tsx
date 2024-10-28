@@ -78,6 +78,7 @@ export default function ImportButton({ action }: Props) {
           message: `${count} students added`,
         });
       } catch (error) {
+        console.error(error);
         notifications.show({
           color: 'red',
           title: 'Error adding students',
@@ -104,6 +105,6 @@ export default function ImportButton({ action }: Props) {
 }
 
 function moneyToNumber(money: string) {
-  let value = money.toUpperCase().replace('LSL', '').trim();
+  let value = String(money).toUpperCase().replace('LSL', '').trim();
   return value.replace(/,/g, '');
 }
