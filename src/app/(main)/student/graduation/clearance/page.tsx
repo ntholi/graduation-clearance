@@ -2,15 +2,13 @@ import { auth } from '@/auth';
 import Container from '@/components/ui/container';
 import { redirect } from 'next/navigation';
 import Body from './Body';
-import { getClearanceRequest } from './actions';
-import { getGraduationConfirmation } from '@/app/admin/cleared-students/actions';
+import { getClearanceRequest, getGraduationConfirmation } from './actions';
 
 export default async function ClearancePage() {
   const session = await auth();
   const confirmation = await getGraduationConfirmation(
     session?.user?.student?.stdNo,
   );
-
   if (confirmation?.cleared && confirmation.confirmed) {
     return redirect('/student/graduation/success');
   } else if (confirmation?.cleared) {

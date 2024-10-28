@@ -7,6 +7,7 @@ import {
   graduatingStudents,
   departmentEnum,
   students,
+  graduationConfirmation,
 } from '@/db/schema';
 import { eq, and } from 'drizzle-orm';
 import db from '@/db';
@@ -130,4 +131,12 @@ export async function getClearanceRequest(stdNo?: string) {
     where: and(eq(clearanceRequest.stdNo, stdNo)),
   });
   return request;
+}
+
+export async function getGraduationConfirmation(stdNo?: string) {
+  if (!stdNo) return null;
+  const confirmation = await db.query.graduationConfirmation.findFirst({
+    where: and(eq(graduationConfirmation.stdNo, stdNo)),
+  });
+  return confirmation;
 }
