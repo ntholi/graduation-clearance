@@ -14,50 +14,58 @@ import {
   Group,
   Center,
   Loader,
+  Stack,
+  Title,
 } from '@mantine/core';
 import { getClearanceResponses } from './actions';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import { parseAsInteger, useQueryState } from 'nuqs';
 
 export default function Page() {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useQueryState('page', parseAsInteger);
 
   const { data, isLoading } = useQuery({
     queryKey: ['clearance-responses', currentPage],
-    queryFn: () => getClearanceResponses(currentPage),
+    queryFn: () => getClearanceResponses(currentPage ?? 1),
   });
 
   return (
-    <Paper withBorder p='md'>
+    <Stack>
+      <Title fw={'lighter'} order={2}>
+        Cleared Students
+      </Title>
       <Table>
-        <TableCaption>Cleared Students</TableCaption>
-        <TableThead>
-          <TableTr>
-            <TableTh>Student No</TableTh>
-            <TableTh>Names</TableTh>
-            <TableTh>Programme</TableTh>
-            <TableTh>Date Requested</TableTh>
-            <TableTh>Date Cleared</TableTh>
-            <TableTh>Cleared By</TableTh>
-          </TableTr>
-        </TableThead>
-        {isLoading ? (
-          <Center>
-            <Loader />
-          </Center>
-        ) : (
-          <TableContent items={data?.items ?? []} />
-        )}
+        <Paper withBorder p='md'>
+          <Table>
+            <TableThead>
+              <TableTr>
+                <TableTh>Student No</TableTh>
+                <TableTh>Names</TableTh>
+                <TableTh>Programme</TableTh>
+                <TableTh>Date Requested</TableTh>
+                <TableTh>Date Cleared</TableTh>
+                <TableTh>Cleared By</TableTh>
+              </TableTr>
+            </TableThead>
+            {isLoading ? (
+              <Center>
+                <Loader />
+              </Center>
+            ) : (
+              <TableContent items={data?.items ?? []} />
+            )}
+          </Table>
+          <Pagination
+            mt={'xl'}
+            size='xs'
+            total={data?.pages ?? 0}
+            value={currentPage ?? 1}
+            onChange={setCurrentPage}
+          />
+        </Paper>
       </Table>
-
-      <Group justify='center' mt='xl'>
-        <Pagination
-          total={data?.pages ?? 0}
-          value={currentPage}
-          onChange={setCurrentPage}
-        />
-      </Group>
-    </Paper>
+    </Stack>
   );
 }
 

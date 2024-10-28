@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SessionProvider } from 'next-auth/react';
 import { AppProgressBar } from 'next-nprogress-bar';
 import React, { Suspense } from 'react';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 const queryClient = new QueryClient();
 
@@ -18,7 +19,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         <ModalsProvider>
           <SessionProvider>
             <QueryClientProvider client={queryClient}>
-              {children}
+              <NuqsAdapter>{children}</NuqsAdapter>
             </QueryClientProvider>
             <AppProgressBar
               height='3px'
