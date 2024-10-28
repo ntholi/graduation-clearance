@@ -15,13 +15,20 @@ import {
   TableTr,
   Title,
   Text,
+  Group,
+  Box,
 } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { parseAsInteger, useQueryState } from 'nuqs';
-import { getClearanceResponses } from './actions';
+import { countClearedStudents, getClearanceResponses } from './actions';
 
 export default function Page() {
   const [currentPage, setCurrentPage] = useQueryState('page', parseAsInteger);
+
+  const { data: counts } = useQuery({
+    queryKey: ['clearance-counts'],
+    queryFn: () => countClearedStudents(),
+  });
 
   const { data, isLoading } = useQuery({
     queryKey: ['clearance-responses', currentPage],
@@ -34,9 +41,21 @@ export default function Page() {
         <Title fw={'lighter'} order={3}>
           Cleared Students
         </Title>
-        <Text size='sm' c='dimmed'>
-          Students cleared for graduation
-        </Text>
+        <Group mt='xs'>
+          <Text size='sm'>
+            <Text span fw={500}>
+              {counts?.cleared ?? '?'}
+            </Text>{' '}
+            students cleared
+          </Text>
+          |
+          <Text size='sm' c='red'>
+            <Text span fw={500}>
+              {counts?.blocked ?? '?'}
+            </Text>{' '}
+            students blocked
+          </Text>
+        </Group>
       </Paper>
       <Table>
         <Paper withBorder p='md'>
@@ -52,9 +71,9 @@ export default function Page() {
               </TableTr>
             </TableThead>
             {isLoading ? (
-              <Center>
-                <Loader />
-              </Center>
+              <Box py={'md'} px={'sm'}>
+                <Text>Loading...</Text>
+              </Box>
             ) : (
               <TableContent items={data?.items ?? []} />
             )}
@@ -86,9 +105,19 @@ function TableContent({ items }: TableContentProps) {
           <TableTd>{it.program}</TableTd>
           <TableTd>{dateTime(it.dateRequested)}</TableTd>
           <TableTd>{dateTime(it.dateCleared)}</TableTd>
-          <TableTd>{it.clearedBy}</TableTd>
+          <TableTd>{titleCase(it.clearedBy ?? 'Unknown')}</TableTd>
         </TableTr>
       ))}
     </TableTbody>
   );
+}
+
+function titleCase(str: string) {
+  return str
+    .split(' ')
+    .map(
+      (word) =>
+        word.charAt(0).toLocaleUpperCase() + word.slice(1).toLowerCase(),
+    )
+    .join(' ');
 }

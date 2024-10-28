@@ -2,7 +2,12 @@
 
 import { auth } from '@/auth';
 import db from '@/db';
-import { clearanceRequest, clearanceResponse, students } from '@/db/schema';
+import {
+  blockedStudents,
+  clearanceRequest,
+  clearanceResponse,
+  students,
+} from '@/db/schema';
 import { users } from '@/db/schema/auth';
 import { count, desc, eq, and } from 'drizzle-orm';
 
@@ -52,7 +57,21 @@ export async function countClearedStudents() {
     .select({ count: count() })
     .from(clearanceResponse)
     .where(eq(clearanceResponse.responder, clearedBy));
-  return _count[0].count;
+
+  const blocked = await db
+    .select({ count: count() })
+    .from(blockedStudents)
+    .where(
+      and(
+        eq(blockedStudents.department, clearedBy),
+        eq(blockedStudents.status, 'blocked'),
+      ),
+    );
+
+  return {
+    cleared: _count[0].count - blocked[0].count,
+    blocked: blocked[0].count,
+  };
 }
 
 export async function getClearanceResponse(stdNo?: string) {
