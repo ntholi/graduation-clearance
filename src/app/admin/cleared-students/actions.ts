@@ -1,54 +1,66 @@
 'use server';
 
+import { auth } from '@/auth';
 import db from '@/db';
-import { graduationConfirmation, students } from '@/db/schema';
-import { count, desc, eq, like } from 'drizzle-orm';
+import { clearanceRequest, clearanceResponse, students } from '@/db/schema';
+import { users } from '@/db/schema/auth';
+import { count, desc, eq, like, and } from 'drizzle-orm';
 
 const ITEMS_PER_PAGE = 10;
 
-export async function getGraduatingStudents(page: number = 1, search = '') {
+export async function getClearanceResponses(page: number = 1) {
+  const clearedBy =
+    (await auth())?.user?.role === 'library' ? 'library' : 'finance';
   const offset = (page - 1) * ITEMS_PER_PAGE;
+
   const list = await db
-    .select()
-    .from(graduationConfirmation)
-    .where(like(graduationConfirmation.stdNo, `%${search}%`))
-    .leftJoin(students, eq(students.stdNo, graduationConfirmation.stdNo))
-    .orderBy(desc(graduationConfirmation.createdAt))
+    .select({
+      stdNo: clearanceRequest.stdNo,
+      names: students.name,
+      program: students.program,
+      dateRequested: clearanceRequest.createdAt,
+      dateCleared: clearanceResponse.createdAt,
+      clearedBy: users.name,
+    })
+    .from(clearanceResponse)
+    .where(eq(clearanceResponse.responder, clearedBy))
+    .leftJoin(
+      clearanceRequest,
+      eq(clearanceRequest.id, clearanceResponse.clearanceRequestId),
+    )
+    .leftJoin(students, eq(students.stdNo, clearanceRequest.stdNo))
+    .leftJoin(users, eq(users.id, clearanceResponse.createdBy))
+    .orderBy(desc(clearanceResponse.createdAt))
     .limit(ITEMS_PER_PAGE)
     .offset(offset);
 
   const totalCount = await db
     .select({ count: count() })
-    .from(graduationConfirmation)
+    .from(clearanceResponse)
     .then((it) => it[0].count);
 
   return {
-    items: list.map((it) => ({
-      ...it.graduation_confirmations,
-      student: it.students,
-    })),
+    items: list,
     pages: Math.ceil(totalCount / ITEMS_PER_PAGE),
   };
 }
 
-export async function getGraduationConfirmation(stdNo?: string) {
+export async function getClearanceResponse(stdNo?: string) {
   if (!stdNo) return null;
-  return await db.query.graduationConfirmation.findFirst({
-    where: eq(graduationConfirmation.stdNo, stdNo),
-  });
-}
-
-export async function getStudent(stdNo: string) {
-  const res = await db
+  const clearedBy =
+    (await auth())?.user?.role === 'library' ? 'library' : 'finance';
+  const list = await db
     .select()
-    .from(graduationConfirmation)
-    .where(eq(graduationConfirmation.stdNo, stdNo))
-    .leftJoin(students, eq(students.stdNo, stdNo))
-    .then((res) => res[0]);
+    .from(clearanceResponse)
+    .where(eq(clearanceResponse.responder, clearedBy))
+    .leftJoin(
+      clearanceRequest,
+      eq(clearanceRequest.id, clearanceResponse.clearanceRequestId),
+    )
+    .leftJoin(students, eq(students.stdNo, clearanceRequest.stdNo))
+    .leftJoin(users, eq(users.id, clearanceResponse.createdBy))
+    .orderBy(desc(clearanceResponse.createdAt))
+    .limit(1);
 
-  return {
-    ...res.graduation_confirmations,
-    ...res?.students,
-    dateCleared: res?.graduation_confirmations?.createdAt,
-  };
+  return list[0];
 }
