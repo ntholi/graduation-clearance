@@ -68,10 +68,7 @@ export async function countClearedStudents() {
       ),
     );
 
-  return {
-    cleared: _count[0].count - blocked[0].count,
-    blocked: blocked[0].count,
-  };
+  return _count[0].count - blocked[0].count;
 }
 
 export async function getClearanceResponse(stdNo?: string) {

@@ -44,16 +44,9 @@ export default function Page() {
         <Group mt='xs'>
           <Text size='sm'>
             <Text span fw={500}>
-              {counts?.cleared ?? '?'}
+              {counts ?? '?'}
             </Text>{' '}
             students cleared
-          </Text>
-          |
-          <Text size='sm' c='red'>
-            <Text span fw={500}>
-              {counts?.blocked ?? '?'}
-            </Text>{' '}
-            students blocked
           </Text>
         </Group>
       </Paper>
@@ -72,7 +65,9 @@ export default function Page() {
             </TableThead>
             {isLoading ? (
               <Box py={'md'} px={'sm'}>
-                <Text>Loading...</Text>
+                <Text size='sm' c='dimmed'>
+                  Loading...
+                </Text>
               </Box>
             ) : (
               <TableContent items={data?.items ?? []} />
