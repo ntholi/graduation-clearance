@@ -41,20 +41,22 @@ def verify_repeat_courses(std_no: int):
 
 def print_in_table(failed_students: list[tuple[int, List[Grade]]]):
     table = Table(title="Failed Students")
+    table.add_column("No.")
     table.add_column("Student Number", style="cyan")
     table.add_column("Failed Courses", style="yellow")
-    for student, grades in failed_students:
+    for i, [student, grades] in enumerate(failed_students):
         grade_name = ", ".join(
             [f"{it.course_code}: {it.course_name} ({it.grade})" for it in grades]
         )
-        table.add_row(str(student), grade_name)
+        table.add_row(str(i + 1), str(student), grade_name)
     console.print(table)
 
 
 def main():
     students = get_graduating_students()
     failed_students: list[tuple[int, List[Grade]]] = []
-    for student in students:
+    for i, student in enumerate(students):
+        print(f"Verifying student {i + 1} of {len(students)}")
         grades = verify_repeat_courses(student.std_no)
         if len(grades) > 0:
             failed_students.append((student.std_no, grades))
