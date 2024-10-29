@@ -39,7 +39,7 @@ export default function Page() {
   return (
     <Stack>
       <Paper withBorder p='md'>
-        <Flex justify='space-between'>
+        <Flex justify='space-between' align='end'>
           <div>
             <Title fw={'lighter'} order={3}>
               Cleared Students
