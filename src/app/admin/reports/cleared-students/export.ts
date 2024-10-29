@@ -13,6 +13,7 @@ export async function exportToExcel() {
   const sheet = workbook.addWorksheet('Cleared Students');
 
   sheet.columns = [
+    { header: '#', key: 'index', width: 10 },
     { header: 'Student No', key: 'stdNo', width: 15 },
     { header: 'Name', key: 'name', width: 30 },
     { header: 'Program', key: 'program', width: 45 },
@@ -38,9 +39,10 @@ export async function exportToExcel() {
   headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
   headerRow.height = 25;
 
-  response.forEach((item) => {
+  response.forEach((item, index) => {
     sheet.addRow({
-      stdNo: item.stdNo,
+      index: index + 1,
+      stdNo: Number(item.stdNo),
       name: item.names,
       program: item.program,
       dateRequested: dateTime(item.dateRequested),
@@ -84,7 +86,7 @@ export async function exportToExcel() {
   const titleRow = sheet.getRow(1);
   titleRow.font = { bold: true, size: 12 };
   titleRow.height = 30;
-  sheet.mergeCells('A1:F1');
+  sheet.mergeCells('A1:G1');
   titleRow.alignment = { horizontal: 'center', vertical: 'middle' };
 
   const buffer = await workbook.xlsx.writeBuffer();
