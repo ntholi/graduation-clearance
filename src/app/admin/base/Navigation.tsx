@@ -16,6 +16,7 @@ import { modals } from '@mantine/modals';
 import { useQuery } from '@tanstack/react-query';
 import {
   Cctv,
+  ChartGantt,
   ChevronRight,
   Computer,
   Construction,
@@ -81,14 +82,6 @@ export default function Navigation() {
             />
           </>
         )}
-        <NavLink
-          label='Cleared Students'
-          component={Link}
-          active={pathname.startsWith('/admin/cleared-students')}
-          href={'/admin/cleared-students'}
-          leftSection={<SquareCheck size='1.1rem' />}
-          rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
-        />
         {(isLibrary || isIT || isResource || isFinance) && (
           <>
             <NotificationIndicator label={pending}>
@@ -172,6 +165,20 @@ export default function Navigation() {
             rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
           />
         )}
+        <NavLink
+          label='Reports'
+          opened
+          leftSection={<ChartGantt size={'1rem'} />}
+        >
+          <NavLink
+            label='Cleared Students'
+            component={Link}
+            active={pathname.startsWith('/admin/reports/cleared-students')}
+            href={'/admin/reports/cleared-students'}
+            leftSection={<SquareCheck size='1.1rem' />}
+            rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
+          />
+        </NavLink>
       </AppShell.Section>
       <AppShell.Section>
         <Divider />
