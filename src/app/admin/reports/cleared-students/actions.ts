@@ -28,13 +28,25 @@ export async function getClearanceResponses(page: number = 1) {
       clearedBy: users.name,
     })
     .from(clearanceResponse)
-    .where(and(eq(clearanceResponse.responder, clearedBy)))
+    .where(
+      and(
+        eq(clearanceResponse.responder, clearedBy),
+        eq(blockedStudents.status, 'unblocked'),
+      ),
+    )
     .leftJoin(
       clearanceRequest,
       eq(clearanceRequest.id, clearanceResponse.clearanceRequestId),
     )
     .leftJoin(students, eq(students.stdNo, clearanceRequest.stdNo))
     .leftJoin(users, eq(users.id, clearanceResponse.createdBy))
+    .leftJoin(
+      blockedStudents,
+      and(
+        eq(blockedStudents.stdNo, clearanceRequest.stdNo),
+        eq(blockedStudents.department, clearedBy),
+      ),
+    )
     .orderBy(desc(clearanceResponse.createdAt))
     .limit(ITEMS_PER_PAGE)
     .offset(offset);
@@ -42,6 +54,23 @@ export async function getClearanceResponses(page: number = 1) {
   const totalCount = await db
     .select({ count: count() })
     .from(clearanceResponse)
+    .leftJoin(
+      clearanceRequest,
+      eq(clearanceRequest.id, clearanceResponse.clearanceRequestId),
+    )
+    .leftJoin(
+      blockedStudents,
+      and(
+        eq(blockedStudents.stdNo, clearanceRequest.stdNo),
+        eq(blockedStudents.department, clearedBy),
+      ),
+    )
+    .where(
+      and(
+        eq(clearanceResponse.responder, clearedBy),
+        eq(blockedStudents.status, 'unblocked'),
+      ),
+    )
     .then((it) => it[0].count);
 
   return {
