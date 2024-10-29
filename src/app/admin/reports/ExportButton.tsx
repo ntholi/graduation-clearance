@@ -14,11 +14,10 @@ export default function ExportButton({ onClick }: Props) {
       title: 'Please confirm your action',
       children: (
         <Text size='sm'>
-          This is a very costly operation, are you sure you want to export this
-          data
+          This is a very costly operation, are you sure you want to proceed?
         </Text>
       ),
-      labels: { confirm: 'Export', cancel: 'Cancel' },
+      labels: { confirm: 'I understand, Proceed', cancel: 'Cancel' },
       confirmProps: { color: 'red' },
       cancelProps: { color: 'blue' },
       onCancel: () => console.log('Cancel'),

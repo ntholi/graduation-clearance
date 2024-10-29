@@ -15,10 +15,13 @@ import {
   TableTr,
   Text,
   Title,
+  Flex,
 } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { parseAsInteger, useQueryState } from 'nuqs';
 import { countBlockedStudents, getBlockedStudents } from './actions';
+import { exportToExcel } from './export';
+import ExportButton from '../ExportButton';
 
 export default function Page() {
   const [currentPage, setCurrentPage] = useQueryState('page', parseAsInteger);
@@ -36,17 +39,22 @@ export default function Page() {
   return (
     <Stack>
       <Paper withBorder p='md'>
-        <Title fw={'lighter'} order={3}>
-          Blocked Students
-        </Title>
-        <Group mt='xs'>
-          <Text size='sm'>
-            <Text span fw={500}>
-              {counts ?? '?'}
-            </Text>{' '}
-            students blocked
-          </Text>
-        </Group>
+        <Flex justify='space-between' align='end'>
+          <div>
+            <Title fw={'lighter'} order={3}>
+              Blocked Students
+            </Title>
+            <Group mt='xs'>
+              <Text size='sm'>
+                <Text span fw={500}>
+                  {counts ?? '?'}
+                </Text>{' '}
+                students blocked
+              </Text>
+            </Group>
+          </div>
+          <ExportButton onClick={exportToExcel} />
+        </Flex>
       </Paper>
       <Table>
         <Paper withBorder p='md'>

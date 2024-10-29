@@ -67,3 +67,30 @@ export async function countBlockedStudents() {
 
   return blocked[0].count;
 }
+
+export async function getAllBlockedStudents() {
+  const department =
+    (await auth())?.user?.role === 'library' ? 'library' : 'finance';
+
+  const list = await db
+    .select({
+      stdNo: blockedStudents.stdNo,
+      names: students.name,
+      program: students.program,
+      reason: blockedStudents.reason,
+      dateBlocked: blockedStudents.createdAt,
+      blockedBy: users.name,
+    })
+    .from(blockedStudents)
+    .where(
+      and(
+        eq(blockedStudents.department, department),
+        eq(blockedStudents.status, 'blocked'),
+      ),
+    )
+    .leftJoin(students, eq(students.stdNo, blockedStudents.stdNo))
+    .leftJoin(users, eq(users.id, blockedStudents.createdBy))
+    .orderBy(desc(blockedStudents.createdAt));
+
+  return list;
+}
