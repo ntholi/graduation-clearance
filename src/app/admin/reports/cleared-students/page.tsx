@@ -22,6 +22,7 @@ import { useQuery } from '@tanstack/react-query';
 import { parseAsInteger, useQueryState } from 'nuqs';
 import { countClearedStudents, getClearedStudents } from './actions';
 import { exportToExcel } from './export';
+import ExportButton from '../ExportButton';
 export default function Page() {
   const [currentPage, setCurrentPage] = useQueryState('page', parseAsInteger);
 
@@ -52,7 +53,7 @@ export default function Page() {
               </Text>
             </Group>
           </div>
-          <Button onClick={exportToExcel}>Export</Button>
+          <ExportButton onClick={exportToExcel} />
         </Flex>
       </Paper>
       <Table>
