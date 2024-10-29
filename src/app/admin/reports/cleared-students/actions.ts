@@ -9,7 +9,7 @@ import {
   students,
 } from '@/db/schema';
 import { users } from '@/db/schema/auth';
-import { count, desc, eq, and } from 'drizzle-orm';
+import { count, desc, eq, and, isNull, or } from 'drizzle-orm';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -31,7 +31,7 @@ export async function getClearedStudents(page: number = 1) {
     .where(
       and(
         eq(clearanceResponse.responder, clearedBy),
-        eq(blockedStudents.status, 'unblocked'),
+        or(isNull(blockedStudents.id), eq(blockedStudents.status, 'unblocked')),
       ),
     )
     .leftJoin(
@@ -68,7 +68,7 @@ export async function getClearedStudents(page: number = 1) {
     .where(
       and(
         eq(clearanceResponse.responder, clearedBy),
-        eq(blockedStudents.status, 'unblocked'),
+        or(isNull(blockedStudents.id), eq(blockedStudents.status, 'unblocked')),
       ),
     )
     .then((it) => it[0].count);
@@ -96,7 +96,7 @@ export async function getAllClearedStudents() {
     .where(
       and(
         eq(clearanceResponse.responder, clearedBy),
-        eq(blockedStudents.status, 'unblocked'),
+        or(isNull(blockedStudents.id), eq(blockedStudents.status, 'unblocked')),
       ),
     )
     .leftJoin(
