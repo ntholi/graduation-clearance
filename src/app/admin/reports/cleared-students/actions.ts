@@ -13,7 +13,7 @@ import { count, desc, eq, and } from 'drizzle-orm';
 
 const ITEMS_PER_PAGE = 10;
 
-export async function getClearanceResponses(page: number = 1) {
+export async function getClearedStudents(page: number = 1) {
   const clearedBy =
     (await auth())?.user?.role === 'library' ? 'library' : 'finance';
   const offset = (page - 1) * ITEMS_PER_PAGE;

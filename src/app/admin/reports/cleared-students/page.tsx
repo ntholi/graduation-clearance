@@ -3,6 +3,7 @@
 import { dateTime } from '@/lib/format';
 import {
   Box,
+  Flex,
   Group,
   Pagination,
   Paper,
@@ -15,11 +16,12 @@ import {
   TableTr,
   Text,
   Title,
+  Button,
 } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { parseAsInteger, useQueryState } from 'nuqs';
-import { countClearedStudents, getClearanceResponses } from './actions';
-
+import { countClearedStudents, getClearedStudents } from './actions';
+import { exportToExcel } from './export';
 export default function Page() {
   const [currentPage, setCurrentPage] = useQueryState('page', parseAsInteger);
 
@@ -30,23 +32,28 @@ export default function Page() {
 
   const { data, isLoading } = useQuery({
     queryKey: ['clearance-responses', currentPage],
-    queryFn: () => getClearanceResponses(currentPage ?? 1),
+    queryFn: () => getClearedStudents(currentPage ?? 1),
   });
 
   return (
     <Stack>
       <Paper withBorder p='md'>
-        <Title fw={'lighter'} order={3}>
-          Cleared Students
-        </Title>
-        <Group mt='xs'>
-          <Text size='sm'>
-            <Text span fw={500}>
-              {counts ?? '?'}
-            </Text>{' '}
-            students cleared
-          </Text>
-        </Group>
+        <Flex justify='space-between'>
+          <div>
+            <Title fw={'lighter'} order={3}>
+              Cleared Students
+            </Title>
+            <Group mt='xs'>
+              <Text size='sm'>
+                <Text span fw={500}>
+                  {counts ?? '?'}
+                </Text>{' '}
+                students cleared
+              </Text>
+            </Group>
+          </div>
+          <Button onClick={exportToExcel}>Export</Button>
+        </Flex>
       </Paper>
       <Table>
         <Paper withBorder p='md'>
@@ -85,7 +92,7 @@ export default function Page() {
 }
 
 type TableContentProps = {
-  items: Awaited<ReturnType<typeof getClearanceResponses>>['items'];
+  items: Awaited<ReturnType<typeof getClearedStudents>>['items'];
 };
 
 function TableContent({ items }: TableContentProps) {
