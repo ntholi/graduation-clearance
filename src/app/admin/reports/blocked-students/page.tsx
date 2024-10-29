@@ -18,33 +18,33 @@ import {
 } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { parseAsInteger, useQueryState } from 'nuqs';
-import { countClearedStudents, getClearanceResponses } from './actions';
+import { countBlockedStudents, getBlockedStudents } from './actions';
 
 export default function Page() {
   const [currentPage, setCurrentPage] = useQueryState('page', parseAsInteger);
 
   const { data: counts } = useQuery({
-    queryKey: ['clearance-counts'],
-    queryFn: () => countClearedStudents(),
+    queryKey: ['blocked-counts'],
+    queryFn: () => countBlockedStudents(),
   });
 
   const { data, isLoading } = useQuery({
-    queryKey: ['clearance-responses', currentPage],
-    queryFn: () => getClearanceResponses(currentPage ?? 1),
+    queryKey: ['blocked-students', currentPage],
+    queryFn: () => getBlockedStudents(currentPage ?? 1),
   });
 
   return (
     <Stack>
       <Paper withBorder p='md'>
         <Title fw={'lighter'} order={3}>
-          Cleared Students
+          Blocked Students
         </Title>
         <Group mt='xs'>
           <Text size='sm'>
             <Text span fw={500}>
               {counts ?? '?'}
             </Text>{' '}
-            students cleared
+            students blocked
           </Text>
         </Group>
       </Paper>
@@ -56,9 +56,9 @@ export default function Page() {
                 <TableTh>Student No</TableTh>
                 <TableTh>Names</TableTh>
                 <TableTh>Programme</TableTh>
-                <TableTh>Date Requested</TableTh>
-                <TableTh>Date Cleared</TableTh>
-                <TableTh>Cleared By</TableTh>
+                <TableTh>Date Blocked</TableTh>
+                <TableTh>Blocked By</TableTh>
+                <TableTh>Reason</TableTh>
               </TableTr>
             </TableThead>
             {isLoading ? (
@@ -85,7 +85,7 @@ export default function Page() {
 }
 
 type TableContentProps = {
-  items: Awaited<ReturnType<typeof getClearanceResponses>>['items'];
+  items: Awaited<ReturnType<typeof getBlockedStudents>>['items'];
 };
 
 function TableContent({ items }: TableContentProps) {
@@ -96,9 +96,9 @@ function TableContent({ items }: TableContentProps) {
           <TableTd>{it.stdNo}</TableTd>
           <TableTd>{it.names}</TableTd>
           <TableTd>{it.program}</TableTd>
-          <TableTd>{dateTime(it.dateRequested)}</TableTd>
-          <TableTd>{dateTime(it.dateCleared)}</TableTd>
-          <TableTd>{titleCase(it.clearedBy ?? 'Unknown')}</TableTd>
+          <TableTd>{dateTime(it.dateBlocked)}</TableTd>
+          <TableTd>{titleCase(it.blockedBy ?? 'Unknown')}</TableTd>
+          <TableTd>{it.reason}</TableTd>
         </TableTr>
       ))}
     </TableTbody>

@@ -178,6 +178,13 @@ export default function Navigation() {
             leftSection={<SquareCheck size='1.1rem' />}
             rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
           />
+          <NavLink
+            label='Blocked Students'
+            component={Link}
+            href={'/admin/reports/blocked-students'}
+            leftSection={<Construction size='1.1rem' />}
+            rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
+          />
         </NavLink>
       </AppShell.Section>
       <AppShell.Section>
