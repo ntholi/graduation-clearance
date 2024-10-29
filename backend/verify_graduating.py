@@ -1,9 +1,13 @@
-from typing import List, Tuple
+from typing import List
 
 from database import db_session
-from database.models import Enrollment, Grade, GraduatingStudent
+from database.models import Grade, GraduatingStudent
 from rich import print
+from rich.console import Console
+from rich.table import Table
 from scrapper import Scrapper
+
+console = Console()
 
 
 def get_graduating_students():
@@ -35,12 +39,27 @@ def verify_repeat_courses(std_no: int):
     return failed_courses
 
 
+def print_in_table(failed_students: list[tuple[int, List[Grade]]]):
+    table = Table(title="Failed Students")
+    table.add_column("Student Number", style="cyan")
+    table.add_column("Failed Courses", style="yellow")
+    for student, grades in failed_students:
+        grade_name = ", ".join(
+            [f"{it.course_code}: {it.course_name} ({it.grade})" for it in grades]
+        )
+        table.add_row(str(student), grade_name)
+    console.print(table)
+
+
 def main():
     students = get_graduating_students()
+    failed_students: list[tuple[int, List[Grade]]] = []
     for student in students:
         grades = verify_repeat_courses(student.std_no)
         if len(grades) > 0:
-            print(f"Student {student.std_no}: {grades}")
+            failed_students.append((student.std_no, grades))
+
+    print_in_table(failed_students)
 
 
 if __name__ == "__main__":
