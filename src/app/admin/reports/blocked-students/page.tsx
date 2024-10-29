@@ -56,16 +56,16 @@ export default function Page() {
           <ExportButton onClick={exportToExcel} />
         </Flex>
       </Paper>
-      <Table>
+      <Table.ScrollContainer minWidth={1900}>
         <Paper withBorder p='md'>
           <Table>
             <TableThead>
               <TableTr>
-                <TableTh>Student No</TableTh>
-                <TableTh>Names</TableTh>
-                <TableTh>Programme</TableTh>
-                <TableTh>Date Blocked</TableTh>
-                <TableTh>Blocked By</TableTh>
+                <TableTh w={100}>Student No</TableTh>
+                <TableTh w={250}>Names</TableTh>
+                <TableTh w={320}>Programme</TableTh>
+                <TableTh w={160}>Date Blocked</TableTh>
+                <TableTh w={150}>Blocked By</TableTh>
                 <TableTh>Reason</TableTh>
               </TableTr>
             </TableThead>
@@ -87,7 +87,7 @@ export default function Page() {
             onChange={setCurrentPage}
           />
         </Paper>
-      </Table>
+      </Table.ScrollContainer>
     </Stack>
   );
 }
