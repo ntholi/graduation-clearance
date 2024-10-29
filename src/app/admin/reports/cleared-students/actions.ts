@@ -79,6 +79,43 @@ export async function getClearedStudents(page: number = 1) {
   };
 }
 
+export async function getAllClearedStudents() {
+  const clearedBy =
+    (await auth())?.user?.role === 'library' ? 'library' : 'finance';
+
+  const list = await db
+    .select({
+      stdNo: clearanceRequest.stdNo,
+      names: students.name,
+      program: students.program,
+      dateRequested: clearanceRequest.createdAt,
+      dateCleared: clearanceResponse.createdAt,
+      clearedBy: users.name,
+    })
+    .from(clearanceResponse)
+    .where(
+      and(
+        eq(clearanceResponse.responder, clearedBy),
+        eq(blockedStudents.status, 'unblocked'),
+      ),
+    )
+    .leftJoin(
+      clearanceRequest,
+      eq(clearanceRequest.id, clearanceResponse.clearanceRequestId),
+    )
+    .leftJoin(students, eq(students.stdNo, clearanceRequest.stdNo))
+    .leftJoin(users, eq(users.id, clearanceResponse.createdBy))
+    .leftJoin(
+      blockedStudents,
+      and(
+        eq(blockedStudents.stdNo, clearanceRequest.stdNo),
+        eq(blockedStudents.department, clearedBy),
+      ),
+    )
+    .orderBy(desc(clearanceResponse.createdAt));
+  return list;
+}
+
 export async function countClearedStudents() {
   const clearedBy =
     (await auth())?.user?.role === 'library' ? 'library' : 'finance';

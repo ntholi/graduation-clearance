@@ -1,10 +1,10 @@
 import { dateTime } from '@/lib/format';
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
-import { getClearedStudents } from './actions';
+import { getAllClearedStudents } from './actions';
 
 export async function exportToExcel() {
-  const response = await getClearedStudents();
+  const response = await getAllClearedStudents();
   const workbook = new ExcelJS.Workbook();
 
   workbook.creator = 'Clearance System';
@@ -38,7 +38,7 @@ export async function exportToExcel() {
   headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
   headerRow.height = 25;
 
-  response.items.forEach((item) => {
+  response.forEach((item) => {
     sheet.addRow({
       stdNo: item.stdNo,
       name: item.names,
