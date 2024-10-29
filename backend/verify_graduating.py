@@ -21,6 +21,9 @@ def verify_repeat_courses(std_no: int):
         for grade in grades:
             if grade.grade in failing_grade:
                 failed_courses.append(grade)
+
+    for _, grades in enrollments:
+        for grade in grades:
             if (
                 grade.course_code in [it.course_code for it in failed_courses]
                 and grade.grade not in failing_grade
@@ -28,6 +31,7 @@ def verify_repeat_courses(std_no: int):
                 failed_courses = [
                     it for it in failed_courses if it.course_code != grade.course_code
                 ]
+
     return failed_courses
 
 
