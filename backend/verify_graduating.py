@@ -19,27 +19,27 @@ def get_graduating_students():
 def verify_repeat_courses(std_no: int):
     scrapper = Scrapper()
     _, enrollments = scrapper.get_student_data(std_no)
+
+    failing_grades = {"F", "ANN", "DEF", "PP"}
+
     failed_courses: List[Grade] = []
-    failing_grade = ["F", "ANN", "DEF", "PP"]
     for _, grades in enrollments:
         for grade in grades:
-            if grade.grade in failing_grade:
+            if grade.grade in failing_grades:
                 failed_courses.append(grade)
 
+    passed_course_names = set()
     for _, grades in enrollments:
         for grade in grades:
-            if (
-                grade.course_name.lower()
-                in [it.course_name.lower() for it in failed_courses]
-                and grade.grade not in failing_grade
-            ):
-                failed_courses = [
-                    it
-                    for it in failed_courses
-                    if it.course_name.lower() != grade.course_name.lower()
-                ]
+            if grade.grade not in failing_grades:
+                passed_course_names.add(grade.course_name.lower())
 
-    return failed_courses
+    remaining_failed_courses = []
+    for grade in failed_courses:
+        if grade.course_name.lower() not in passed_course_names:
+            remaining_failed_courses.append(grade)
+
+    return remaining_failed_courses
 
 
 def print_in_table(failed_students: list[tuple[int, List[Grade]]]):
