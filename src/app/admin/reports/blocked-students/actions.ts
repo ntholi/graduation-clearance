@@ -4,14 +4,22 @@ import { auth } from '@/auth';
 import db from '@/db';
 import { blockedStudents, students } from '@/db/schema';
 import { users } from '@/db/schema/auth';
-import { count, desc, eq, and } from 'drizzle-orm';
+import { count, desc, eq, and, or, like } from 'drizzle-orm';
 
 const ITEMS_PER_PAGE = 10;
 
-export async function getBlockedStudents(page: number = 1) {
+export async function getBlockedStudents(page: number = 1, search?: string) {
   const department =
     (await auth())?.user?.role === 'library' ? 'library' : 'finance';
   const offset = (page - 1) * ITEMS_PER_PAGE;
+
+  const searchCondition = search
+    ? or(
+        like(students.name, `%${search}%`),
+        like(students.stdNo, `%${search}%`),
+        like(students.program, `%${search}%`),
+      )
+    : undefined;
 
   const list = await db
     .select({
@@ -27,6 +35,7 @@ export async function getBlockedStudents(page: number = 1) {
       and(
         eq(blockedStudents.department, department),
         eq(blockedStudents.status, 'blocked'),
+        searchCondition,
       ),
     )
     .leftJoin(students, eq(students.stdNo, blockedStudents.stdNo))
@@ -38,10 +47,12 @@ export async function getBlockedStudents(page: number = 1) {
   const totalCount = await db
     .select({ count: count() })
     .from(blockedStudents)
+    .leftJoin(students, eq(students.stdNo, blockedStudents.stdNo))
     .where(
       and(
         eq(blockedStudents.department, department),
         eq(blockedStudents.status, 'blocked'),
+        searchCondition,
       ),
     )
     .then((it) => it[0].count);

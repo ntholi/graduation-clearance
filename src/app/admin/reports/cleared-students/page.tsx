@@ -17,14 +17,23 @@ import {
   Text,
   Title,
   Button,
+  TextInput,
+  Divider,
+  CloseButton,
 } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { parseAsInteger, useQueryState } from 'nuqs';
 import { countClearedStudents, getClearedStudents } from './actions';
 import { exportToExcel } from './export';
 import ExportButton from '../ExportButton';
+import { SearchIcon } from 'lucide-react';
+import { useDebounce } from '@/hooks/useDebounce';
+import { useState } from 'react';
+
 export default function Page() {
   const [currentPage, setCurrentPage] = useQueryState('page', parseAsInteger);
+  const [search, setSearch] = useState('');
+  const debouncedSearch = useDebounce(search, 500);
 
   const { data: counts } = useQuery({
     queryKey: ['clearance-counts'],
@@ -32,8 +41,8 @@ export default function Page() {
   });
 
   const { data, isLoading } = useQuery({
-    queryKey: ['clearance-responses', currentPage],
-    queryFn: () => getClearedStudents(currentPage ?? 1),
+    queryKey: ['clearance-responses', currentPage, debouncedSearch],
+    queryFn: () => getClearedStudents(currentPage ?? 1, debouncedSearch),
   });
 
   return (
@@ -53,7 +62,23 @@ export default function Page() {
               </Text>
             </Group>
           </div>
-          <ExportButton onClick={exportToExcel} />
+          <Group>
+            <TextInput
+              placeholder='Search students...'
+              leftSection={<SearchIcon size={16} />}
+              value={search}
+              onChange={(e) => setSearch(e.currentTarget.value)}
+              rightSection={
+                <CloseButton
+                  aria-label='Clear input'
+                  onClick={() => setSearch('')}
+                  style={{ display: search ? undefined : 'none' }}
+                />
+              }
+            />
+            <Divider orientation='vertical' />
+            <ExportButton onClick={exportToExcel} />
+          </Group>
         </Flex>
       </Paper>
       <Table>

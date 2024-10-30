@@ -9,14 +9,22 @@ import {
   students,
 } from '@/db/schema';
 import { users } from '@/db/schema/auth';
-import { count, desc, eq, and, isNull, or } from 'drizzle-orm';
+import { count, desc, eq, and, isNull, or, like } from 'drizzle-orm';
 
 const ITEMS_PER_PAGE = 10;
 
-export async function getClearedStudents(page: number = 1) {
+export async function getClearedStudents(page: number = 1, search?: string) {
   const clearedBy =
     (await auth())?.user?.role === 'library' ? 'library' : 'finance';
   const offset = (page - 1) * ITEMS_PER_PAGE;
+
+  const searchCondition = search
+    ? or(
+        like(students.name, `%${search}%`),
+        like(students.stdNo, `%${search}%`),
+        like(students.program, `%${search}%`),
+      )
+    : undefined;
 
   const list = await db
     .select({
@@ -32,6 +40,7 @@ export async function getClearedStudents(page: number = 1) {
       and(
         eq(clearanceResponse.responder, clearedBy),
         or(isNull(blockedStudents.id), eq(blockedStudents.status, 'unblocked')),
+        searchCondition,
       ),
     )
     .leftJoin(
@@ -58,6 +67,7 @@ export async function getClearedStudents(page: number = 1) {
       clearanceRequest,
       eq(clearanceRequest.id, clearanceResponse.clearanceRequestId),
     )
+    .leftJoin(students, eq(students.stdNo, clearanceRequest.stdNo))
     .leftJoin(
       blockedStudents,
       and(
@@ -69,6 +79,7 @@ export async function getClearedStudents(page: number = 1) {
       and(
         eq(clearanceResponse.responder, clearedBy),
         or(isNull(blockedStudents.id), eq(blockedStudents.status, 'unblocked')),
+        searchCondition,
       ),
     )
     .then((it) => it[0].count);
