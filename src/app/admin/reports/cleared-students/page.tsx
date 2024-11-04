@@ -29,6 +29,7 @@ import ExportButton from '../ExportButton';
 import { SearchIcon } from 'lucide-react';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useState } from 'react';
+import { Stack as MantineStack } from '@mantine/core';
 
 export default function Page() {
   const [currentPage, setCurrentPage] = useQueryState('page', parseAsInteger);
@@ -81,8 +82,8 @@ export default function Page() {
           </Group>
         </Flex>
       </Paper>
-      <Table>
-        <Paper withBorder p='md'>
+      <Paper withBorder p='md'>
+        <Table.ScrollContainer minWidth={1300}>
           <Table>
             <TableThead>
               <TableTr>
@@ -92,6 +93,9 @@ export default function Page() {
                 <TableTh>Date Requested</TableTh>
                 <TableTh>Date Cleared</TableTh>
                 <TableTh>Cleared By</TableTh>
+                <TableTh>Receipt No</TableTh>
+                <TableTh>Item</TableTh>
+                <TableTh>Amount</TableTh>
               </TableTr>
             </TableThead>
             {isLoading ? (
@@ -111,8 +115,8 @@ export default function Page() {
             value={currentPage ?? 1}
             onChange={setCurrentPage}
           />
-        </Paper>
-      </Table>
+        </Table.ScrollContainer>
+      </Paper>
     </Stack>
   );
 }
@@ -124,16 +128,41 @@ type TableContentProps = {
 function TableContent({ items }: TableContentProps) {
   return (
     <TableTbody>
-      {items.map((it) => (
-        <TableTr key={it.stdNo}>
-          <TableTd>{it.stdNo}</TableTd>
-          <TableTd>{it.names}</TableTd>
-          <TableTd>{it.program}</TableTd>
-          <TableTd>{dateTime(it.dateRequested)}</TableTd>
-          <TableTd>{dateTime(it.dateCleared)}</TableTd>
-          <TableTd>{titleCase(it.clearedBy ?? 'Unknown')}</TableTd>
-        </TableTr>
-      ))}
+      {items.map((it) => {
+        if (it.payments.length === 0) {
+          return (
+            <TableTr key={it.stdNo}>
+              <TableTd>{it.stdNo}</TableTd>
+              <TableTd>{it.names}</TableTd>
+              <TableTd>{it.program}</TableTd>
+              <TableTd>{dateTime(it.dateRequested)}</TableTd>
+              <TableTd>{dateTime(it.dateCleared)}</TableTd>
+              <TableTd>{titleCase(it.clearedBy ?? 'Unknown')}</TableTd>
+              <TableTd colSpan={3}>
+                <Text size='sm' c='dimmed' ta='center'>
+                  No payments
+                </Text>
+              </TableTd>
+            </TableTr>
+          );
+        }
+
+        return it.payments.map((payment, index) => (
+          <TableTr key={`${it.stdNo}-${payment.receipt_no}`}>
+            <TableTd>{index === 0 ? it.stdNo : ''}</TableTd>
+            <TableTd>{index === 0 ? it.names : ''}</TableTd>
+            <TableTd>{index === 0 ? it.program : ''}</TableTd>
+            <TableTd>{index === 0 ? dateTime(it.dateRequested) : ''}</TableTd>
+            <TableTd>{index === 0 ? dateTime(it.dateCleared) : ''}</TableTd>
+            <TableTd>
+              {index === 0 ? titleCase(it.clearedBy ?? 'Unknown') : ''}
+            </TableTd>
+            <TableTd>{payment.receipt_no}</TableTd>
+            <TableTd>{payment.item}</TableTd>
+            <TableTd>KES {Number(payment.amount).toLocaleString()}</TableTd>
+          </TableTr>
+        ));
+      })}
     </TableTbody>
   );
 }

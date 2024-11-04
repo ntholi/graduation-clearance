@@ -20,6 +20,9 @@ export async function exportToExcel() {
     { header: 'Date Requested', key: 'dateRequested', width: 20 },
     { header: 'Date Cleared', key: 'dateCleared', width: 20 },
     { header: 'Cleared By', key: 'clearedBy', width: 20 },
+    { header: 'Receipt No', key: 'receiptNo', width: 15 },
+    { header: 'Payment Item', key: 'paymentItem', width: 30 },
+    { header: 'Amount', key: 'amount', width: 20 },
   ];
 
   const headerRow = sheet.getRow(1);
@@ -39,16 +42,39 @@ export async function exportToExcel() {
   headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
   headerRow.height = 25;
 
+  let rowIndex = 1;
   response.forEach((item, index) => {
-    sheet.addRow({
-      index: index + 1,
-      stdNo: Number(item.stdNo),
-      name: item.names,
-      program: item.program,
-      dateRequested: dateTime(item.dateRequested),
-      dateCleared: dateTime(item.dateCleared),
-      clearedBy: titleCase(item.clearedBy ?? 'Unknown'),
-    });
+    if (item.payments.length === 0) {
+      sheet.addRow({
+        index: index + 1,
+        stdNo: Number(item.stdNo),
+        name: item.names,
+        program: item.program,
+        dateRequested: dateTime(item.dateRequested),
+        dateCleared: dateTime(item.dateCleared),
+        clearedBy: titleCase(item.clearedBy ?? 'Unknown'),
+        receiptNo: '-',
+        paymentItem: 'No payments',
+        amount: '0',
+      });
+      rowIndex++;
+    } else {
+      item.payments.forEach((payment, pIndex) => {
+        sheet.addRow({
+          index: pIndex === 0 ? index + 1 : '',
+          stdNo: pIndex === 0 ? Number(item.stdNo) : '',
+          name: pIndex === 0 ? item.names : '',
+          program: pIndex === 0 ? item.program : '',
+          dateRequested: pIndex === 0 ? dateTime(item.dateRequested) : '',
+          dateCleared: pIndex === 0 ? dateTime(item.dateCleared) : '',
+          clearedBy: pIndex === 0 ? titleCase(item.clearedBy ?? 'Unknown') : '',
+          receiptNo: payment.receipt_no,
+          paymentItem: payment.item,
+          amount: `M ${Number(payment.amount).toLocaleString()}`,
+        });
+        rowIndex++;
+      });
+    }
   });
 
   sheet.eachRow((row, rowNumber) => {
@@ -86,7 +112,7 @@ export async function exportToExcel() {
   const titleRow = sheet.getRow(1);
   titleRow.font = { bold: true, size: 12 };
   titleRow.height = 30;
-  sheet.mergeCells('A1:G1');
+  sheet.mergeCells('A1:J1');
   titleRow.alignment = { horizontal: 'center', vertical: 'middle' };
 
   const buffer = await workbook.xlsx.writeBuffer();

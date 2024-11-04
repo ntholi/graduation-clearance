@@ -80,16 +80,16 @@ export default function Page() {
           </Group>
         </Flex>
       </Paper>
-      <Table.ScrollContainer minWidth={1900}>
-        <Paper withBorder p='md'>
+      <Paper withBorder p='md'>
+        <Table.ScrollContainer minWidth={1200}>
           <Table>
             <TableThead>
               <TableTr>
-                <TableTh w={100}>Student No</TableTh>
-                <TableTh w={250}>Names</TableTh>
-                <TableTh w={320}>Programme</TableTh>
-                <TableTh w={160}>Date Blocked</TableTh>
-                <TableTh w={150}>Blocked By</TableTh>
+                <TableTh>Student No</TableTh>
+                <TableTh>Names</TableTh>
+                <TableTh>Programme</TableTh>
+                <TableTh>Date Blocked</TableTh>
+                <TableTh>Blocked By</TableTh>
                 <TableTh>Reason</TableTh>
               </TableTr>
             </TableThead>
@@ -110,8 +110,8 @@ export default function Page() {
             value={currentPage ?? 1}
             onChange={setCurrentPage}
           />
-        </Paper>
-      </Table.ScrollContainer>
+        </Table.ScrollContainer>
+      </Paper>
     </Stack>
   );
 }

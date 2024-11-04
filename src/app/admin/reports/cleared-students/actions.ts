@@ -7,9 +7,10 @@ import {
   clearanceRequest,
   clearanceResponse,
   students,
+  financePayments,
 } from '@/db/schema';
 import { users } from '@/db/schema/auth';
-import { count, desc, eq, and, isNull, or, like } from 'drizzle-orm';
+import { count, desc, eq, and, isNull, or, like, sql } from 'drizzle-orm';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -34,6 +35,15 @@ export async function getClearedStudents(page: number = 1, search?: string) {
       dateRequested: clearanceRequest.createdAt,
       dateCleared: clearanceResponse.createdAt,
       clearedBy: users.name,
+      payments: sql<{ receipt_no: string; item: string; amount: string }[]>`
+        json_agg(
+          json_build_object(
+            'receipt_no', ${financePayments.receiptNo},
+            'item', ${financePayments.item},
+            'amount', ${financePayments.amount}::text
+          )
+        ) FILTER (WHERE ${financePayments.receiptNo} IS NOT NULL)
+      `,
     })
     .from(clearanceResponse)
     .where(
@@ -55,6 +65,18 @@ export async function getClearedStudents(page: number = 1, search?: string) {
         eq(blockedStudents.stdNo, clearanceRequest.stdNo),
         eq(blockedStudents.department, clearedBy),
       ),
+    )
+    .leftJoin(
+      financePayments,
+      eq(financePayments.stdNo, clearanceRequest.stdNo),
+    )
+    .groupBy(
+      clearanceRequest.stdNo,
+      students.name,
+      students.program,
+      clearanceRequest.createdAt,
+      clearanceResponse.createdAt,
+      users.name,
     )
     .orderBy(desc(clearanceResponse.createdAt))
     .limit(ITEMS_PER_PAGE)
@@ -85,7 +107,10 @@ export async function getClearedStudents(page: number = 1, search?: string) {
     .then((it) => it[0].count);
 
   return {
-    items: list,
+    items: list.map((item) => ({
+      ...item,
+      payments: item.payments || [],
+    })),
     pages: Math.ceil(totalCount / ITEMS_PER_PAGE),
   };
 }
@@ -102,6 +127,15 @@ export async function getAllClearedStudents() {
       dateRequested: clearanceRequest.createdAt,
       dateCleared: clearanceResponse.createdAt,
       clearedBy: users.name,
+      payments: sql<{ receipt_no: string; item: string; amount: string }[]>`
+        json_agg(
+          json_build_object(
+            'receipt_no', ${financePayments.receiptNo},
+            'item', ${financePayments.item},
+            'amount', ${financePayments.amount}::text
+          )
+        ) FILTER (WHERE ${financePayments.receiptNo} IS NOT NULL)
+      `,
     })
     .from(clearanceResponse)
     .where(
@@ -123,8 +157,24 @@ export async function getAllClearedStudents() {
         eq(blockedStudents.department, clearedBy),
       ),
     )
+    .leftJoin(
+      financePayments,
+      eq(financePayments.stdNo, clearanceRequest.stdNo),
+    )
+    .groupBy(
+      clearanceRequest.stdNo,
+      students.name,
+      students.program,
+      clearanceRequest.createdAt,
+      clearanceResponse.createdAt,
+      users.name,
+    )
     .orderBy(desc(clearanceResponse.createdAt));
-  return list;
+
+  return list.map((item) => ({
+    ...item,
+    payments: item.payments || [],
+  }));
 }
 
 export async function countClearedStudents() {
