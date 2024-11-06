@@ -83,7 +83,7 @@ export default function Page() {
         </Flex>
       </Paper>
       <Paper withBorder p='md'>
-        <Table.ScrollContainer minWidth={1300}>
+        <Table.ScrollContainer minWidth={1500}>
           <Table>
             <TableThead>
               <TableTr>
