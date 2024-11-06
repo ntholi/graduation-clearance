@@ -159,7 +159,7 @@ function TableContent({ items }: TableContentProps) {
             </TableTd>
             <TableTd>{payment.receipt_no}</TableTd>
             <TableTd>{payment.item}</TableTd>
-            <TableTd>KES {Number(payment.amount).toLocaleString()}</TableTd>
+            <TableTd>M {Number(payment.amount).toLocaleString()}</TableTd>
           </TableTr>
         ));
       })}
