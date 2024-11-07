@@ -77,7 +77,11 @@ def batch_save_enrollments(
 def approve_signup_requests():
     requests = (
         db_session.query(SignUpRequest)
-        .filter(SignUpRequest.status == SignUpRequestStatus.pending)
+        .filter(
+            SignUpRequest.status == SignUpRequestStatus.pending,
+            SignUpRequest.created_at >= "2023-11-01",
+            SignUpRequest.created_at < "2023-12-01",
+        )
         .all()
     )
     print(f"Found {len(requests)} requests to approve")
@@ -209,8 +213,8 @@ def main():
         # update_saved_students()
         # delete_non_graduating_requests()
         # delete_duplicate_requests()
-        print("Sleeping for 10 minutes...")
-        time.sleep(60 * 10)
+        print("Sleeping for 5 minutes...")
+        time.sleep(60 * 5)
 
 
 if __name__ == "__main__":
