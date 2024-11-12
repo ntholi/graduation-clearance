@@ -25,65 +25,41 @@ export async function getStudents(page: number = 1, search = '') {
   };
 }
 
-export async function getStudentByUserId(userId: string | undefined) {
-  if (!userId) return null;
+export async function getTranscript(stdNo: string) {
   const student = await db
     .select()
     .from(students)
-    .where(eq(students.userId, userId))
-    .then((data) => data[0]);
-  return student;
-}
+    .where(eq(students.stdNo, stdNo))
+    .limit(1);
 
-export async function getStudent(id: string) {
-  const student = await db
+  if (!student.length) return null;
+
+  const enrollmentData = await db
     .select()
-    .from(students)
-    .where(eq(students.stdNo, id))
-    .then((data) => data[0]);
-  return student;
-}
+    .from(enrollments)
+    .where(eq(enrollments.stdNo, stdNo))
+    .leftJoin(grades, eq(grades.enrollmentId, enrollments.id));
 
-export async function deleteStudent(id: string) {
-  await db.delete(students).where(eq(students.stdNo, id));
-  revalidatePath('/admin/students');
-}
+  const terms = enrollmentData.reduce((acc: any, curr) => {
+    const term = curr.enrollments;
+    const grade = curr.grades;
 
-export async function updateStudent(
-  id: string,
-  values: Student,
-): Promise<Student> {
-  const session = await auth();
-  if (!session || !session.user?.id) {
-    throw new Error('Unauthorized');
-  }
-  const res = await db
-    .update(students)
-    .set({ ...values, updatedBy: session.user.id, updatedAt: new Date() })
-    .where(eq(students.stdNo, id))
-    .returning();
-  revalidatePath(`/admin/students/${id}`);
-  revalidatePath('/admin/students');
-  return res[0];
-}
+    if (!acc[term.term]) {
+      acc[term.term] = {
+        ...term,
+        grades: [],
+      };
+    }
 
-export async function getRepeatModules(stdNo: string) {
-  const res = await db
-    .select({
-      courseCode: grades.courseCode,
-      courseName: grades.courseName,
-      grade: grades.grade,
-      term: enrollments.term,
-      semester: enrollments.semester,
-    })
-    .from(grades)
-    .innerJoin(enrollments, eq(grades.enrollmentId, enrollments.id))
-    .where(eq(enrollments.stdNo, stdNo));
-  const failedModules = res.filter((it) => it.grade.trim() === 'F');
-  const repeatModules = res.filter(
-    (it) =>
-      failedModules.map((it) => it.courseCode).includes(it.courseCode) ||
-      failedModules.map((it) => it.courseName).includes(it.courseName),
-  );
-  return repeatModules;
+    if (grade) {
+      acc[term.term].grades.push(grade);
+    }
+
+    return acc;
+  }, {});
+
+  return {
+    student: student[0],
+    terms: Object.values(terms),
+  };
 }
