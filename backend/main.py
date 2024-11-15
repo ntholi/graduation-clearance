@@ -79,8 +79,6 @@ def approve_signup_requests():
         db_session.query(SignUpRequest)
         .filter(
             SignUpRequest.status == SignUpRequestStatus.pending,
-            SignUpRequest.created_at >= "2023-11-01",
-            SignUpRequest.created_at < "2023-12-01",
         )
         .all()
     )
