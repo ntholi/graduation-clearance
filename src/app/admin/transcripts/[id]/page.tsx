@@ -19,6 +19,7 @@ import { PrinterIcon } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import { getTranscript } from '../actions';
 import { TableBody } from '@/components/ui/table';
+import PrintButton from './PrintButton';
 
 type Props = {
   params: {
@@ -40,11 +41,7 @@ export default async function Page({ params: { id } }: Props) {
         <Title order={3} fw={100}>
           Academic Transcript
         </Title>
-        <Group>
-          <ActionIcon size={'lg'} variant='default'>
-            <PrinterIcon size={'1.1rem'} />
-          </ActionIcon>
-        </Group>
+        <PrintButton />
       </Flex>
       <Divider my={15} />
 
