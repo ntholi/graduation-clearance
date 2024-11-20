@@ -20,6 +20,7 @@ import {
   ChevronRight,
   Computer,
   Construction,
+  FileText,
   GraduationCap,
   HandCoins,
   Landmark,
@@ -162,6 +163,15 @@ export default function Navigation() {
             active={pathname.startsWith('/admin/payments')}
             href={'/admin/payments'}
             leftSection={<HandCoins size='1.1rem' />}
+            rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
+          />
+        )}
+        {isRegistry && (
+          <NavLink
+            label='Transcripts'
+            component={Link}
+            href={'/admin/transcripts'}
+            leftSection={<FileText size='1.1rem' />}
             rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
           />
         )}
