@@ -90,7 +90,7 @@ const TermDisplay = ({ term }: { term: Term }) => (
 );
 
 const TableHeaders = () => (
-  <View style={tw('flex flex-row border-b border-border pb-0.5 mb-1')}>
+  <View style={tw('flex flex-row border-t border-b pb-0.5 mb-1')}>
     <Text style={tw('w-1/5')}>Code</Text>
     <Text style={tw('w-1/2')}>Module Name</Text>
     <Text style={tw('w-[15%]')}>Credit</Text>
@@ -113,8 +113,8 @@ const TranscriptPDF = ({
     <Document>
       <Page size='A4' style={tw('p-10 text-[8pt] font-arial')}>
         {/* Header Information */}
-        <View style={tw('mb-4')}>
-          <View style={tw('flex flex-row mb-1')}>
+        <View style={tw('mb-4 border-b border-t pb-0.5')}>
+          <View style={tw('flex flex-row')}>
             <View style={tw('flex flex-row w-1/2')}>
               <Text style={tw('w-[35%] font-bold')}>Student Name</Text>
               <Text style={tw('px-0.5')}>:</Text>
@@ -126,7 +126,7 @@ const TranscriptPDF = ({
               <Text>{student.admissionDate}</Text>
             </View>
           </View>
-          <View style={tw('flex flex-row mb-1')}>
+          <View style={tw('flex flex-row')}>
             <View style={tw('flex flex-row w-1/2')}>
               <Text style={tw('w-[35%] font-bold')}>Student ID</Text>
               <Text style={tw('px-0.5')}>:</Text>
@@ -138,7 +138,7 @@ const TranscriptPDF = ({
               <Text>{student.completionDate}</Text>
             </View>
           </View>
-          <View style={tw('flex flex-row mb-1')}>
+          <View style={tw('flex flex-row')}>
             <View style={tw('flex flex-row w-1/2')}>
               <Text style={tw('w-[35%] font-bold')}>IC / Passport No.</Text>
               <Text style={tw('px-0.5')}>:</Text>
@@ -150,7 +150,7 @@ const TranscriptPDF = ({
               <Text>{student.programme}</Text>
             </View>
           </View>
-          <View style={tw('flex flex-row mb-1')}>
+          <View style={tw('flex flex-row')}>
             <View style={tw('flex flex-row w-1/2')}>
               <Text style={tw('w-[35%] font-bold')}>Gender</Text>
               <Text style={tw('px-0.5')}>:</Text>
@@ -162,7 +162,7 @@ const TranscriptPDF = ({
               <Text>{student.faculty}</Text>
             </View>
           </View>
-          <View style={tw('flex flex-row mb-1')}>
+          <View style={tw('flex flex-row')}>
             <View style={tw('flex flex-row w-1/2')}>
               <Text style={tw('w-[35%] font-bold')}>Nationality</Text>
               <Text style={tw('px-0.5')}>:</Text>
@@ -178,13 +178,13 @@ const TranscriptPDF = ({
 
         {/* Two-column layout */}
         <View style={tw('flex flex-row mt-2.5')}>
-          <View style={tw('w-1/2 pr-2.5')}>
+          <View style={tw('w-1/2')}>
             <TableHeaders />
             {leftColumnTerms.map((term, index) => (
               <TermDisplay key={index} term={term} />
             ))}
           </View>
-          <View style={tw('w-1/2 pl-2.5')}>
+          <View style={tw('w-1/2')}>
             <TableHeaders />
             {rightColumnTerms.map((term, index) => (
               <TermDisplay key={index} term={term} />
@@ -193,7 +193,7 @@ const TranscriptPDF = ({
         </View>
 
         {/* Totals Section */}
-        <View style={tw('mt-5 border-t border-border pt-2.5')}>
+        <View style={tw('mt-5 border-t pt-2.5')}>
           <View style={tw('flex flex-row mb-2')}>
             <Text style={tw('w-1/4')}>Total MPU Credits</Text>
             <Text style={tw('px-0.5')}>:</Text>
