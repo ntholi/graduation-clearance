@@ -48,18 +48,31 @@ export async function getTranscript(stdNo: string) {
       acc[term.term] = {
         ...term,
         grades: [],
+        creditsEarned: 0,
+        cumulativeCredits: 0,
       };
     }
 
     if (grade) {
       acc[term.term].grades.push(grade);
+      acc[term.term].creditsEarned += grade.credits || 0;
     }
 
     return acc;
   }, {});
 
+  const sortedTerms = Object.values(terms).sort((a: any, b: any) =>
+    a.term.localeCompare(b.term),
+  );
+
+  let runningTotal = 0;
+  sortedTerms.forEach((term: any) => {
+    runningTotal += term.creditsEarned;
+    term.cumulativeCredits = runningTotal;
+  });
+
   return {
     student: student[0],
-    terms: Object.values(terms),
+    terms: sortedTerms,
   };
 }
