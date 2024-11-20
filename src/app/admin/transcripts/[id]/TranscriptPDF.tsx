@@ -34,7 +34,7 @@ type Student = {
 
 type Grade = {
   courseCode: string;
-  moduleName: string;
+  courseName: string;
   credit: number;
   grade: string;
 };
@@ -54,7 +54,7 @@ const TermDisplay = ({ term }: { term: Term }) => (
     {term.grades.map((grade, index) => (
       <View key={index} style={tw('flex flex-row mb-0.5')}>
         <Text style={tw('w-1/5')}>{grade.courseCode}</Text>
-        <Text style={tw('w-1/2')}>{grade.moduleName}</Text>
+        <Text style={tw('w-1/2')}>{grade.courseName}</Text>
         <Text style={tw('w-[15%]')}>{grade.credit}</Text>
         <Text style={tw('w-[15%]')}>{grade.grade}</Text>
       </View>
