@@ -3,7 +3,16 @@ import { createTw } from 'react-pdf-tailwind';
 
 Font.register({
   family: 'Arial',
-  src: 'https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxM.woff',
+  fonts: [
+    {
+      src: '/fonts/ARIAL.TTF',
+      fontWeight: 'normal',
+    },
+    {
+      src: '/fonts/ARIALBD.TTF',
+      fontWeight: 'bold',
+    },
+  ],
 });
 
 const tw = createTw({
@@ -107,60 +116,60 @@ const TranscriptPDF = ({
         <View style={tw('mb-4')}>
           <View style={tw('flex flex-row mb-1')}>
             <View style={tw('flex flex-row w-1/2')}>
-              <Text style={tw('w-[35%]')}>Student Name</Text>
+              <Text style={tw('w-[35%] font-bold')}>Student Name</Text>
               <Text style={tw('px-0.5')}>:</Text>
               <Text>{student.name}</Text>
             </View>
             <View style={tw('flex flex-row w-1/2')}>
-              <Text style={tw('w-[35%]')}>Date of Admission</Text>
+              <Text style={tw('w-[35%] font-bold')}>Date of Admission</Text>
               <Text style={tw('px-0.5')}>:</Text>
               <Text>{student.admissionDate}</Text>
             </View>
           </View>
           <View style={tw('flex flex-row mb-1')}>
             <View style={tw('flex flex-row w-1/2')}>
-              <Text style={tw('w-[35%]')}>Student ID</Text>
+              <Text style={tw('w-[35%] font-bold')}>Student ID</Text>
               <Text style={tw('px-0.5')}>:</Text>
               <Text>{student.studentId}</Text>
             </View>
             <View style={tw('flex flex-row w-1/2')}>
-              <Text style={tw('w-[35%]')}>Date of Completion</Text>
+              <Text style={tw('w-[35%] font-bold')}>Date of Completion</Text>
               <Text style={tw('px-0.5')}>:</Text>
               <Text>{student.completionDate}</Text>
             </View>
           </View>
           <View style={tw('flex flex-row mb-1')}>
             <View style={tw('flex flex-row w-1/2')}>
-              <Text style={tw('w-[35%]')}>IC / Passport No.</Text>
+              <Text style={tw('w-[35%] font-bold')}>IC / Passport No.</Text>
               <Text style={tw('px-0.5')}>:</Text>
               <Text>{student.passportNo}</Text>
             </View>
             <View style={tw('flex flex-row w-1/2')}>
-              <Text style={tw('w-[35%]')}>Programme</Text>
+              <Text style={tw('w-[35%] font-bold')}>Programme</Text>
               <Text style={tw('px-0.5')}>:</Text>
               <Text>{student.programme}</Text>
             </View>
           </View>
           <View style={tw('flex flex-row mb-1')}>
             <View style={tw('flex flex-row w-1/2')}>
-              <Text style={tw('w-[35%]')}>Gender</Text>
+              <Text style={tw('w-[35%] font-bold')}>Gender</Text>
               <Text style={tw('px-0.5')}>:</Text>
               <Text>{student.gender}</Text>
             </View>
             <View style={tw('flex flex-row w-1/2')}>
-              <Text style={tw('w-[35%]')}>Faculty</Text>
+              <Text style={tw('w-[35%] font-bold')}>Faculty</Text>
               <Text style={tw('px-0.5')}>:</Text>
               <Text>{student.faculty}</Text>
             </View>
           </View>
           <View style={tw('flex flex-row mb-1')}>
             <View style={tw('flex flex-row w-1/2')}>
-              <Text style={tw('w-[35%]')}>Nationality</Text>
+              <Text style={tw('w-[35%] font-bold')}>Nationality</Text>
               <Text style={tw('px-0.5')}>:</Text>
               <Text>{student.nationality}</Text>
             </View>
             <View style={tw('flex flex-row w-1/2')}>
-              <Text style={tw('w-[35%]')}>Issued Date</Text>
+              <Text style={tw('w-[35%] font-bold')}>Issued Date</Text>
               <Text style={tw('px-0.5')}>:</Text>
               <Text>{student.issuedDate}</Text>
             </View>
