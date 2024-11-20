@@ -14,7 +14,7 @@ Font.register({
 
 const styles = StyleSheet.create({
   page: {
-    padding: 20,
+    padding: 40,
     fontSize: 8,
     fontFamily: 'Arial',
   },
@@ -25,150 +25,321 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 3,
   },
-  headerLabel: {
-    width: '20%',
-    fontWeight: 'bold',
+  headerField: {
+    flexDirection: 'row',
+    width: '50%',
   },
-  headerValue: {
-    width: '30%',
+  headerLabel: {
+    width: '35%',
   },
   headerColon: {
     width: '2%',
+    paddingHorizontal: 2,
   },
-  table: {
-    width: '100%',
-  },
-  tableHeader: {
+  contentContainer: {
     flexDirection: 'row',
-    borderBottom: '0.5pt solid #000',
-    paddingBottom: 2,
-  },
-  tableRow: {
-    flexDirection: 'row',
-    paddingTop: 2,
-    paddingBottom: 2,
-  },
-  codeColumn: {
-    width: '15%',
-  },
-  nameColumn: {
-    width: '45%',
-  },
-  creditGradeColumn: {
-    width: '10%',
-    textAlign: 'center',
-  },
-  termHeader: {
-    fontWeight: 'bold',
     marginTop: 10,
+  },
+  column: {
+    width: '50%',
+    paddingRight: 10,
+  },
+  columnRight: {
+    width: '50%',
+    paddingLeft: 10,
+  },
+  tableHeaders: {
+    flexDirection: 'row',
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#000000',
+    paddingBottom: 2,
     marginBottom: 5,
   },
+  codeHeader: {
+    width: '20%',
+  },
+  moduleHeader: {
+    width: '50%',
+  },
+  creditHeader: {
+    width: '15%',
+  },
+  gradeHeader: {
+    width: '15%',
+  },
+  termSection: {
+    marginBottom: 15,
+  },
+  termTitle: {
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  gradeRow: {
+    flexDirection: 'row',
+    marginBottom: 1,
+  },
+  code: {
+    width: '20%',
+  },
+  module: {
+    width: '50%',
+  },
+  credit: {
+    width: '15%',
+  },
+  grade: {
+    width: '15%',
+  },
   termSummary: {
-    marginTop: 3,
     marginLeft: 20,
+    marginTop: 3,
   },
   summaryRow: {
     flexDirection: 'row',
-    gap: 30,
+    marginBottom: 1,
   },
-  totals: {
+  summaryLabel: {
+    width: '15%',
+  },
+  summaryColon: {
+    width: '2%',
+  },
+  summaryValue: {
+    width: '23%',
+  },
+  summaryCredit: {
+    width: '30%',
+  },
+  totalsSection: {
     marginTop: 20,
+    borderTopWidth: 0.5,
+    borderTopColor: '#000000',
+    paddingTop: 10,
+  },
+  totalRow: {
+    flexDirection: 'row',
+    marginBottom: 2,
+  },
+  totalLabel: {
+    width: '25%',
+  },
+  registrar: {
+    position: 'absolute',
+    bottom: 60,
+    left: 40,
+    textTransform: 'uppercase',
+    fontSize: 9,
   },
   footer: {
     position: 'absolute',
-    bottom: 20,
-    left: 20,
-    right: 20,
+    bottom: 40,
+    left: 40,
+    right: 40,
     textAlign: 'center',
     fontSize: 8,
   },
 });
 
-type TranscriptPDFProps = {
-  student: {
-    name: string;
-    stdNo: string;
-    program: string;
-    nationality: string;
-  };
-  terms: Array<{
-    term: string;
-    gpa: number;
-    cgpa: number;
-    credits: number;
-    grades: Array<{
-      courseCode: string;
-      courseName: string;
-      credits: number;
-      grade: string;
-    }>;
-  }>;
+type Student = {
+  name: string;
+  studentId: string;
+  passportNo: string;
+  gender: string;
+  nationality: string;
+  admissionDate: string;
+  completionDate: string;
+  programme: string;
+  faculty: string;
+  issuedDate: string;
 };
 
-export default function TranscriptPDF({ student, terms }: TranscriptPDFProps) {
+type Grade = {
+  courseCode: string;
+  moduleName: string;
+  credit: number;
+  grade: string;
+};
+
+type Term = {
+  term: string;
+  grades: Grade[];
+  gpa: number;
+  credits: number;
+  cgpa: number;
+  cumulativeCredits: number;
+};
+
+const TermDisplay = ({ term }: { term: Term }) => (
+  <View style={styles.termSection}>
+    <Text style={styles.termTitle}>{term.term}</Text>
+    {term.grades.map((grade, index) => (
+      <View key={index} style={styles.gradeRow}>
+        <Text style={styles.code}>{grade.courseCode}</Text>
+        <Text style={styles.module}>{grade.moduleName}</Text>
+        <Text style={styles.credit}>{grade.credit}</Text>
+        <Text style={styles.grade}>{grade.grade}</Text>
+      </View>
+    ))}
+    <View style={styles.termSummary}>
+      <View style={styles.summaryRow}>
+        <Text style={styles.summaryLabel}>GPA</Text>
+        <Text style={styles.summaryColon}>:</Text>
+        <Text style={styles.summaryValue}>{term.gpa}</Text>
+        <Text>Credits Earned</Text>
+        <Text style={styles.summaryColon}>:</Text>
+        <Text>{term.credits}</Text>
+      </View>
+      <View style={styles.summaryRow}>
+        <Text style={styles.summaryLabel}>CGPA</Text>
+        <Text style={styles.summaryColon}>:</Text>
+        <Text style={styles.summaryValue}>{term.cgpa}</Text>
+        <Text>Cumulative Credits</Text>
+        <Text style={styles.summaryColon}>:</Text>
+        <Text>{term.cumulativeCredits}</Text>
+      </View>
+    </View>
+  </View>
+);
+
+const TableHeaders = () => (
+  <View style={styles.tableHeaders}>
+    <Text style={styles.codeHeader}>Code</Text>
+    <Text style={styles.moduleHeader}>Module Name</Text>
+    <Text style={styles.creditHeader}>Credit</Text>
+    <Text style={styles.gradeHeader}>Grade</Text>
+  </View>
+);
+
+const TranscriptPDF = ({
+  student,
+  terms,
+}: {
+  student: Student;
+  terms: Term[];
+}) => {
+  // Split terms into left and right columns
+  const midpoint = Math.ceil(terms.length / 2);
+  const leftColumnTerms = terms.slice(0, midpoint);
+  const rightColumnTerms = terms.slice(midpoint);
+
   return (
     <Document>
       <Page size='A4' style={styles.page}>
+        {/* Header Information */}
         <View style={styles.header}>
           <View style={styles.headerRow}>
-            <Text style={styles.headerLabel}>Student Name</Text>
-            <Text style={styles.headerColon}>:</Text>
-            <Text style={styles.headerValue}>{student.name}</Text>
-            <Text style={styles.headerLabel}>Date of Admission</Text>
-            <Text style={styles.headerColon}>:</Text>
-            <Text style={styles.headerValue}>August 2021</Text>
-          </View>
-        </View>
-
-        {terms.map((term, index) => (
-          <View key={index}>
-            <Text style={styles.termHeader}>{term.term}</Text>
-            <View style={styles.table}>
-              <View style={styles.tableHeader}>
-                <Text style={styles.codeColumn}>Code</Text>
-                <Text style={styles.nameColumn}>Module Name</Text>
-                <Text style={styles.creditGradeColumn}>Credit</Text>
-                <Text style={styles.creditGradeColumn}>Grade</Text>
-              </View>
-
-              {term.grades.map((grade, gradeIndex) => (
-                <View key={gradeIndex} style={styles.tableRow}>
-                  <Text style={styles.codeColumn}>{grade.courseCode}</Text>
-                  <Text style={styles.nameColumn}>{grade.courseName}</Text>
-                  <Text style={styles.creditGradeColumn}>{grade.credits}</Text>
-                  <Text style={styles.creditGradeColumn}>{grade.grade}</Text>
-                </View>
-              ))}
-
-              <View style={styles.termSummary}>
-                <View style={styles.summaryRow}>
-                  <Text>GPA : {term.gpa}</Text>
-                  <Text>Credits Earned : {term.credits}</Text>
-                </View>
-                <Text>CGPA : {term.cgpa}</Text>
-              </View>
+            <View style={styles.headerField}>
+              <Text style={styles.headerLabel}>Student Name</Text>
+              <Text style={styles.headerColon}>:</Text>
+              <Text>{student.name}</Text>
+            </View>
+            <View style={styles.headerField}>
+              <Text style={styles.headerLabel}>Date of Admission</Text>
+              <Text style={styles.headerColon}>:</Text>
+              <Text>{student.admissionDate}</Text>
             </View>
           </View>
-        ))}
-
-        <View style={styles.totals}>
-          <Text>Total MPU Credits : -</Text>
-          <Text>Total Credits Transferred : -</Text>
-          <Text>
-            Total Credits Earned :{' '}
-            {terms.reduce((sum, term) => sum + term.credits, 0)}
-          </Text>
-          <Text>
-            Total Cumulative Credits :{' '}
-            {terms.reduce((sum, term) => sum + term.credits, 0)}
-          </Text>
+          <View style={styles.headerRow}>
+            <View style={styles.headerField}>
+              <Text style={styles.headerLabel}>Student ID</Text>
+              <Text style={styles.headerColon}>:</Text>
+              <Text>{student.studentId}</Text>
+            </View>
+            <View style={styles.headerField}>
+              <Text style={styles.headerLabel}>Date of Completion</Text>
+              <Text style={styles.headerColon}>:</Text>
+              <Text>{student.completionDate}</Text>
+            </View>
+          </View>
+          <View style={styles.headerRow}>
+            <View style={styles.headerField}>
+              <Text style={styles.headerLabel}>IC / Passport No.</Text>
+              <Text style={styles.headerColon}>:</Text>
+              <Text>{student.passportNo}</Text>
+            </View>
+            <View style={styles.headerField}>
+              <Text style={styles.headerLabel}>Programme</Text>
+              <Text style={styles.headerColon}>:</Text>
+              <Text>{student.programme}</Text>
+            </View>
+          </View>
+          <View style={styles.headerRow}>
+            <View style={styles.headerField}>
+              <Text style={styles.headerLabel}>Gender</Text>
+              <Text style={styles.headerColon}>:</Text>
+              <Text>{student.gender}</Text>
+            </View>
+            <View style={styles.headerField}>
+              <Text style={styles.headerLabel}>Faculty</Text>
+              <Text style={styles.headerColon}>:</Text>
+              <Text>{student.faculty}</Text>
+            </View>
+          </View>
+          <View style={styles.headerRow}>
+            <View style={styles.headerField}>
+              <Text style={styles.headerLabel}>Nationality</Text>
+              <Text style={styles.headerColon}>:</Text>
+              <Text>{student.nationality}</Text>
+            </View>
+            <View style={styles.headerField}>
+              <Text style={styles.headerLabel}>Issued Date</Text>
+              <Text style={styles.headerColon}>:</Text>
+              <Text>{student.issuedDate}</Text>
+            </View>
+          </View>
         </View>
 
+        {/* Two-column layout for terms */}
+        <View style={styles.contentContainer}>
+          {/* Left Column */}
+          <View style={styles.column}>
+            <TableHeaders />
+            {leftColumnTerms.map((term, index) => (
+              <TermDisplay key={index} term={term} />
+            ))}
+          </View>
+
+          {/* Right Column */}
+          <View style={styles.columnRight}>
+            <TableHeaders />
+            {rightColumnTerms.map((term, index) => (
+              <TermDisplay key={index} term={term} />
+            ))}
+          </View>
+        </View>
+
+        {/* Totals Section */}
+        <View style={styles.totalsSection}>
+          <View style={styles.totalRow}>
+            <Text style={styles.totalLabel}>Total MPU Credits</Text>
+            <Text style={styles.summaryColon}>:</Text>
+            <Text>-</Text>
+          </View>
+          <View style={styles.totalRow}>
+            <Text style={styles.totalLabel}>Total Credit Transferred</Text>
+            <Text style={styles.summaryColon}>:</Text>
+            <Text>-</Text>
+          </View>
+          <View style={styles.totalRow}>
+            <Text style={styles.totalLabel}>Total Credits Earned</Text>
+            <Text style={styles.summaryColon}>:</Text>
+            <Text>{terms.reduce((sum, term) => sum + term.credits, 0)}</Text>
+          </View>
+          <View style={styles.totalRow}>
+            <Text style={styles.totalLabel}>Total Cumulative Credits</Text>
+            <Text style={styles.summaryColon}>:</Text>
+            <Text>{terms[terms.length - 1].cumulativeCredits}</Text>
+          </View>
+        </View>
+
+        <Text style={styles.registrar}>REGISTRAR</Text>
         <Text style={styles.footer}>
           This is not a valid record unless it bears both the stamp and
-          signature on behalf of the university
+          signatory on behalf of the university
         </Text>
       </Page>
     </Document>
   );
-}
+};
+
+export default TranscriptPDF;
