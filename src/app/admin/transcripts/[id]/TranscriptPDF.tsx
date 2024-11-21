@@ -116,9 +116,8 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   grade: {
+    paddingLeft: '10pt',
     width: '35pt',
-    textAlign: 'right',
-    paddingRight: '5pt',
   },
   termSection: {
     marginBottom: '10pt',
