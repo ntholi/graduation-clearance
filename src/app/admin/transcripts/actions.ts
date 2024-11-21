@@ -47,7 +47,6 @@ export async function getTranscript(stdNo: string) {
     if (!acc[term.term]) {
       acc[term.term] = {
         ...term,
-        term: toWords(term.term),
         grades: [],
         creditsEarned: 0,
         cumulativeCredits: 0,
@@ -62,9 +61,12 @@ export async function getTranscript(stdNo: string) {
     return acc;
   }, {});
 
-  const sortedTerms = Object.values(terms).sort((a: any, b: any) =>
-    a.term.localeCompare(b.term),
-  );
+  const sortedTerms = Object.values(terms)
+    .sort((a: any, b: any) => a.term.localeCompare(b.term))
+    .map((term: any) => ({
+      ...term,
+      term: toWords(term.term),
+    }));
 
   let runningTotal = 0;
   sortedTerms.forEach((term: any) => {

@@ -1,5 +1,5 @@
+import { TableBody } from '@/components/ui/table';
 import {
-  ActionIcon,
   Box,
   Divider,
   Flex,
@@ -15,10 +15,8 @@ import {
   Text,
   Title,
 } from '@mantine/core';
-import { PrinterIcon } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import { getTranscript } from '../actions';
-import { TableBody } from '@/components/ui/table';
 import PrintButton from './PrintButton';
 
 type Props = {
