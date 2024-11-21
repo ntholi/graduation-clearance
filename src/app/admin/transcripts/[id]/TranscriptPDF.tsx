@@ -21,6 +21,9 @@ const tw = createTw({
       colors: {
         border: '#000000',
       },
+      borderWidth: {
+        DEFAULT: '0.5pt',
+      },
     },
   },
 });
@@ -63,7 +66,7 @@ const HeaderRow = ({ label, value }: { label: string; value: string }) => (
 );
 
 const TableHeader = () => (
-  <View style={tw('flex flex-row font-bold')}>
+  <View style={tw('flex flex-row font-bold py-1.5')}>
     <Text style={tw('w-[60pt]')}>Code</Text>
     <Text style={tw('flex-1')}>Module Name</Text>
     <Text style={tw('w-[40pt] text-right')}>Credit</Text>
@@ -130,7 +133,7 @@ const TranscriptPDF = ({
     <Document>
       <Page size='A4' style={tw('pt-5 px-8 pb-10 font-sans text-[7.12pt]')}>
         {/* Header Section */}
-        <View style={tw('border-t border-b border-border')}>
+        <View style={tw('border-t border-b')}>
           <View style={tw('flex flex-row')}>
             <View style={tw('w-1/2')}>
               <HeaderRow label='Student Name' value={student.name} />
@@ -156,9 +159,7 @@ const TranscriptPDF = ({
         </View>
 
         {/* Content Header */}
-        <View
-          style={tw('mt-2 flex flex-row gap-5 border-t border-b border-border')}
-        >
+        <View style={tw('mt-2 flex flex-row gap-5 border-t border-b')}>
           <View style={tw('flex-1')}>
             <TableHeader />
           </View>
@@ -203,7 +204,7 @@ const TranscriptPDF = ({
         {/* Registrar Signature */}
         <View
           style={tw(
-            'absolute bottom-[100pt] right-10 w-[100pt] border-t border-border text-center',
+            'absolute bottom-[100pt] right-10 w-[100pt] border-t text-center',
           )}
         >
           <Text style={tw('pt-1.5')}>REGISTRAR</Text>
