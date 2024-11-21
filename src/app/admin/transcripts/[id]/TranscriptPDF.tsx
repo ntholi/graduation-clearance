@@ -148,7 +148,10 @@ const TranscriptPDF = ({
               <HeaderRow label='Student ID' value={student.stdNo} />
               <HeaderRow label='IC / Passport No.' value={student.nationalId} />
               <HeaderRow label='Gender' value={student.gender} />
-              <HeaderRow label='Nationality' value={student.nationality} />
+              <HeaderRow
+                label='Nationality'
+                value={student.nationality ?? 'Mosotho'}
+              />
             </View>
             <View style={tw('w-1/2')}>
               <HeaderRow label='Date of Admission' value={terms[0].term} />
