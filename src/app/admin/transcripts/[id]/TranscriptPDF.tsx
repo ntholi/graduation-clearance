@@ -84,8 +84,8 @@ const GradeRow = ({ grade }: { grade: Grade }) => (
 );
 
 const TermSummary = ({ term }: { term: Term }) => (
-  <View style={tw('ml-[60pt] mt-0.5')}>
-    <View style={tw('flex flex-row min-h-[11pt] justify-between w-[87%]')}>
+  <View style={tw('ml-[60pt] mt-0.5 mt-1')}>
+    <View style={tw('flex flex-row justify-between w-[87%]')}>
       <View style={tw('w-[60pt] flex-row justify-between')}>
         <Text>GPA</Text>
         <Text>{`:  ${term.gpa}`}</Text>
@@ -95,7 +95,7 @@ const TermSummary = ({ term }: { term: Term }) => (
         <Text style={tw('w-[20pt]')}>{`:  ${term.credits}`}</Text>
       </View>
     </View>
-    <View style={tw('flex flex-row min-h-[11pt] justify-between w-[87%]')}>
+    <View style={tw('flex flex-row justify-between w-[87%]')}>
       <View style={tw('w-[60pt] flex-row justify-between')}>
         <Text>CGPA</Text>
         <Text>{`:  ${term.cgpa}`}</Text>
@@ -125,9 +125,8 @@ const TranscriptPDF = ({
   student: Student;
   terms: Term[];
 }) => {
-  const midpoint = Math.ceil(terms.length / 2);
-  const leftTerms = terms.slice(0, midpoint);
-  const rightTerms = terms.slice(midpoint);
+  const leftTerms = terms.slice(0, 6);
+  const rightTerms = terms.slice(6);
 
   return (
     <Document>
