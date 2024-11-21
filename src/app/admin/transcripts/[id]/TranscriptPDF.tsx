@@ -1,21 +1,21 @@
 import { Document, Page, Text, View, Font } from '@react-pdf/renderer';
 import { createTw } from 'react-pdf-tailwind';
 
-// Register fonts
 Font.register({
   family: 'Arial',
-  fonts: [
-    { src: '/fonts/ARIAL.TTF' },
-    { src: '/fonts/ARIALBD.TTF', fontWeight: 'bold' },
-  ],
+  src: '/fonts/ARIAL.TTF',
 });
 
-// Configure Tailwind
+Font.register({
+  family: 'Arial-Bold',
+  src: '/fonts/ARIALBD.TTF',
+});
+
 const tw = createTw({
   theme: {
     fontFamily: {
       sans: ['Arial'],
-      bold: ['Arial'],
+      bold: ['Arial-Bold'],
     },
     extend: {
       colors: {
@@ -54,9 +54,8 @@ type Term = {
   cumulativeCredits: number;
 };
 
-// Reusable components
 const HeaderRow = ({ label, value }: { label: string; value: string }) => (
-  <View style={tw('flex flex-row my-0.5')}>
+  <View style={tw('flex flex-row')}>
     <Text style={tw('w-[90pt] font-bold')}>{label}</Text>
     <Text style={tw('w-[10pt] text-center')}>:</Text>
     <Text style={tw('flex-1')}>{value}</Text>
@@ -64,7 +63,7 @@ const HeaderRow = ({ label, value }: { label: string; value: string }) => (
 );
 
 const TableHeader = () => (
-  <View style={tw('flex flex-row py-0.5 font-bold')}>
+  <View style={tw('flex flex-row font-bold')}>
     <Text style={tw('w-[60pt]')}>Code</Text>
     <Text style={tw('flex-1')}>Module Name</Text>
     <Text style={tw('w-[40pt] text-right')}>Credit</Text>
@@ -136,49 +135,25 @@ const TranscriptPDF = ({
       <Page size='A4' style={tw('pt-5 px-8 pb-10 font-sans text-[7.12pt]')}>
         {/* Header Section */}
         <View style={tw('border-t border-b border-border')}>
-          <View style={tw('flex')}>
-            <View style={tw('w-[45%]')}>
+          <View style={tw('flex flex-row')}>
+            <View style={tw('w-1/2')}>
               <HeaderRow label='Student Name' value={student.name} />
+              <HeaderRow label='Student ID' value={student.studentId} />
+              <HeaderRow label='IC / Passport No.' value={student.passportNo} />
+              <HeaderRow label='Gender' value={student.gender} />
+              <HeaderRow label='Nationality' value={student.nationality} />
             </View>
-            <View style={tw('w-[55%]')}>
+            <View style={tw('w-1/2')}>
               <HeaderRow
                 label='Date of Admission'
                 value={student.admissionDate}
               />
-            </View>
-          </View>
-          <View style={tw('flex')}>
-            <View style={tw('w-[45%]')}>
-              <HeaderRow label='Student ID' value={student.studentId} />
-            </View>
-            <View style={tw('w-[55%]')}>
               <HeaderRow
                 label='Date of Completion'
                 value={student.completionDate}
               />
-            </View>
-          </View>
-          <View style={tw('flex')}>
-            <View style={tw('w-[45%]')}>
-              <HeaderRow label='IC / Passport No.' value={student.passportNo} />
-            </View>
-            <View style={tw('w-[55%]')}>
               <HeaderRow label='Programme' value={student.programme} />
-            </View>
-          </View>
-          <View style={tw('flex')}>
-            <View style={tw('w-[45%]')}>
-              <HeaderRow label='Gender' value={student.gender} />
-            </View>
-            <View style={tw('w-[55%]')}>
               <HeaderRow label='Faculty' value={student.faculty} />
-            </View>
-          </View>
-          <View style={tw('flex')}>
-            <View style={tw('w-[45%]')}>
-              <HeaderRow label='Nationality' value={student.nationality} />
-            </View>
-            <View style={tw('w-[55%]')}>
               <HeaderRow label='Issued Date' value={student.issuedDate} />
             </View>
           </View>
