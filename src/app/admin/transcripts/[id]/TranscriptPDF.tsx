@@ -153,8 +153,11 @@ const TranscriptPDF = ({
             <View style={tw('w-1/2')}>
               <HeaderRow label='Date of Admission' value={terms[0].term} />
               <HeaderRow label='Date of Completion' value={'November 2024'} />
-              <HeaderRow label='Programme' value={student.program} />
-              <HeaderRow label='Faculty' value={student.faculty} />
+              <HeaderRow
+                label='Programme'
+                value={correctSpelling(student.program)}
+              />
+              <HeaderRow label='Faculty' value={findFaculty(student.program)} />
               <HeaderRow label='Issued Date' value={issueDate} />
             </View>
           </View>
@@ -217,3 +220,171 @@ const TranscriptPDF = ({
 };
 
 export default TranscriptPDF;
+
+function findFaculty(programName: string) {
+  const program = programs.find((p) => p.name === programName);
+  if (!program) throw new Error('Program not found');
+  return program.faculty;
+}
+
+function correctSpelling(name: string) {
+  return name.replace('Entreprenuership', 'Entrepreneurship');
+}
+
+const programs = [
+  {
+    name: 'BA in Architectural Studies',
+    code: 'BAAS',
+    faculty: 'Faculty of Architecture and the Built Environment',
+  },
+  {
+    name: 'Diploma in Architecture Technology',
+    code: 'DAT',
+    faculty: 'Faculty of Architecture and the Built Environment',
+  },
+  {
+    name: 'B Bus in Entreprenuership',
+    code: 'BEN',
+    faculty: 'Faculty of Business and Globalisation',
+  },
+  {
+    name: 'BA in Human Resource Management',
+    code: 'BHR',
+    faculty: 'Faculty of Business and Globalisation',
+  },
+  {
+    name: 'B Bus in International Business',
+    code: 'BIB',
+    faculty: 'Faculty of Business and Globalisation',
+  },
+  {
+    name: 'Diploma in Business Management',
+    code: 'DBM',
+    faculty: 'Faculty of Business and Globalisation',
+  },
+  {
+    name: 'Diploma in Marketing',
+    code: 'DMK',
+    faculty: 'Faculty of Business and Globalisation',
+  },
+  {
+    name: 'Diploma in Retail Management',
+    code: 'DRM',
+    faculty: 'Faculty of Business and Globalisation',
+  },
+  {
+    name: 'BA in Professional Communication',
+    code: 'BPC',
+    faculty: 'Faculty of Communication, Media and Broadcasting',
+  },
+  {
+    name: 'Diploma in Journalism & Media',
+    code: 'DJM',
+    faculty: 'Faculty of Communication, Media and Broadcasting',
+  },
+  {
+    name: 'Diploma in Public Relations',
+    code: 'DPR',
+    faculty: 'Faculty of Communication, Media and Broadcasting',
+  },
+  {
+    name: 'BA in Broadcasting & Journalism',
+    code: 'BBJ',
+    faculty: 'Faculty of Communication, Media and Broadcasting',
+  },
+  {
+    name: 'BA in Digital Film Production',
+    code: 'BDF',
+    faculty: 'Faculty of Communication, Media and Broadcasting',
+  },
+  {
+    name: 'Diploma in Broadcasting Radio & TV',
+    code: 'DBRTV',
+    faculty: 'Faculty of Communication, Media and Broadcasting',
+  },
+  {
+    name: 'Diploma in Film Production',
+    code: 'DFP',
+    faculty: 'Faculty of Communication, Media and Broadcasting',
+  },
+  {
+    name: 'BA in Tourism Management',
+    code: 'BTM',
+    faculty: 'Faculty of Creativity in Tourism & Hospitality',
+  },
+  {
+    name: 'Diploma in Events Management',
+    code: 'DEM',
+    faculty: 'Faculty of Creativity in Tourism & Hospitality',
+  },
+  {
+    name: 'Diploma in Hotel Management',
+    code: 'DHM',
+    faculty: 'Faculty of Creativity in Tourism & Hospitality',
+  },
+  {
+    name: 'Diploma in International Tourism',
+    code: 'DITR',
+    faculty: 'Faculty of Creativity in Tourism & Hospitality',
+  },
+  {
+    name: 'Diploma in Tourism Management',
+    code: 'DTM',
+    faculty: 'Faculty of Creativity in Tourism & Hospitality',
+  },
+  {
+    name: 'B Des in Professional Design',
+    code: 'BDSPD',
+    faculty: 'Faculty of Design and Innovation',
+  },
+  {
+    name: 'Diploma in Creative Advertising',
+    code: 'DCAV',
+    faculty: 'Faculty of Design and Innovation',
+  },
+  {
+    name: 'Diploma in Graphic Design',
+    code: 'DGD',
+    faculty: 'Faculty of Design and Innovation',
+  },
+  {
+    name: 'BA in Fashion & Retailing',
+    code: 'BAFASH',
+    faculty: 'Faculty of Fashion and Lifestyle Design',
+  },
+  {
+    name: 'Diploma in Fashion & Apparel Design',
+    code: 'DFAD',
+    faculty: 'Faculty of Fashion and Lifestyle Design',
+  },
+  {
+    name: 'BSc in Business Information Technology',
+    code: 'BSCBIT',
+    faculty: 'Faculty of Information & Communication Technology',
+  },
+  {
+    name: 'BSc in Information Technology',
+    code: 'BSCIT',
+    faculty: 'Faculty of Information & Communication Technology',
+  },
+  {
+    name: 'BSc in Software Engineering with Multimedia',
+    code: 'BSCSM',
+    faculty: 'Faculty of Information & Communication Technology',
+  },
+  {
+    name: 'Diploma in Business Information Technology',
+    code: 'DBIT',
+    faculty: 'Faculty of Information & Communication Technology',
+  },
+  {
+    name: 'Diploma in Information Technology',
+    code: 'DIT',
+    faculty: 'Faculty of Information & Communication Technology',
+  },
+  {
+    name: 'Diploma in Multimedia & Software Engineering',
+    code: 'DMSE',
+    faculty: 'Faculty of Information & Communication Technology',
+  },
+];
