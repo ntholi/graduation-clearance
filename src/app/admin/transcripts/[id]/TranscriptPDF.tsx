@@ -137,12 +137,22 @@ const styles = StyleSheet.create({
   summaryRow: {
     flexDirection: 'row',
     minHeight: '11pt',
+    gap: '20pt',
+  },
+  summaryGroup: {
+    flexDirection: 'row',
+    width: '140pt',
   },
   summaryLabel: {
     width: '85pt',
   },
   summaryColon: {
     width: '10pt',
+    textAlign: 'center',
+  },
+  summaryValue: {
+    width: '45pt',
+    textAlign: 'right',
   },
   footer: {
     position: 'absolute',
@@ -287,24 +297,32 @@ const TranscriptPDF = ({
                 ))}
                 <View style={styles.termSummary}>
                   <View style={styles.summaryRow}>
-                    <Text style={styles.summaryLabel}>GPA</Text>
-                    <Text style={styles.summaryColon}>:</Text>
-                    <Text>{term.gpa}</Text>
+                    <View style={styles.summaryGroup}>
+                      <Text style={styles.summaryLabel}>GPA</Text>
+                      <Text style={styles.summaryColon}>:</Text>
+                      <Text style={styles.summaryValue}>{term.gpa}</Text>
+                    </View>
+                    <View style={styles.summaryGroup}>
+                      <Text style={styles.summaryLabel}>Credits Earned</Text>
+                      <Text style={styles.summaryColon}>:</Text>
+                      <Text style={styles.summaryValue}>{term.credits}</Text>
+                    </View>
                   </View>
                   <View style={styles.summaryRow}>
-                    <Text style={styles.summaryLabel}>Credits Earned</Text>
-                    <Text style={styles.summaryColon}>:</Text>
-                    <Text>{term.credits}</Text>
-                  </View>
-                  <View style={styles.summaryRow}>
-                    <Text style={styles.summaryLabel}>CGPA</Text>
-                    <Text style={styles.summaryColon}>:</Text>
-                    <Text>{term.cgpa}</Text>
-                  </View>
-                  <View style={styles.summaryRow}>
-                    <Text style={styles.summaryLabel}>Cumulative Credits</Text>
-                    <Text style={styles.summaryColon}>:</Text>
-                    <Text>{term.cumulativeCredits}</Text>
+                    <View style={styles.summaryGroup}>
+                      <Text style={styles.summaryLabel}>CGPA</Text>
+                      <Text style={styles.summaryColon}>:</Text>
+                      <Text style={styles.summaryValue}>{term.cgpa}</Text>
+                    </View>
+                    <View style={styles.summaryGroup}>
+                      <Text style={styles.summaryLabel}>
+                        Cumulative Credits
+                      </Text>
+                      <Text style={styles.summaryColon}>:</Text>
+                      <Text style={styles.summaryValue}>
+                        {term.cumulativeCredits}
+                      </Text>
+                    </View>
                   </View>
                 </View>
               </View>
@@ -325,24 +343,32 @@ const TranscriptPDF = ({
                 ))}
                 <View style={styles.termSummary}>
                   <View style={styles.summaryRow}>
-                    <Text style={styles.summaryLabel}>GPA</Text>
-                    <Text style={styles.summaryColon}>:</Text>
-                    <Text>{term.gpa}</Text>
+                    <View style={styles.summaryGroup}>
+                      <Text style={styles.summaryLabel}>GPA</Text>
+                      <Text style={styles.summaryColon}>:</Text>
+                      <Text style={styles.summaryValue}>{term.gpa}</Text>
+                    </View>
+                    <View style={styles.summaryGroup}>
+                      <Text style={styles.summaryLabel}>Credits Earned</Text>
+                      <Text style={styles.summaryColon}>:</Text>
+                      <Text style={styles.summaryValue}>{term.credits}</Text>
+                    </View>
                   </View>
                   <View style={styles.summaryRow}>
-                    <Text style={styles.summaryLabel}>Credits Earned</Text>
-                    <Text style={styles.summaryColon}>:</Text>
-                    <Text>{term.credits}</Text>
-                  </View>
-                  <View style={styles.summaryRow}>
-                    <Text style={styles.summaryLabel}>CGPA</Text>
-                    <Text style={styles.summaryColon}>:</Text>
-                    <Text>{term.cgpa}</Text>
-                  </View>
-                  <View style={styles.summaryRow}>
-                    <Text style={styles.summaryLabel}>Cumulative Credits</Text>
-                    <Text style={styles.summaryColon}>:</Text>
-                    <Text>{term.cumulativeCredits}</Text>
+                    <View style={styles.summaryGroup}>
+                      <Text style={styles.summaryLabel}>CGPA</Text>
+                      <Text style={styles.summaryColon}>:</Text>
+                      <Text style={styles.summaryValue}>{term.cgpa}</Text>
+                    </View>
+                    <View style={styles.summaryGroup}>
+                      <Text style={styles.summaryLabel}>
+                        Cumulative Credits
+                      </Text>
+                      <Text style={styles.summaryColon}>:</Text>
+                      <Text style={styles.summaryValue}>
+                        {term.cumulativeCredits}
+                      </Text>
+                    </View>
                   </View>
                 </View>
               </View>
