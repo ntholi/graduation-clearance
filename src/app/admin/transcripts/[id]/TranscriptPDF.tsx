@@ -111,7 +111,7 @@ const TranscriptPDF = ({
 
   return (
     <Document>
-      <Page size='A4' style={tw('p-10 text-[8pt] font-arial')}>
+      <Page size='A4' style={tw('p-10 text-[7pt] font-arial')}>
         {/* Header Information */}
         <View style={tw('mb-4 border-b border-t pb-0.5')}>
           <View style={tw('flex flex-row')}>
