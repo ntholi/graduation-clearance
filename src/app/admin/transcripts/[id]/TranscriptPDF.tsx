@@ -30,13 +30,13 @@ const tw = createTw({
 
 type Student = {
   name: string;
-  studentId: string;
-  passportNo: string;
+  stdNo: string;
+  nationalId: string;
   gender: string;
   nationality: string;
   admissionDate: string;
   completionDate: string;
-  programme: string;
+  program: string;
   faculty: string;
   issuedDate: string;
 };
@@ -128,6 +128,12 @@ const TranscriptPDF = ({
   const leftTerms = terms.slice(0, 6);
   const rightTerms = terms.slice(6);
 
+  const issueDate = new Date().toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+
   return (
     <Document>
       <Page
@@ -139,23 +145,17 @@ const TranscriptPDF = ({
           <View style={tw('flex flex-row')}>
             <View style={tw('w-1/2')}>
               <HeaderRow label='Student Name' value={student.name} />
-              <HeaderRow label='Student ID' value={student.studentId} />
-              <HeaderRow label='IC / Passport No.' value={student.passportNo} />
+              <HeaderRow label='Student ID' value={student.stdNo} />
+              <HeaderRow label='IC / Passport No.' value={student.nationalId} />
               <HeaderRow label='Gender' value={student.gender} />
               <HeaderRow label='Nationality' value={student.nationality} />
             </View>
             <View style={tw('w-1/2')}>
-              <HeaderRow
-                label='Date of Admission'
-                value={student.admissionDate}
-              />
-              <HeaderRow
-                label='Date of Completion'
-                value={student.completionDate}
-              />
-              <HeaderRow label='Programme' value={student.programme} />
+              <HeaderRow label='Date of Admission' value={terms[0].term} />
+              <HeaderRow label='Date of Completion' value={'November 2024'} />
+              <HeaderRow label='Programme' value={student.program} />
               <HeaderRow label='Faculty' value={student.faculty} />
-              <HeaderRow label='Issued Date' value={student.issuedDate} />
+              <HeaderRow label='Issued Date' value={issueDate} />
             </View>
           </View>
         </View>
