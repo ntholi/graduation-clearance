@@ -134,23 +134,25 @@ const styles = StyleSheet.create({
     marginLeft: '60pt',
     marginTop: '2pt',
   },
-  summaryRow: {
+  summaryLine: {
     flexDirection: 'row',
     minHeight: '11pt',
-    gap: '20pt',
   },
-  summaryGroup: {
-    flexDirection: 'row',
-    width: '140pt',
+  gpaLabel: {
+    width: '30pt',
   },
-  summaryLabel: {
+  cgpaLabel: {
+    width: '35pt',
+  },
+  creditsLabel: {
     width: '85pt',
+    marginLeft: '25pt',
   },
-  summaryColon: {
-    width: '10pt',
-    textAlign: 'center',
+  gpaValue: {
+    width: '35pt',
+    textAlign: 'right',
   },
-  summaryValue: {
+  creditsValue: {
     width: '45pt',
     textAlign: 'right',
   },
@@ -296,33 +298,29 @@ const TranscriptPDF = ({
                   </View>
                 ))}
                 <View style={styles.termSummary}>
-                  <View style={styles.summaryRow}>
-                    <View style={styles.summaryGroup}>
-                      <Text style={styles.summaryLabel}>GPA</Text>
-                      <Text style={styles.summaryColon}>:</Text>
-                      <Text style={styles.summaryValue}>{term.gpa}</Text>
-                    </View>
-                    <View style={styles.summaryGroup}>
-                      <Text style={styles.summaryLabel}>Credits Earned</Text>
-                      <Text style={styles.summaryColon}>:</Text>
-                      <Text style={styles.summaryValue}>{term.credits}</Text>
-                    </View>
+                  <View style={styles.summaryLine}>
+                    <Text style={styles.gpaLabel}>GPA</Text>
+                    <Text style={styles.gpaValue}>
+                      {':  '}
+                      {term.gpa}
+                    </Text>
+                    <Text style={styles.creditsLabel}>Credits Earned</Text>
+                    <Text style={styles.creditsValue}>
+                      {':  '}
+                      {term.credits}
+                    </Text>
                   </View>
-                  <View style={styles.summaryRow}>
-                    <View style={styles.summaryGroup}>
-                      <Text style={styles.summaryLabel}>CGPA</Text>
-                      <Text style={styles.summaryColon}>:</Text>
-                      <Text style={styles.summaryValue}>{term.cgpa}</Text>
-                    </View>
-                    <View style={styles.summaryGroup}>
-                      <Text style={styles.summaryLabel}>
-                        Cumulative Credits
-                      </Text>
-                      <Text style={styles.summaryColon}>:</Text>
-                      <Text style={styles.summaryValue}>
-                        {term.cumulativeCredits}
-                      </Text>
-                    </View>
+                  <View style={styles.summaryLine}>
+                    <Text style={styles.cgpaLabel}>CGPA</Text>
+                    <Text style={styles.gpaValue}>
+                      {':  '}
+                      {term.cgpa}
+                    </Text>
+                    <Text style={styles.creditsLabel}>Cumulative Credits</Text>
+                    <Text style={styles.creditsValue}>
+                      {':  '}
+                      {term.cumulativeCredits}
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -342,33 +340,29 @@ const TranscriptPDF = ({
                   </View>
                 ))}
                 <View style={styles.termSummary}>
-                  <View style={styles.summaryRow}>
-                    <View style={styles.summaryGroup}>
-                      <Text style={styles.summaryLabel}>GPA</Text>
-                      <Text style={styles.summaryColon}>:</Text>
-                      <Text style={styles.summaryValue}>{term.gpa}</Text>
-                    </View>
-                    <View style={styles.summaryGroup}>
-                      <Text style={styles.summaryLabel}>Credits Earned</Text>
-                      <Text style={styles.summaryColon}>:</Text>
-                      <Text style={styles.summaryValue}>{term.credits}</Text>
-                    </View>
+                  <View style={styles.summaryLine}>
+                    <Text style={styles.gpaLabel}>GPA</Text>
+                    <Text style={styles.gpaValue}>
+                      {':  '}
+                      {term.gpa}
+                    </Text>
+                    <Text style={styles.creditsLabel}>Credits Earned</Text>
+                    <Text style={styles.creditsValue}>
+                      {':  '}
+                      {term.credits}
+                    </Text>
                   </View>
-                  <View style={styles.summaryRow}>
-                    <View style={styles.summaryGroup}>
-                      <Text style={styles.summaryLabel}>CGPA</Text>
-                      <Text style={styles.summaryColon}>:</Text>
-                      <Text style={styles.summaryValue}>{term.cgpa}</Text>
-                    </View>
-                    <View style={styles.summaryGroup}>
-                      <Text style={styles.summaryLabel}>
-                        Cumulative Credits
-                      </Text>
-                      <Text style={styles.summaryColon}>:</Text>
-                      <Text style={styles.summaryValue}>
-                        {term.cumulativeCredits}
-                      </Text>
-                    </View>
+                  <View style={styles.summaryLine}>
+                    <Text style={styles.cgpaLabel}>CGPA</Text>
+                    <Text style={styles.gpaValue}>
+                      {':  '}
+                      {term.cgpa}
+                    </Text>
+                    <Text style={styles.creditsLabel}>Cumulative Credits</Text>
+                    <Text style={styles.creditsValue}>
+                      {':  '}
+                      {term.cumulativeCredits}
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -379,23 +373,25 @@ const TranscriptPDF = ({
         <View style={styles.footer}>
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>Total MPU Credits</Text>
-            <Text style={styles.summaryColon}>:</Text>
-            <Text>-</Text>
+            <Text>{':  '}-</Text>
           </View>
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>Total Credit Transferred</Text>
-            <Text style={styles.summaryColon}>:</Text>
-            <Text>-</Text>
+            <Text>{':  '}-</Text>
           </View>
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>Total Credits Earned</Text>
-            <Text style={styles.summaryColon}>:</Text>
-            <Text>{terms[terms.length - 1].cumulativeCredits}</Text>
+            <Text>
+              {':  '}
+              {terms[terms.length - 1].cumulativeCredits}
+            </Text>
           </View>
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>Total Cumulative Credits</Text>
-            <Text style={styles.summaryColon}>:</Text>
-            <Text>{terms[terms.length - 1].cumulativeCredits}</Text>
+            <Text>
+              {':  '}
+              {terms[terms.length - 1].cumulativeCredits}
+            </Text>
           </View>
         </View>
 
