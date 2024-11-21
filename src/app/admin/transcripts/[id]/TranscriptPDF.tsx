@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   headerRow: {
     flexDirection: 'row',
-    marginVertical: '2pt',
+    marginVertical: '0.5pt',
   },
   headerLeft: {
     width: '45%',
@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
   },
   headerLabel: {
     width: '90pt',
+    fontWeight: 'bold',
   },
   headerColon: {
     width: '10pt',
@@ -86,12 +87,21 @@ const styles = StyleSheet.create({
   column: {
     flex: 1,
   },
-  tableHeader: {
+  contentHeader: {
     flexDirection: 'row',
+    gap: '20pt',
     borderTop: '0.5pt solid black',
     borderBottom: '0.5pt solid black',
+  },
+  leftContentHeader: {
+    flex: 1,
+  },
+  rightContentHeader: {
+    flex: 1,
+  },
+  tableHeader: {
+    flexDirection: 'row',
     paddingVertical: '3pt',
-    marginBottom: '5pt',
   },
   code: {
     width: '60pt',
@@ -241,14 +251,27 @@ const TranscriptPDF = ({
           </View>
         </View>
 
-        <View style={styles.content}>
-          <View style={styles.column}>
+        <View style={styles.contentHeader}>
+          <View style={styles.leftContentHeader}>
             <View style={styles.tableHeader}>
               <Text style={styles.code}>Code</Text>
               <Text style={styles.name}>Module Name</Text>
               <Text style={styles.credit}>Credit</Text>
               <Text style={styles.grade}>Grade</Text>
             </View>
+          </View>
+          <View style={styles.rightContentHeader}>
+            <View style={styles.tableHeader}>
+              <Text style={styles.code}>Code</Text>
+              <Text style={styles.name}>Module Name</Text>
+              <Text style={styles.credit}>Credit</Text>
+              <Text style={styles.grade}>Grade</Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.content}>
+          <View style={styles.column}>
             {leftTerms.map((term, i) => (
               <View key={i} style={styles.termSection}>
                 <Text style={styles.termTitle}>{term.term}</Text>
@@ -287,12 +310,6 @@ const TranscriptPDF = ({
           </View>
 
           <View style={styles.column}>
-            <View style={styles.tableHeader}>
-              <Text style={styles.code}>Code</Text>
-              <Text style={styles.name}>Module Name</Text>
-              <Text style={styles.credit}>Credit</Text>
-              <Text style={styles.grade}>Grade</Text>
-            </View>
             {rightTerms.map((term, i) => (
               <View key={i} style={styles.termSection}>
                 <Text style={styles.termTitle}>{term.term}</Text>
