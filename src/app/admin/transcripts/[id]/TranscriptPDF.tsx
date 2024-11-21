@@ -225,169 +225,141 @@ const TranscriptPDF = ({
 export default TranscriptPDF;
 
 function findFaculty(programName: string) {
-  const program = programs.find((p) => p.name === programName);
-  if (!program) throw new Error('Program not found');
+  const program = programs.find((p) => programName.includes(p.name));
+  if (!program) throw new Error(`Faculty for ${programName} not found`);
   return program.faculty;
 }
 
 function correctSpelling(name: string) {
   return name.replace('Entreprenuership', 'Entrepreneurship');
 }
-
 const programs = [
   {
-    name: 'BA in Architectural Studies',
-    code: 'BAAS',
+    name: 'Architectural Studies',
     faculty: 'Faculty of Architecture and the Built Environment',
   },
   {
-    name: 'Diploma in Architecture Technology',
-    code: 'DAT',
+    name: 'Architecture Technology',
     faculty: 'Faculty of Architecture and the Built Environment',
   },
   {
-    name: 'B Bus in Entreprenuership',
-    code: 'BEN',
+    name: 'Entreprenuership',
     faculty: 'Faculty of Business and Globalisation',
   },
   {
-    name: 'BA in Human Resource Management',
-    code: 'BHR',
+    name: 'Entrepreneurship',
     faculty: 'Faculty of Business and Globalisation',
   },
   {
-    name: 'B Bus in International Business',
-    code: 'BIB',
+    name: 'Human Resource Management',
     faculty: 'Faculty of Business and Globalisation',
   },
   {
-    name: 'Diploma in Business Management',
-    code: 'DBM',
+    name: 'International Business',
     faculty: 'Faculty of Business and Globalisation',
   },
   {
-    name: 'Diploma in Marketing',
-    code: 'DMK',
+    name: 'Business Management',
     faculty: 'Faculty of Business and Globalisation',
   },
   {
-    name: 'Diploma in Retail Management',
-    code: 'DRM',
+    name: 'Marketing',
     faculty: 'Faculty of Business and Globalisation',
   },
   {
-    name: 'BA in Professional Communication',
-    code: 'BPC',
+    name: 'Retail Management',
+    faculty: 'Faculty of Business and Globalisation',
+  },
+  {
+    name: 'Professional Communication',
     faculty: 'Faculty of Communication, Media and Broadcasting',
   },
   {
-    name: 'Diploma in Journalism & Media',
-    code: 'DJM',
+    name: 'Journalism & Media',
     faculty: 'Faculty of Communication, Media and Broadcasting',
   },
   {
-    name: 'Diploma in Public Relations',
-    code: 'DPR',
+    name: 'Public Relations',
     faculty: 'Faculty of Communication, Media and Broadcasting',
   },
   {
-    name: 'BA in Broadcasting & Journalism',
-    code: 'BBJ',
+    name: 'Broadcasting & Journalism',
     faculty: 'Faculty of Communication, Media and Broadcasting',
   },
   {
-    name: 'BA in Digital Film Production',
-    code: 'BDF',
+    name: 'Digital Film Production',
     faculty: 'Faculty of Communication, Media and Broadcasting',
   },
   {
-    name: 'Diploma in Broadcasting Radio & TV',
-    code: 'DBRTV',
+    name: 'Broadcasting Radio & TV',
     faculty: 'Faculty of Communication, Media and Broadcasting',
   },
   {
-    name: 'Diploma in Film Production',
-    code: 'DFP',
+    name: 'Film Production',
     faculty: 'Faculty of Communication, Media and Broadcasting',
   },
   {
-    name: 'BA in Tourism Management',
-    code: 'BTM',
+    name: 'Tourism Management',
     faculty: 'Faculty of Creativity in Tourism & Hospitality',
   },
   {
-    name: 'Diploma in Events Management',
-    code: 'DEM',
+    name: 'Events Management',
     faculty: 'Faculty of Creativity in Tourism & Hospitality',
   },
   {
-    name: 'Diploma in Hotel Management',
-    code: 'DHM',
+    name: 'Hotel Management',
     faculty: 'Faculty of Creativity in Tourism & Hospitality',
   },
   {
-    name: 'Diploma in International Tourism',
-    code: 'DITR',
+    name: 'International Tourism',
     faculty: 'Faculty of Creativity in Tourism & Hospitality',
   },
   {
-    name: 'Diploma in Tourism Management',
-    code: 'DTM',
+    name: 'Tourism Management',
     faculty: 'Faculty of Creativity in Tourism & Hospitality',
   },
   {
-    name: 'B Des in Professional Design',
-    code: 'BDSPD',
+    name: 'Professional Design',
     faculty: 'Faculty of Design and Innovation',
   },
   {
-    name: 'Diploma in Creative Advertising',
-    code: 'DCAV',
+    name: 'Creative Advertising',
     faculty: 'Faculty of Design and Innovation',
   },
   {
-    name: 'Diploma in Graphic Design',
-    code: 'DGD',
+    name: 'Graphic Design',
     faculty: 'Faculty of Design and Innovation',
   },
   {
-    name: 'BA in Fashion & Retailing',
-    code: 'BAFASH',
+    name: 'Fashion & Retailing',
     faculty: 'Faculty of Fashion and Lifestyle Design',
   },
   {
-    name: 'Diploma in Fashion & Apparel Design',
-    code: 'DFAD',
+    name: 'Fashion & Apparel Design',
     faculty: 'Faculty of Fashion and Lifestyle Design',
   },
   {
-    name: 'BSc in Business Information Technology',
-    code: 'BSCBIT',
+    name: 'Business Information Technology',
     faculty: 'Faculty of Information & Communication Technology',
   },
   {
-    name: 'BSc in Information Technology',
-    code: 'BSCIT',
+    name: 'Information Technology',
     faculty: 'Faculty of Information & Communication Technology',
   },
   {
-    name: 'BSc in Software Engineering with Multimedia',
-    code: 'BSCSM',
+    name: 'Software Engineering with Multimedia',
     faculty: 'Faculty of Information & Communication Technology',
   },
   {
-    name: 'Diploma in Business Information Technology',
-    code: 'DBIT',
+    name: 'Business Information Technology',
     faculty: 'Faculty of Information & Communication Technology',
   },
   {
-    name: 'Diploma in Information Technology',
-    code: 'DIT',
+    name: 'Information Technology',
     faculty: 'Faculty of Information & Communication Technology',
   },
   {
-    name: 'Diploma in Multimedia & Software Engineering',
-    code: 'DMSE',
+    name: 'Multimedia & Software Engineering',
     faculty: 'Faculty of Information & Communication Technology',
   },
 ];
