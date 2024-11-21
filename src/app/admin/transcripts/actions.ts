@@ -55,7 +55,9 @@ export async function getTranscript(stdNo: string) {
 
     if (grade) {
       acc[term.term].grades.push(grade);
-      acc[term.term].creditsEarned += grade.credits || 0;
+      if (!failingGrade(grade.grade)) {
+        acc[term.term].creditsEarned += grade.credits || 0;
+      }
     }
 
     return acc;
@@ -78,6 +80,10 @@ export async function getTranscript(stdNo: string) {
     student: student[0],
     terms: sortedTerms,
   };
+}
+
+function failingGrade(grade: string) {
+  return ['F', 'PP', 'ANN'].includes(grade.toUpperCase().trim());
 }
 
 function toWords(string: string) {
