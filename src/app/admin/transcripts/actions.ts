@@ -47,6 +47,7 @@ export async function getTranscript(stdNo: string) {
     if (!acc[term.term]) {
       acc[term.term] = {
         ...term,
+        term: toWords(term.term),
         grades: [],
         creditsEarned: 0,
         cumulativeCredits: 0,
@@ -75,4 +76,24 @@ export async function getTranscript(stdNo: string) {
     student: student[0],
     terms: sortedTerms,
   };
+}
+
+function toWords(string: string) {
+  const [year, month] = string.split('-');
+  const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  return `${monthNames[parseInt(month) - 1]} ${year}`;
 }

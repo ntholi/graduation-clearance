@@ -31,7 +31,7 @@ type Student = {
 type Grade = {
   courseCode: string;
   courseName: string;
-  credit: number;
+  credits: number;
   grade: string;
 };
 
@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
   header: {
     borderTop: '0.5pt solid black',
     borderBottom: '0.5pt solid black',
-    marginBottom: '15pt',
   },
   headerRow: {
     flexDirection: 'row',
@@ -80,14 +79,8 @@ const styles = StyleSheet.create({
   headerValue: {
     flex: 1,
   },
-  content: {
-    flexDirection: 'row',
-    gap: '20pt',
-  },
-  column: {
-    flex: 1,
-  },
   contentHeader: {
+    marginTop: '8pt',
     flexDirection: 'row',
     gap: '20pt',
     borderTop: '0.5pt solid black',
@@ -99,9 +92,18 @@ const styles = StyleSheet.create({
   rightContentHeader: {
     flex: 1,
   },
+  content: {
+    marginTop: '10pt',
+    flexDirection: 'row',
+    gap: '20pt',
+  },
+  column: {
+    flex: 1,
+  },
   tableHeader: {
     flexDirection: 'row',
     paddingVertical: '3pt',
+    fontWeight: 'bold',
   },
   code: {
     width: '60pt',
@@ -123,10 +125,11 @@ const styles = StyleSheet.create({
   },
   termTitle: {
     marginBottom: '3pt',
+    fontWeight: 'bold',
   },
   gradeRow: {
     flexDirection: 'row',
-    minHeight: '8pt',
+    minHeight: '7pt',
   },
   termSummary: {
     marginLeft: '60pt',
@@ -279,7 +282,7 @@ const TranscriptPDF = ({
                   <View key={j} style={styles.gradeRow}>
                     <Text style={styles.code}>{grade.courseCode}</Text>
                     <Text style={styles.name}>{grade.courseName}</Text>
-                    <Text style={styles.credit}>{grade.credit}</Text>
+                    <Text style={styles.credit}>{grade.credits}</Text>
                     <Text style={styles.grade}>{grade.grade}</Text>
                   </View>
                 ))}
@@ -317,7 +320,7 @@ const TranscriptPDF = ({
                   <View key={j} style={styles.gradeRow}>
                     <Text style={styles.code}>{grade.courseCode}</Text>
                     <Text style={styles.name}>{grade.courseName}</Text>
-                    <Text style={styles.credit}>{grade.credit}</Text>
+                    <Text style={styles.credit}>{grade.credits}</Text>
                     <Text style={styles.grade}>{grade.grade}</Text>
                   </View>
                 ))}
