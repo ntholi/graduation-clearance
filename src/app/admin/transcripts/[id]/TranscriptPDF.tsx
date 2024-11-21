@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: '30pt',
     paddingBottom: '40pt',
     fontFamily: 'Arial',
-    fontSize: '8pt',
+    fontSize: '7.12pt',
   },
   header: {
     borderTop: '0.5pt solid black',
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   },
   gradeRow: {
     flexDirection: 'row',
-    minHeight: '11pt',
+    minHeight: '8pt',
   },
   termSummary: {
     marginLeft: '60pt',
