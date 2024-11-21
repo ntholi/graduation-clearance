@@ -130,7 +130,10 @@ const TranscriptPDF = ({
 
   return (
     <Document>
-      <Page size='A4' style={tw('pt-5 px-8 pb-10 font-sans text-[7.12pt]')}>
+      <Page
+        size='A4'
+        style={tw('pt-5 px-8 pb-10 font-sans text-[7.12pt] pt-[166pt]')}
+      >
         {/* Header Section */}
         <View style={tw('border-t border-b')}>
           <View style={tw('flex flex-row')}>
@@ -182,16 +185,16 @@ const TranscriptPDF = ({
         </View>
 
         {/* Footer */}
-        <View style={tw('absolute bottom-[60pt] left-8 right-8')}>
+        <View style={tw('absolute bottom-[30pt] left-[85pt]')}>
           {['Total MPU Credits', 'Total Credit Transferred'].map((label) => (
-            <View key={label} style={tw('flex flex-row min-h-[12pt]')}>
-              <Text style={tw('w-[110pt]')}>{label}</Text>
+            <View key={label} style={tw('flex flex-row')}>
+              <Text style={tw('w-[160pt]')}>{label}</Text>
               <Text>{':  '}-</Text>
             </View>
           ))}
           {['Total Credits Earned', 'Total Cumulative Credits'].map((label) => (
-            <View key={label} style={tw('flex flex-row min-h-[12pt]')}>
-              <Text style={tw('w-[110pt]')}>{label}</Text>
+            <View key={label} style={tw('flex flex-row')}>
+              <Text style={tw('w-[160pt]')}>{label}</Text>
               <Text>
                 {':  '}
                 {terms[terms.length - 1].cumulativeCredits}
@@ -201,23 +204,13 @@ const TranscriptPDF = ({
         </View>
 
         {/* Registrar Signature */}
-        <View
-          style={tw(
-            'absolute bottom-[100pt] right-10 w-[100pt] border-t text-center',
-          )}
-        >
-          <Text style={tw('pt-1.5')}>REGISTRAR</Text>
+        <View style={tw('absolute bottom-[30pt] right-14 w-[190pt] border-t')}>
+          <Text style={tw('pt-1.5 text-center font-bold')}>REGISTRAR</Text>
+          <Text>
+            This is not a valid record unless it bears both the stamp and
+            signatory on behalf of the university
+          </Text>
         </View>
-
-        {/* Validation Text */}
-        <Text
-          style={tw(
-            'absolute bottom-10 right-8 w-[250pt] text-[8pt] text-center',
-          )}
-        >
-          This is not a valid record unless it bears both the stamp and
-          signatory on behalf of the university
-        </Text>
       </Page>
     </Document>
   );
