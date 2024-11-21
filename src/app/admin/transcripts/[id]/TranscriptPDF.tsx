@@ -1,31 +1,18 @@
-import { Document, Page, Text, View, Font } from '@react-pdf/renderer';
-import { createTw } from 'react-pdf-tailwind';
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  Font,
+} from '@react-pdf/renderer';
 
 Font.register({
   family: 'Arial',
   fonts: [
-    {
-      src: '/fonts/ARIAL.TTF',
-      fontWeight: 'normal',
-    },
-    {
-      src: '/fonts/ARIALBD.TTF',
-      fontWeight: 'bold',
-    },
+    { src: '/fonts/ARIAL.TTF' },
+    { src: '/fonts/ARIALBD.TTF', fontWeight: 'bold' },
   ],
-});
-
-const tw = createTw({
-  theme: {
-    fontFamily: {
-      arial: ['Arial'],
-    },
-    extend: {
-      colors: {
-        border: '#000000',
-      },
-    },
-  },
 });
 
 type Student = {
@@ -57,46 +44,125 @@ type Term = {
   cumulativeCredits: number;
 };
 
-const TermDisplay = ({ term }: { term: Term }) => (
-  <View style={tw('mb-4')}>
-    <Text style={tw('font-bold mb-1')}>{term.term}</Text>
-    {term.grades.map((grade, index) => (
-      <View key={index} style={tw('flex flex-row mb-0.5')}>
-        <Text style={tw('w-1/5')}>{grade.courseCode}</Text>
-        <Text style={tw('w-1/2')}>{grade.courseName}</Text>
-        <Text style={tw('w-[15%]')}>{grade.credit}</Text>
-        <Text style={tw('w-[15%]')}>{grade.grade}</Text>
-      </View>
-    ))}
-    <View style={tw('ml-5 mt-1')}>
-      <View style={tw('flex flex-row mb-0.5')}>
-        <Text style={tw('w-[15%]')}>GPA</Text>
-        <Text style={tw('px-0.5')}>:</Text>
-        <Text style={tw('w-[23%]')}>{term.gpa}</Text>
-        <Text>Credits Earned</Text>
-        <Text style={tw('px-0.5')}>:</Text>
-        <Text>{term.credits}</Text>
-      </View>
-      <View style={tw('flex flex-row mb-0.5')}>
-        <Text style={tw('w-[15%]')}>CGPA</Text>
-        <Text style={tw('px-0.5')}>:</Text>
-        <Text style={tw('w-[23%]')}>{term.cgpa}</Text>
-        <Text>Cumulative Credits</Text>
-        <Text style={tw('px-0.5')}>:</Text>
-        <Text>{term.cumulativeCredits}</Text>
-      </View>
-    </View>
-  </View>
-);
-
-const TableHeaders = () => (
-  <View style={tw('flex flex-row border-t border-b pb-0.5 mb-1')}>
-    <Text style={tw('w-1/5')}>Code</Text>
-    <Text style={tw('w-1/2')}>Module Name</Text>
-    <Text style={tw('w-[15%]')}>Credit</Text>
-    <Text style={tw('w-[15%]')}>Grade</Text>
-  </View>
-);
+const styles = StyleSheet.create({
+  page: {
+    paddingTop: '20pt',
+    paddingHorizontal: '30pt',
+    paddingBottom: '40pt',
+    fontFamily: 'Arial',
+    fontSize: '8pt',
+  },
+  header: {
+    borderTop: '0.5pt solid black',
+    borderBottom: '0.5pt solid black',
+    marginBottom: '15pt',
+  },
+  headerRow: {
+    flexDirection: 'row',
+    marginVertical: '2pt',
+  },
+  headerLeft: {
+    width: '45%',
+    flexDirection: 'row',
+  },
+  headerRight: {
+    width: '55%',
+    flexDirection: 'row',
+  },
+  headerLabel: {
+    width: '90pt',
+  },
+  headerColon: {
+    width: '10pt',
+    textAlign: 'center',
+  },
+  headerValue: {
+    flex: 1,
+  },
+  content: {
+    flexDirection: 'row',
+    gap: '20pt',
+  },
+  column: {
+    flex: 1,
+  },
+  tableHeader: {
+    flexDirection: 'row',
+    borderTop: '0.5pt solid black',
+    borderBottom: '0.5pt solid black',
+    paddingVertical: '3pt',
+    marginBottom: '5pt',
+  },
+  code: {
+    width: '60pt',
+  },
+  name: {
+    flex: 1,
+  },
+  credit: {
+    width: '40pt',
+    textAlign: 'right',
+  },
+  grade: {
+    width: '35pt',
+    textAlign: 'right',
+    paddingRight: '5pt',
+  },
+  termSection: {
+    marginBottom: '10pt',
+  },
+  termTitle: {
+    marginBottom: '3pt',
+  },
+  gradeRow: {
+    flexDirection: 'row',
+    minHeight: '11pt',
+  },
+  termSummary: {
+    marginLeft: '60pt',
+    marginTop: '2pt',
+  },
+  summaryRow: {
+    flexDirection: 'row',
+    minHeight: '11pt',
+  },
+  summaryLabel: {
+    width: '85pt',
+  },
+  summaryColon: {
+    width: '10pt',
+  },
+  footer: {
+    position: 'absolute',
+    bottom: '60pt',
+    left: '30pt',
+    right: '30pt',
+  },
+  totalRow: {
+    flexDirection: 'row',
+    minHeight: '12pt',
+  },
+  totalLabel: {
+    width: '110pt',
+  },
+  registrar: {
+    position: 'absolute',
+    bottom: '100pt',
+    right: '40pt',
+    width: '100pt',
+    textAlign: 'center',
+    borderTop: '0.5pt solid black',
+    paddingTop: '5pt',
+  },
+  validation: {
+    position: 'absolute',
+    bottom: '40pt',
+    right: '30pt',
+    width: '250pt',
+    fontSize: '8pt',
+    textAlign: 'center',
+  },
+});
 
 const TranscriptPDF = ({
   student,
@@ -106,124 +172,190 @@ const TranscriptPDF = ({
   terms: Term[];
 }) => {
   const midpoint = Math.ceil(terms.length / 2);
-  const leftColumnTerms = terms.slice(0, midpoint);
-  const rightColumnTerms = terms.slice(midpoint);
+  const leftTerms = terms.slice(0, midpoint);
+  const rightTerms = terms.slice(midpoint);
 
   return (
     <Document>
-      <Page size='A4' style={tw('p-10 text-[7pt] font-arial')}>
-        {/* Header Information */}
-        <View style={tw('mb-4 border-b border-t pb-0.5')}>
-          <View style={tw('flex flex-row')}>
-            <View style={tw('flex flex-row w-1/2')}>
-              <Text style={tw('w-[35%] font-bold')}>Student Name</Text>
-              <Text style={tw('px-0.5')}>:</Text>
-              <Text>{student.name}</Text>
+      <Page size='A4' style={styles.page}>
+        <View style={styles.header}>
+          <View style={styles.headerRow}>
+            <View style={styles.headerLeft}>
+              <Text style={styles.headerLabel}>Student Name</Text>
+              <Text style={styles.headerColon}>:</Text>
+              <Text style={styles.headerValue}>{student.name}</Text>
             </View>
-            <View style={tw('flex flex-row w-1/2')}>
-              <Text style={tw('w-[35%] font-bold')}>Date of Admission</Text>
-              <Text style={tw('px-0.5')}>:</Text>
-              <Text>{student.admissionDate}</Text>
-            </View>
-          </View>
-          <View style={tw('flex flex-row')}>
-            <View style={tw('flex flex-row w-1/2')}>
-              <Text style={tw('w-[35%] font-bold')}>Student ID</Text>
-              <Text style={tw('px-0.5')}>:</Text>
-              <Text>{student.studentId}</Text>
-            </View>
-            <View style={tw('flex flex-row w-1/2')}>
-              <Text style={tw('w-[35%] font-bold')}>Date of Completion</Text>
-              <Text style={tw('px-0.5')}>:</Text>
-              <Text>{student.completionDate}</Text>
+            <View style={styles.headerRight}>
+              <Text style={styles.headerLabel}>Date of Admission</Text>
+              <Text style={styles.headerColon}>:</Text>
+              <Text style={styles.headerValue}>{student.admissionDate}</Text>
             </View>
           </View>
-          <View style={tw('flex flex-row')}>
-            <View style={tw('flex flex-row w-1/2')}>
-              <Text style={tw('w-[35%] font-bold')}>IC / Passport No.</Text>
-              <Text style={tw('px-0.5')}>:</Text>
-              <Text>{student.passportNo}</Text>
+          <View style={styles.headerRow}>
+            <View style={styles.headerLeft}>
+              <Text style={styles.headerLabel}>Student ID</Text>
+              <Text style={styles.headerColon}>:</Text>
+              <Text style={styles.headerValue}>{student.studentId}</Text>
             </View>
-            <View style={tw('flex flex-row w-1/2')}>
-              <Text style={tw('w-[35%] font-bold')}>Programme</Text>
-              <Text style={tw('px-0.5')}>:</Text>
-              <Text>{student.programme}</Text>
-            </View>
-          </View>
-          <View style={tw('flex flex-row')}>
-            <View style={tw('flex flex-row w-1/2')}>
-              <Text style={tw('w-[35%] font-bold')}>Gender</Text>
-              <Text style={tw('px-0.5')}>:</Text>
-              <Text>{student.gender}</Text>
-            </View>
-            <View style={tw('flex flex-row w-1/2')}>
-              <Text style={tw('w-[35%] font-bold')}>Faculty</Text>
-              <Text style={tw('px-0.5')}>:</Text>
-              <Text>{student.faculty}</Text>
+            <View style={styles.headerRight}>
+              <Text style={styles.headerLabel}>Date of Completion</Text>
+              <Text style={styles.headerColon}>:</Text>
+              <Text style={styles.headerValue}>{student.completionDate}</Text>
             </View>
           </View>
-          <View style={tw('flex flex-row')}>
-            <View style={tw('flex flex-row w-1/2')}>
-              <Text style={tw('w-[35%] font-bold')}>Nationality</Text>
-              <Text style={tw('px-0.5')}>:</Text>
-              <Text>{student.nationality}</Text>
+          <View style={styles.headerRow}>
+            <View style={styles.headerLeft}>
+              <Text style={styles.headerLabel}>IC / Passport No.</Text>
+              <Text style={styles.headerColon}>:</Text>
+              <Text style={styles.headerValue}>{student.passportNo}</Text>
             </View>
-            <View style={tw('flex flex-row w-1/2')}>
-              <Text style={tw('w-[35%] font-bold')}>Issued Date</Text>
-              <Text style={tw('px-0.5')}>:</Text>
-              <Text>{student.issuedDate}</Text>
+            <View style={styles.headerRight}>
+              <Text style={styles.headerLabel}>Programme</Text>
+              <Text style={styles.headerColon}>:</Text>
+              <Text style={styles.headerValue}>{student.programme}</Text>
             </View>
           </View>
-        </View>
-
-        {/* Two-column layout */}
-        <View style={tw('flex flex-row mt-2.5')}>
-          <View style={tw('w-1/2')}>
-            <TableHeaders />
-            {leftColumnTerms.map((term, index) => (
-              <TermDisplay key={index} term={term} />
-            ))}
+          <View style={styles.headerRow}>
+            <View style={styles.headerLeft}>
+              <Text style={styles.headerLabel}>Gender</Text>
+              <Text style={styles.headerColon}>:</Text>
+              <Text style={styles.headerValue}>{student.gender}</Text>
+            </View>
+            <View style={styles.headerRight}>
+              <Text style={styles.headerLabel}>Faculty</Text>
+              <Text style={styles.headerColon}>:</Text>
+              <Text style={styles.headerValue}>{student.faculty}</Text>
+            </View>
           </View>
-          <View style={tw('w-1/2')}>
-            <TableHeaders />
-            {rightColumnTerms.map((term, index) => (
-              <TermDisplay key={index} term={term} />
-            ))}
+          <View style={styles.headerRow}>
+            <View style={styles.headerLeft}>
+              <Text style={styles.headerLabel}>Nationality</Text>
+              <Text style={styles.headerColon}>:</Text>
+              <Text style={styles.headerValue}>{student.nationality}</Text>
+            </View>
+            <View style={styles.headerRight}>
+              <Text style={styles.headerLabel}>Issued Date</Text>
+              <Text style={styles.headerColon}>:</Text>
+              <Text style={styles.headerValue}>{student.issuedDate}</Text>
+            </View>
           </View>
         </View>
 
-        {/* Totals Section */}
-        <View style={tw('mt-5 border-t pt-2.5')}>
-          <View style={tw('flex flex-row mb-2')}>
-            <Text style={tw('w-1/4')}>Total MPU Credits</Text>
-            <Text style={tw('px-0.5')}>:</Text>
+        <View style={styles.content}>
+          <View style={styles.column}>
+            <View style={styles.tableHeader}>
+              <Text style={styles.code}>Code</Text>
+              <Text style={styles.name}>Module Name</Text>
+              <Text style={styles.credit}>Credit</Text>
+              <Text style={styles.grade}>Grade</Text>
+            </View>
+            {leftTerms.map((term, i) => (
+              <View key={i} style={styles.termSection}>
+                <Text style={styles.termTitle}>{term.term}</Text>
+                {term.grades.map((grade, j) => (
+                  <View key={j} style={styles.gradeRow}>
+                    <Text style={styles.code}>{grade.courseCode}</Text>
+                    <Text style={styles.name}>{grade.courseName}</Text>
+                    <Text style={styles.credit}>{grade.credit}</Text>
+                    <Text style={styles.grade}>{grade.grade}</Text>
+                  </View>
+                ))}
+                <View style={styles.termSummary}>
+                  <View style={styles.summaryRow}>
+                    <Text style={styles.summaryLabel}>GPA</Text>
+                    <Text style={styles.summaryColon}>:</Text>
+                    <Text>{term.gpa}</Text>
+                  </View>
+                  <View style={styles.summaryRow}>
+                    <Text style={styles.summaryLabel}>Credits Earned</Text>
+                    <Text style={styles.summaryColon}>:</Text>
+                    <Text>{term.credits}</Text>
+                  </View>
+                  <View style={styles.summaryRow}>
+                    <Text style={styles.summaryLabel}>CGPA</Text>
+                    <Text style={styles.summaryColon}>:</Text>
+                    <Text>{term.cgpa}</Text>
+                  </View>
+                  <View style={styles.summaryRow}>
+                    <Text style={styles.summaryLabel}>Cumulative Credits</Text>
+                    <Text style={styles.summaryColon}>:</Text>
+                    <Text>{term.cumulativeCredits}</Text>
+                  </View>
+                </View>
+              </View>
+            ))}
+          </View>
+
+          <View style={styles.column}>
+            <View style={styles.tableHeader}>
+              <Text style={styles.code}>Code</Text>
+              <Text style={styles.name}>Module Name</Text>
+              <Text style={styles.credit}>Credit</Text>
+              <Text style={styles.grade}>Grade</Text>
+            </View>
+            {rightTerms.map((term, i) => (
+              <View key={i} style={styles.termSection}>
+                <Text style={styles.termTitle}>{term.term}</Text>
+                {term.grades.map((grade, j) => (
+                  <View key={j} style={styles.gradeRow}>
+                    <Text style={styles.code}>{grade.courseCode}</Text>
+                    <Text style={styles.name}>{grade.courseName}</Text>
+                    <Text style={styles.credit}>{grade.credit}</Text>
+                    <Text style={styles.grade}>{grade.grade}</Text>
+                  </View>
+                ))}
+                <View style={styles.termSummary}>
+                  <View style={styles.summaryRow}>
+                    <Text style={styles.summaryLabel}>GPA</Text>
+                    <Text style={styles.summaryColon}>:</Text>
+                    <Text>{term.gpa}</Text>
+                  </View>
+                  <View style={styles.summaryRow}>
+                    <Text style={styles.summaryLabel}>Credits Earned</Text>
+                    <Text style={styles.summaryColon}>:</Text>
+                    <Text>{term.credits}</Text>
+                  </View>
+                  <View style={styles.summaryRow}>
+                    <Text style={styles.summaryLabel}>CGPA</Text>
+                    <Text style={styles.summaryColon}>:</Text>
+                    <Text>{term.cgpa}</Text>
+                  </View>
+                  <View style={styles.summaryRow}>
+                    <Text style={styles.summaryLabel}>Cumulative Credits</Text>
+                    <Text style={styles.summaryColon}>:</Text>
+                    <Text>{term.cumulativeCredits}</Text>
+                  </View>
+                </View>
+              </View>
+            ))}
+          </View>
+        </View>
+
+        <View style={styles.footer}>
+          <View style={styles.totalRow}>
+            <Text style={styles.totalLabel}>Total MPU Credits</Text>
+            <Text style={styles.summaryColon}>:</Text>
             <Text>-</Text>
           </View>
-          <View style={tw('flex flex-row mb-2')}>
-            <Text style={tw('w-1/4')}>Total Credit Transferred</Text>
-            <Text style={tw('px-0.5')}>:</Text>
+          <View style={styles.totalRow}>
+            <Text style={styles.totalLabel}>Total Credit Transferred</Text>
+            <Text style={styles.summaryColon}>:</Text>
             <Text>-</Text>
           </View>
-          <View style={tw('flex flex-row mb-2')}>
-            <Text style={tw('w-1/4')}>Total Credits Earned</Text>
-            <Text style={tw('px-0.5')}>:</Text>
-            <Text>{terms.reduce((sum, term) => sum + term.credits, 0)}</Text>
+          <View style={styles.totalRow}>
+            <Text style={styles.totalLabel}>Total Credits Earned</Text>
+            <Text style={styles.summaryColon}>:</Text>
+            <Text>{terms[terms.length - 1].cumulativeCredits}</Text>
           </View>
-          <View style={tw('flex flex-row mb-2')}>
-            <Text style={tw('w-1/4')}>Total Cumulative Credits</Text>
-            <Text style={tw('px-0.5')}>:</Text>
+          <View style={styles.totalRow}>
+            <Text style={styles.totalLabel}>Total Cumulative Credits</Text>
+            <Text style={styles.summaryColon}>:</Text>
             <Text>{terms[terms.length - 1].cumulativeCredits}</Text>
           </View>
         </View>
 
-        <Text style={tw('absolute bottom-[60pt] left-10 uppercase text-[9pt]')}>
-          REGISTRAR
-        </Text>
-        <Text
-          style={tw(
-            'absolute bottom-10 left-10 right-10 text-center text-[8pt]',
-          )}
-        >
+        <Text style={styles.registrar}>REGISTRAR</Text>
+        <Text style={styles.validation}>
           This is not a valid record unless it bears both the stamp and
           signatory on behalf of the university
         </Text>
