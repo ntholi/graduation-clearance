@@ -1,11 +1,11 @@
 'use client';
-import { ActionIcon, Tooltip } from '@mantine/core';
-import { FileDownIcon } from 'lucide-react';
+import { Button, Tooltip } from '@mantine/core';
 import { pdf } from '@react-pdf/renderer';
-import TranscriptPDF from './[id]/TranscriptPDF';
-import { useState } from 'react';
 import JSZip from 'jszip';
+import { FileDownIcon } from 'lucide-react';
+import { useState } from 'react';
 import { getClearedStudentNumbers } from '../clearance-requests/actions';
+import TranscriptPDF from './[id]/TranscriptPDF';
 import { getTranscript } from './actions';
 
 export default function ExportAllButton() {
@@ -17,15 +17,18 @@ export default function ExportAllButton() {
 
     try {
       const stdNos = await getClearedStudentNumbers();
-      console.log('Cleared student numbers:', stdNos.length);
       const zip = new JSZip();
 
       // // Generate PDF for each student
-      for (const stdNo of stdNos) {
+      for (let index = 0; index < stdNos.length; index++) {
+        const stdNo = stdNos[index];
         if (!stdNo) continue;
         const data: any = await getTranscript(stdNo);
         try {
           if (!data) continue;
+          console.log(
+            `${index + 1}/${stdNos.length}) Generating PDF for ${stdNo}`,
+          );
           const blob = await pdf(
             <TranscriptPDF student={data.student} terms={data.terms} />,
           ).toBlob();
@@ -56,14 +59,14 @@ export default function ExportAllButton() {
 
   return (
     <Tooltip label='Export All Transcripts'>
-      <ActionIcon
-        size={'lg'}
+      <Button
         variant='default'
         onClick={handleExport}
+        leftSection={<FileDownIcon size={'1rem'} />}
         loading={isLoading}
       >
-        <FileDownIcon size={'1.1rem'} />
-      </ActionIcon>
+        Export All
+      </Button>
     </Tooltip>
   );
 }

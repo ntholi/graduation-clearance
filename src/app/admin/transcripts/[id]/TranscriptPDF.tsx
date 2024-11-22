@@ -235,11 +235,7 @@ function correctSpelling(name: string) {
 }
 const programs = [
   {
-    name: 'Architectural Studies',
-    faculty: 'Faculty of Architecture and the Built Environment',
-  },
-  {
-    name: 'Architecture Technology',
+    name: 'Architectur',
     faculty: 'Faculty of Architecture and the Built Environment',
   },
   {
@@ -303,7 +299,7 @@ const programs = [
     faculty: 'Faculty of Communication, Media and Broadcasting',
   },
   {
-    name: 'Tourism Management',
+    name: 'Tourism',
     faculty: 'Faculty of Creativity in Tourism & Hospitality',
   },
   {
