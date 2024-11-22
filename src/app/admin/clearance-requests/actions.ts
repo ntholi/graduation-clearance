@@ -7,8 +7,20 @@ import {
   clearanceRequest,
   students,
   clearanceResponse,
+  financePayments,
 } from '@/db/schema';
-import { and, count, desc, eq, like, inArray, not } from 'drizzle-orm';
+import {
+  and,
+  count,
+  desc,
+  eq,
+  like,
+  inArray,
+  not,
+  sql,
+  or,
+  isNull,
+} from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 export type ClearanceRequest = typeof clearanceRequest.$inferSelect;
@@ -148,4 +160,32 @@ export async function respondToRequest(
   }
   revalidatePath(`/admin/clearance-requests/${stdNo}`);
   revalidatePath('/admin/blocked-students');
+}
+
+export async function getClearedStudentNumbers() {
+  const list = await db
+    .select({
+      stdNo: clearanceRequest.stdNo,
+    })
+    .from(clearanceResponse)
+    .where(
+      and(
+        eq(clearanceResponse.responder, 'finance'),
+        or(isNull(blockedStudents.id), eq(blockedStudents.status, 'unblocked')),
+      ),
+    )
+    .leftJoin(
+      clearanceRequest,
+      eq(clearanceRequest.id, clearanceResponse.clearanceRequestId),
+    )
+    .leftJoin(
+      blockedStudents,
+      and(
+        eq(blockedStudents.stdNo, clearanceRequest.stdNo),
+        eq(blockedStudents.department, 'finance'),
+      ),
+    )
+    .orderBy(desc(clearanceResponse.createdAt));
+
+  return list.map((item) => item.stdNo);
 }

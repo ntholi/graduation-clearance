@@ -51,6 +51,7 @@
     "drizzle-orm": "^0.33.0",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
+    "jszip": "^3.10.1",
     "lucide-react": "^0.447.0",
     "mantine-form-zod-resolver": "^1.1.0",
     "nanoid": "^5.0.8",

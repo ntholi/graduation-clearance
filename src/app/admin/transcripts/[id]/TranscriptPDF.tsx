@@ -271,6 +271,10 @@ const programs = [
     faculty: 'Faculty of Business and Globalisation',
   },
   {
+    name: 'Radio Broadcasting',
+    faculty: 'Faculty of Communication, Media and Broadcasting',
+  },
+  {
     name: 'Professional Communication',
     faculty: 'Faculty of Communication, Media and Broadcasting',
   },
