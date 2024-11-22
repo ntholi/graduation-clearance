@@ -178,6 +178,7 @@ export async function getClearedStudentNumbers() {
       clearanceRequest,
       eq(clearanceRequest.id, clearanceResponse.clearanceRequestId),
     )
+    .leftJoin(students, eq(students.stdNo, clearanceRequest.stdNo))
     .leftJoin(
       blockedStudents,
       and(
@@ -185,7 +186,7 @@ export async function getClearedStudentNumbers() {
         eq(blockedStudents.department, 'finance'),
       ),
     )
-    .orderBy(desc(clearanceResponse.createdAt));
+    .orderBy(students.program, students.name);
 
   return list.map((item) => item.stdNo);
 }

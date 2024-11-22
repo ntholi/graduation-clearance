@@ -1,10 +1,8 @@
 'use server';
 
-import { auth } from '@/auth';
 import db from '@/db';
 import { enrollments, grades, students } from '@/db/schema';
 import { eq, like } from 'drizzle-orm';
-import { revalidatePath } from 'next/cache';
 
 export type Student = typeof students.$inferSelect;
 
