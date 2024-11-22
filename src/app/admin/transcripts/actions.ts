@@ -83,7 +83,9 @@ export async function getTranscript(stdNo: string) {
 }
 
 function failingGrade(grade: string) {
-  return ['F', 'PP', 'ANN'].includes(grade.toUpperCase().trim());
+  return ['F', 'PP', 'ANN', 'GNS', 'FIN', 'FX', 'DNC', 'DNA', 'DNS'].includes(
+    grade.toUpperCase().trim(),
+  );
 }
 
 function toWords(string: string) {

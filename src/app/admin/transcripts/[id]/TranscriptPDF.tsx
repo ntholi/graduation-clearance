@@ -225,7 +225,9 @@ const TranscriptPDF = ({
 export default TranscriptPDF;
 
 function findFaculty(programName: string) {
-  const program = programs.find((p) => programName.includes(p.name));
+  const program = programs.find((p) =>
+    programName.toLowerCase().includes(p.name.toLowerCase()),
+  );
   if (!program) throw new Error(`Faculty for ${programName} not found`);
   return program.faculty;
 }

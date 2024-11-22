@@ -7,6 +7,8 @@ import { useState } from 'react';
 import { getClearedStudentNumbers } from '../clearance-requests/actions';
 import TranscriptPDF from './[id]/TranscriptPDF';
 import { getTranscript } from './actions';
+import { modals } from '@mantine/modals';
+import { Text } from '@mantine/core';
 
 export default function ExportAllButton() {
   const [isLoading, setIsLoading] = useState(false);
@@ -38,6 +40,7 @@ export default function ExportAllButton() {
             `Error generating PDF for ${data.student.stdNo}:`,
             error,
           );
+          return;
         }
       }
 
@@ -57,11 +60,27 @@ export default function ExportAllButton() {
     }
   };
 
+  const openConfirmModal = () =>
+    modals.openConfirmModal({
+      title: 'Please confirm your action',
+      children: (
+        <Text size='sm'>
+          This operation will generate PDFs for all cleared students and may
+          take some time. Are you sure you want to proceed?
+        </Text>
+      ),
+      labels: { confirm: 'I understand, Proceed', cancel: 'Cancel' },
+      confirmProps: { color: 'red' },
+      cancelProps: { color: 'blue' },
+      onCancel: () => console.log('Cancel'),
+      onConfirm: handleExport,
+    });
+
   return (
     <Tooltip label='Export All Transcripts'>
       <Button
         variant='default'
-        onClick={handleExport}
+        onClick={openConfirmModal}
         leftSection={<FileDownIcon size={'1rem'} />}
         loading={isLoading}
       >
