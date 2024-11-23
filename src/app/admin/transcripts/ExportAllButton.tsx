@@ -34,7 +34,8 @@ export default function ExportAllButton() {
           const blob = await pdf(
             <TranscriptPDF student={data.student} terms={data.terms} />,
           ).toBlob();
-          zip.file(`${data.student.stdNo}.pdf`, blob);
+          const prefix = (index + 1).toString().padStart(3, '0');
+          zip.file(`${prefix}-${data.student.stdNo}.pdf`, blob);
         } catch (error) {
           console.error(
             `Error generating PDF for ${data.student.stdNo}:`,
