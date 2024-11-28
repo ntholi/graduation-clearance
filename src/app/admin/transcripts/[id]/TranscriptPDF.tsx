@@ -85,24 +85,30 @@ const GradeRow = ({ grade }: { grade: Grade }) => (
 
 const TermSummary = ({ term }: { term: Term }) => (
   <View style={tw('ml-[60pt] mt-0.5 mt-1')}>
-    <View style={tw('flex flex-row justify-between w-[87%]')}>
+    <View style={tw('flex flex-row justify-between w-[84%]')}>
       <View style={tw('w-[60pt] flex-row justify-between')}>
         <Text>GPA</Text>
         <Text>{`:  ${term.gpa}`}</Text>
       </View>
       <View style={tw('w-[100pt] flex-row justify-between')}>
         <Text>Credits Earned</Text>
-        <Text style={tw('w-[20pt]')}>{`:  ${term.credits}`}</Text>
+        <View style={tw('flex-row justify-between w-[16pt]')}>
+          <Text>:</Text>
+          <Text>{term.credits}</Text>
+        </View>
       </View>
     </View>
-    <View style={tw('flex flex-row justify-between w-[87%]')}>
+    <View style={tw('flex flex-row justify-between w-[84%]')}>
       <View style={tw('w-[60pt] flex-row justify-between')}>
         <Text>CGPA</Text>
         <Text>{`:  ${term.cgpa}`}</Text>
       </View>
       <View style={tw('w-[100pt] flex-row justify-between')}>
         <Text>Cumulative Credits</Text>
-        <Text style={tw('w-[20pt]')}>{`:  ${term.cumulativeCredits}`}</Text>
+        <View style={tw('flex-row justify-between w-[16pt]')}>
+          <Text>:</Text>
+          <Text>{term.cumulativeCredits}</Text>
+        </View>
       </View>
     </View>
   </View>
