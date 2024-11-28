@@ -138,7 +138,7 @@ const TranscriptPDF = ({
     <Document>
       <Page
         size='A4'
-        style={tw('pt-5 px-4 pb-10 font-sans text-[7.12pt] pt-[166pt]')}
+        style={tw('pt-5 px-4 pb-10 font-sans text-[7.12pt] pt-[155pt]')}
       >
         {/* Header Section */}
         <View style={tw('border-t border-b')}>
@@ -191,7 +191,7 @@ const TranscriptPDF = ({
         </View>
 
         {/* Footer */}
-        <View style={tw('absolute bottom-[20pt] left-[85pt]')}>
+        <View style={tw('absolute bottom-[60pt] left-[85pt]')}>
           {['Total MPU Credits', 'Total Credit Transferred'].map((label) => (
             <View key={label} style={tw('flex flex-row')}>
               <Text style={tw('w-[160pt]')}>{label}</Text>
@@ -210,7 +210,7 @@ const TranscriptPDF = ({
         </View>
 
         {/* Registrar Signature */}
-        <View style={tw('absolute bottom-[20pt] right-14 w-[190pt] border-t')}>
+        <View style={tw('absolute bottom-[60pt] right-14 w-[190pt] border-t')}>
           <Text style={tw('pt-1.5 text-center font-bold')}>REGISTRAR</Text>
           <Text>
             This is not a valid record unless it bears both the stamp and
