@@ -197,7 +197,7 @@ const TranscriptPDF = ({
         </View>
 
         {/* Footer */}
-        <View style={tw('absolute bottom-[50pt] left-[85pt]')}>
+        <View style={tw('absolute bottom-[40pt] left-[85pt]')}>
           {['Total MPU Credits', 'Total Credit Transferred'].map((label) => (
             <View key={label} style={tw('flex flex-row')}>
               <Text style={tw('w-[160pt]')}>{label}</Text>
@@ -216,7 +216,7 @@ const TranscriptPDF = ({
         </View>
 
         {/* Registrar Signature */}
-        <View style={tw('absolute bottom-[50pt] right-14 w-[190pt] border-t')}>
+        <View style={tw('absolute bottom-[40pt] right-14 w-[190pt] border-t')}>
           <Text style={tw('pt-1.5 text-center font-bold')}>REGISTRAR</Text>
           <Text>
             This is not a valid record unless it bears both the stamp and
