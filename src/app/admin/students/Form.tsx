@@ -2,7 +2,7 @@
 import { students } from '@/db/schema';
 import FormHeader from '@admin/components/FormHeader';
 import useFormAction from '@admin/hooks/useFormAction';
-import { NumberInput, Stack, TextInput } from '@mantine/core';
+import { NumberInput, Select, Stack, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -44,7 +44,11 @@ export default function Form({ onSubmit, value }: Props) {
       <Stack p={'xl'}>
         <TextInput label='Student Number' {...form.getInputProps('stdNo')} />
         <TextInput label='Name' {...form.getInputProps('name')} />
-        <TextInput label='Email' {...form.getInputProps('email')} />
+        <Select
+          label='Gender'
+          data={['Male', 'Female']}
+          {...form.getInputProps('gender')}
+        />
         <TextInput label='National ID' {...form.getInputProps('nationalId')} />
         <TextInput label='Program' {...form.getInputProps('program')} />
         <TextInput
