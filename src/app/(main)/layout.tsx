@@ -7,7 +7,7 @@ import { Toaster } from '@/components/ui/sonner';
 import Gradient from '@/components/ui/Gradient';
 
 export const metadata: Metadata = {
-  title: 'Limkokwing Registry',
+  title: 'Graduation Clearance',
   description: 'Limkokwing Registry App, for Graduation Clearance',
   icons: {
     icon: '/logo.png',

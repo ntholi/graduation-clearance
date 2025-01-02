@@ -9,7 +9,7 @@ import Providers from './providers';
 import AdminShell from '@admin/base/AdminShell';
 
 export const metadata: Metadata = {
-  title: 'Admin | Limkokwing Registry',
+  title: 'Admin | Graduation Clearance',
   description: 'Limkokwing Registry',
 };
 
