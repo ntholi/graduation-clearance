@@ -2,7 +2,7 @@
 import { students } from '@/db/schema';
 import FormHeader from '@admin/components/FormHeader';
 import useFormAction from '@admin/hooks/useFormAction';
-import { NumberInput, Stack, TextInput } from '@mantine/core';
+import { Stack, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';

@@ -35,10 +35,13 @@ export default async function Page({ params: { id } }: Props) {
 
   const { student, terms } = data;
 
-  // Create a map to track duplicate course codes
+  const failingGrades = new Set(['F', 'PP', 'ANN']);
   const courseCodeCount = new Map<string, number>();
   terms.forEach((term) => {
-    term.grades.forEach((grade: any) => {
+    term.grades.forEach((grade: { courseCode: string; grade: string }) => {
+      if (failingGrades.has(grade.grade)) {
+        return;
+      }
       const count = courseCodeCount.get(grade.courseCode) || 0;
       courseCodeCount.set(grade.courseCode, count + 1);
     });
@@ -84,7 +87,7 @@ export default async function Page({ params: { id } }: Props) {
           </Group>
         </Paper>
 
-        {terms.map((term: any) => (
+        {terms.map((term) => (
           <Paper key={term.term} withBorder p='md'>
             <Stack gap='xs'>
               <Text size='sm' fw={500}>
