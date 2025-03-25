@@ -127,8 +127,7 @@ export default async function Page({ params: { id } }: Props) {
                         </Text>
                       </TableTd>
                       <TableTd>
-                        <Flex justify='space-between' align='center'>
-                          <Text>{grade.courseName}</Text>
+                        <Group align='center'>
                           <UpdateGradeDialog
                             gradeId={grade.id}
                             currentName={grade.courseName}
@@ -137,11 +136,11 @@ export default async function Page({ params: { id } }: Props) {
                               revalidatePath(`/admin/transcripts/${id}`);
                             }}
                           />
-                        </Flex>
+                          <Text>{grade.courseName}</Text>
+                        </Group>
                       </TableTd>
                       <TableTd>
-                        <Flex justify='space-between' align='center'>
-                          <Text>{grade.credits}</Text>
+                        <Group align='center' gap={'xs'}>
                           <UpdateCreditsDialog
                             gradeId={grade.id}
                             currentCredits={grade.credits}
@@ -150,7 +149,8 @@ export default async function Page({ params: { id } }: Props) {
                               revalidatePath(`/admin/transcripts/${id}`);
                             }}
                           />
-                        </Flex>
+                          <Text>{grade.credits}</Text>
+                        </Group>
                       </TableTd>
                       <TableTd>{grade.grade}</TableTd>
                     </TableTr>
