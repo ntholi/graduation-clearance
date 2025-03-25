@@ -35,6 +35,15 @@ export default async function Page({ params: { id } }: Props) {
 
   const { student, terms } = data;
 
+  // Create a map to track duplicate course codes
+  const courseCodeCount = new Map<string, number>();
+  terms.forEach((term) => {
+    term.grades.forEach((grade: any) => {
+      const count = courseCodeCount.get(grade.courseCode) || 0;
+      courseCodeCount.set(grade.courseCode, count + 1);
+    });
+  });
+
   return (
     <Box p={'lg'}>
       <Flex justify={'space-between'} align={'center'}>
@@ -102,7 +111,17 @@ export default async function Page({ params: { id } }: Props) {
                 <TableBody>
                   {term.grades.map((grade: any) => (
                     <TableTr key={grade.id}>
-                      <TableTd>{grade.courseCode}</TableTd>
+                      <TableTd>
+                        <Text
+                          c={
+                            (courseCodeCount.get(grade.courseCode) || 0) > 1
+                              ? 'red'
+                              : undefined
+                          }
+                        >
+                          {grade.courseCode}
+                        </Text>
+                      </TableTd>
                       <TableTd>
                         <Flex justify='space-between' align='center'>
                           <Text>{grade.courseName}</Text>
