@@ -18,6 +18,8 @@ import {
 import { notFound } from 'next/navigation';
 import { getTranscript } from '../actions';
 import PrintButton from './PrintButton';
+import UpdateGradeDialog from './UpdateGradeDialog';
+import { revalidatePath } from 'next/cache';
 
 type Props = {
   params: {
@@ -101,7 +103,19 @@ export default async function Page({ params: { id } }: Props) {
                   {term.grades.map((grade: any) => (
                     <TableTr key={grade.id}>
                       <TableTd>{grade.courseCode}</TableTd>
-                      <TableTd>{grade.courseName}</TableTd>
+                      <TableTd>
+                        <Flex justify='space-between' align='center'>
+                          <Text>{grade.courseName}</Text>
+                          <UpdateGradeDialog
+                            gradeId={grade.id}
+                            currentName={grade.courseName}
+                            onUpdate={async () => {
+                              'use server';
+                              revalidatePath(`/admin/transcripts/${id}`);
+                            }}
+                          />
+                        </Flex>
+                      </TableTd>
                       <TableTd>{grade.credits}</TableTd>
                       <TableTd>{grade.grade}</TableTd>
                     </TableTr>

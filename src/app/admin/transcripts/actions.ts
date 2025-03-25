@@ -3,6 +3,7 @@
 import db from '@/db';
 import { enrollments, grades, students } from '@/db/schema';
 import { eq, like } from 'drizzle-orm';
+import { revalidatePath } from 'next/cache';
 
 export type Student = typeof students.$inferSelect;
 
@@ -78,6 +79,15 @@ export async function getTranscript(stdNo: string) {
     student: student[0],
     terms: sortedTerms,
   };
+}
+
+export async function updateGrade(
+  gradeId: number,
+  updates: { courseCode: string; courseName: string },
+) {
+  await db.update(grades).set(updates).where(eq(grades.id, gradeId));
+
+  revalidatePath('/admin/transcripts');
 }
 
 function failingGrade(grade: string) {
