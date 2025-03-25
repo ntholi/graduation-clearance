@@ -19,6 +19,7 @@ import { notFound } from 'next/navigation';
 import { getTranscript } from '../actions';
 import PrintButton from './PrintButton';
 import UpdateGradeDialog from './UpdateGradeDialog';
+import UpdateCreditsDialog from './UpdateCreditsDialog';
 import { revalidatePath } from 'next/cache';
 
 type Props = {
@@ -138,7 +139,19 @@ export default async function Page({ params: { id } }: Props) {
                           />
                         </Flex>
                       </TableTd>
-                      <TableTd>{grade.credits}</TableTd>
+                      <TableTd>
+                        <Flex justify='space-between' align='center'>
+                          <Text>{grade.credits}</Text>
+                          <UpdateCreditsDialog
+                            gradeId={grade.id}
+                            currentCredits={grade.credits}
+                            onUpdate={async () => {
+                              'use server';
+                              revalidatePath(`/admin/transcripts/${id}`);
+                            }}
+                          />
+                        </Flex>
+                      </TableTd>
                       <TableTd>{grade.grade}</TableTd>
                     </TableTr>
                   ))}

@@ -83,7 +83,7 @@ export async function getTranscript(stdNo: string) {
 
 export async function updateGrade(
   gradeId: number,
-  updates: { courseCode: string; courseName: string },
+  updates: { courseCode?: string; courseName?: string; credits?: number },
 ) {
   await db.update(grades).set(updates).where(eq(grades.id, gradeId));
 
