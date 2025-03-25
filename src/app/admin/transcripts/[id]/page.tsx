@@ -128,14 +128,16 @@ export default async function Page({ params: { id } }: Props) {
                       </TableTd>
                       <TableTd>
                         <Group align='center'>
-                          <UpdateGradeDialog
-                            gradeId={grade.id}
-                            currentName={grade.courseName}
-                            onUpdate={async () => {
-                              'use server';
-                              revalidatePath(`/admin/transcripts/${id}`);
-                            }}
-                          />
+                          {(courseCodeCount.get(grade.courseCode) || 0) > 1 && (
+                            <UpdateGradeDialog
+                              gradeId={grade.id}
+                              currentName={grade.courseName}
+                              onUpdate={async () => {
+                                'use server';
+                                revalidatePath(`/admin/transcripts/${id}`);
+                              }}
+                            />
+                          )}
                           <Text>{grade.courseName}</Text>
                         </Group>
                       </TableTd>
