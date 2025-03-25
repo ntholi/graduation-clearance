@@ -9,22 +9,16 @@ import { getTranscript } from '../actions';
 
 export default function PrintButton() {
   const { id } = useParams();
-  const [data, setData] = useState<any>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await getTranscript(id as string);
-      setData(result);
-    };
-    fetchData();
-  }, [id]);
 
   const handlePrint = async () => {
-    if (!data) return;
-
+    const data = await getTranscript(id as string);
+    if (!data) {
+      console.error('No transcript data found');
+      return;
+    }
     try {
       const blob = await pdf(
-        <TranscriptPDF student={data.student} terms={data.terms} />,
+        <TranscriptPDF student={data.student as any} terms={data.terms} />,
       ).toBlob();
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
