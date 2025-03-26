@@ -151,7 +151,17 @@ export default async function Page({ params: { id } }: Props) {
                               revalidatePath(`/admin/transcripts/${id}`);
                             }}
                           />
-                          <Text>{grade.credits}</Text>
+                          <Text
+                            c={
+                              (grade.courseCode as string).endsWith(
+                                grade.credits,
+                              )
+                                ? undefined
+                                : 'red'
+                            }
+                          >
+                            {grade.credits}
+                          </Text>
                         </Group>
                       </TableTd>
                       <TableTd>{grade.grade}</TableTd>
