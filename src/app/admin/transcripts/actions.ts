@@ -4,6 +4,7 @@ import db from '@/db';
 import { enrollments, grades, students } from '@/db/schema';
 import { eq, like } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
+import { auth } from '@/auth';
 
 export type Student = typeof students.$inferSelect;
 
@@ -118,6 +119,25 @@ export async function updateGrade(
   }
 
   revalidatePath('/admin/transcripts');
+}
+
+export async function updateStudent(stdNo: string, updates: Partial<Student>) {
+  const session = await auth();
+  if (!session || !session.user?.id) {
+    throw new Error('Unauthorized');
+  }
+
+  await db
+    .update(students)
+    .set({
+      ...updates,
+      updatedAt: new Date(),
+      updatedBy: session.user.id,
+    })
+    .where(eq(students.stdNo, stdNo));
+
+  revalidatePath('/admin/transcripts');
+  revalidatePath(`/admin/transcripts/${stdNo}`);
 }
 
 function failingGrade(grade: string) {

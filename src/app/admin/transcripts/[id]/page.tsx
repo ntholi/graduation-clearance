@@ -20,6 +20,7 @@ import { getTranscript } from '../actions';
 import PrintButton from './PrintButton';
 import UpdateGradeDialog from './UpdateGradeDialog';
 import UpdateCreditsDialog from './UpdateCreditsDialog';
+import UpdateProgramDialog from './UpdateProgramDialog';
 import { revalidatePath } from 'next/cache';
 import TranscriptProvider from './components/TranscriptProvider';
 import TermWrapper from './components/TermWrapper';
@@ -98,7 +99,17 @@ export default async function Page({ params: { id } }: Props) {
                 <Text size='sm' c='dimmed'>
                   Programme
                 </Text>
-                <Text>{student.program}</Text>
+                <Group align='center' gap={5}>
+                  <UpdateProgramDialog
+                    stdNo={student.stdNo}
+                    currentProgram={student.program || ''}
+                    onUpdate={async () => {
+                      'use server';
+                      revalidatePath(`/admin/transcripts/${id}`);
+                    }}
+                  />
+                  <Text>{student.program || 'Not Set'}</Text>
+                </Group>
               </Box>
               <Box>
                 <Text size='sm' c='dimmed'>
