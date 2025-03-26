@@ -87,6 +87,36 @@ export async function updateGrade(
 ) {
   await db.update(grades).set(updates).where(eq(grades.id, gradeId));
 
+  if (updates.credits !== undefined) {
+    const updatedGrade = await db
+      .select()
+      .from(grades)
+      .where(eq(grades.id, gradeId))
+      .limit(1);
+
+    if (updatedGrade.length) {
+      const enrollmentId = updatedGrade[0].enrollmentId;
+
+      const termGrades = await db
+        .select()
+        .from(grades)
+        .where(eq(grades.enrollmentId, enrollmentId));
+
+      // Calculate new total credits for the term
+      const totalCredits = termGrades.reduce((sum, grade) => {
+        if (!failingGrade(grade.grade)) {
+          return sum + (grade.credits || 0);
+        }
+        return sum;
+      }, 0);
+
+      await db
+        .update(enrollments)
+        .set({ credits: totalCredits })
+        .where(eq(enrollments.id, enrollmentId));
+    }
+  }
+
   revalidatePath('/admin/transcripts');
 }
 
