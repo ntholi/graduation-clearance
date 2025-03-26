@@ -106,9 +106,9 @@ export default async function Page({ params: { id } }: Props) {
                 </TableCaption>
                 <TableThead>
                   <TableTr>
-                    <TableTh>Code</TableTh>
-                    <TableTh>Module Name</TableTh>
-                    <TableTh>Credit</TableTh>
+                    <TableTh w={100}>Code</TableTh>
+                    <TableTh w={400}>Module Name</TableTh>
+                    <TableTh w={80}>Credit</TableTh>
                     <TableTh>Grade</TableTh>
                   </TableTr>
                 </TableThead>
@@ -122,6 +122,7 @@ export default async function Page({ params: { id } }: Props) {
                               ? 'red'
                               : undefined
                           }
+                          size='sm'
                         >
                           {grade.courseCode}
                         </Text>
@@ -138,7 +139,7 @@ export default async function Page({ params: { id } }: Props) {
                               }}
                             />
                           )}
-                          <Text>{grade.courseName}</Text>
+                          <Text size='sm'>{grade.courseName}</Text>
                         </Group>
                       </TableTd>
                       <TableTd>
@@ -159,12 +160,15 @@ export default async function Page({ params: { id } }: Props) {
                                 ? undefined
                                 : 'red'
                             }
+                            size='sm'
                           >
                             {grade.credits}
                           </Text>
                         </Group>
                       </TableTd>
-                      <TableTd>{grade.grade}</TableTd>
+                      <TableTd>
+                        <Text size='sm'>{grade.grade}</Text>
+                      </TableTd>
                     </TableTr>
                   ))}
                 </TableBody>
