@@ -36,16 +36,36 @@ export default async function Page({ params: { id } }: Props) {
 
   const { student, terms } = data;
 
-  const failingGrades = new Set(['F', 'PP', 'ANN']);
-  const courseCodeCount = new Map<string, number>();
+  const duplicateCourses = new Set<string>();
+  const courseCodeCounts = new Map<string, number>();
+
+  const failedCourses = terms.reduce((acc, term) => {
+    const failed = term.grades.filter((grade: { grade: string }) =>
+      ['F', 'PP', 'ANN'].includes(grade.grade),
+    );
+    return acc.concat(failed);
+  }, []);
+
+  // Count occurrences of each course code
   terms.forEach((term) => {
-    term.grades.forEach((grade: { courseCode: string; grade: string }) => {
-      if (failingGrades.has(grade.grade)) {
-        return;
-      }
-      const count = courseCodeCount.get(grade.courseCode) || 0;
-      courseCodeCount.set(grade.courseCode, count + 1);
+    term.grades.forEach((grade: { courseCode: string }) => {
+      courseCodeCounts.set(
+        grade.courseCode,
+        (courseCodeCounts.get(grade.courseCode) || 0) + 1,
+      );
     });
+  });
+
+  // Add to duplicateCourses if the course appears more than once and wasn't failed
+  courseCodeCounts.forEach((count, courseCode) => {
+    if (
+      count > 1 &&
+      !failedCourses.some(
+        (course: { courseCode: string }) => course.courseCode === courseCode,
+      )
+    ) {
+      duplicateCourses.add(courseCode);
+    }
   });
 
   return (
@@ -107,7 +127,7 @@ export default async function Page({ params: { id } }: Props) {
                 <TableThead>
                   <TableTr>
                     <TableTh w={100}>Code</TableTh>
-                    <TableTh w={400}>Module Name</TableTh>
+                    <TableTh w={420}>Module Name</TableTh>
                     <TableTh w={80}>Credit</TableTh>
                     <TableTh>Grade</TableTh>
                   </TableTr>
@@ -118,7 +138,7 @@ export default async function Page({ params: { id } }: Props) {
                       <TableTd>
                         <Text
                           c={
-                            (courseCodeCount.get(grade.courseCode) || 0) > 1
+                            duplicateCourses.has(grade.courseCode)
                               ? 'red'
                               : undefined
                           }
@@ -129,16 +149,20 @@ export default async function Page({ params: { id } }: Props) {
                       </TableTd>
                       <TableTd>
                         <Group align='center'>
-                          {(courseCodeCount.get(grade.courseCode) || 0) > 1 && (
-                            <UpdateGradeDialog
-                              gradeId={grade.id}
-                              currentName={grade.courseName}
-                              onUpdate={async () => {
-                                'use server';
-                                revalidatePath(`/admin/transcripts/${id}`);
-                              }}
-                            />
-                          )}
+                          <UpdateGradeDialog
+                            gradeId={grade.id}
+                            currentName={grade.courseName}
+                            color={
+                              duplicateCourses.has(grade.courseCode)
+                                ? 'red'
+                                : 'dimmed'
+                            }
+                            onUpdate={async () => {
+                              'use server';
+                              revalidatePath(`/admin/transcripts/${id}`);
+                            }}
+                          />
+
                           <Text size='sm'>{grade.courseName}</Text>
                         </Group>
                       </TableTd>

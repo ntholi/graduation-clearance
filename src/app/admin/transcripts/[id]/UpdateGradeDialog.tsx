@@ -20,10 +20,12 @@ const MODULE_OPTIONS = [
 export default function UpdateGradeDialog({
   gradeId,
   currentName,
+  color = 'blue',
   onUpdate,
 }: {
   gradeId: number;
   currentName: string;
+  color?: string;
   onUpdate: () => void;
 }) {
   const [opened, { open, close }] = useDisclosure(false);
@@ -43,7 +45,7 @@ export default function UpdateGradeDialog({
 
   return (
     <>
-      <ActionIcon variant='subtle' size='xs' onClick={open}>
+      <ActionIcon variant='subtle' color={color} size='xs' onClick={open}>
         <IconEdit size={16} />
       </ActionIcon>
 
