@@ -21,6 +21,8 @@ import PrintButton from './PrintButton';
 import UpdateGradeDialog from './UpdateGradeDialog';
 import UpdateCreditsDialog from './UpdateCreditsDialog';
 import { revalidatePath } from 'next/cache';
+import TranscriptProvider from './components/TranscriptProvider';
+import TermWrapper from './components/TermWrapper';
 
 type Props = {
   params: {
@@ -46,7 +48,6 @@ export default async function Page({ params: { id } }: Props) {
     return acc.concat(failed);
   }, []);
 
-  // Count occurrences of each course code
   terms.forEach((term) => {
     term.grades.forEach((grade: { courseCode: string }) => {
       courseCodeCounts.set(
@@ -56,7 +57,6 @@ export default async function Page({ params: { id } }: Props) {
     });
   });
 
-  // Add to duplicateCourses if the course appears more than once and wasn't failed
   courseCodeCounts.forEach((count, courseCode) => {
     if (
       count > 1 &&
@@ -69,51 +69,48 @@ export default async function Page({ params: { id } }: Props) {
   });
 
   return (
-    <Box p={'lg'}>
-      <Flex justify={'space-between'} align={'center'}>
-        <Title order={3} fw={100}>
-          Academic Transcript
-        </Title>
-        <PrintButton />
-      </Flex>
-      <Divider my={15} />
+    <TranscriptProvider>
+      <Box p={'lg'}>
+        <Flex justify={'space-between'} align={'center'}>
+          <Title order={3} fw={100}>
+            Academic Transcript
+          </Title>
+          <PrintButton />
+        </Flex>
+        <Divider my={15} />
 
-      <Stack p={'xl'}>
-        <Paper withBorder p='md'>
-          <Group justify='space-between'>
-            <Box>
-              <Text size='sm' c='dimmed'>
-                Student Name
-              </Text>
-              <Text>{student.name}</Text>
-            </Box>
-            <Box>
-              <Text size='sm' c='dimmed'>
-                Student ID
-              </Text>
-              <Text>{student.stdNo}</Text>
-            </Box>
-            <Box>
-              <Text size='sm' c='dimmed'>
-                Programme
-              </Text>
-              <Text>{student.program}</Text>
-            </Box>
-            <Box>
-              <Text size='sm' c='dimmed'>
-                Nationality
-              </Text>
-              <Text>{student.nationality}</Text>
-            </Box>
-          </Group>
-        </Paper>
+        <Stack p={'xl'}>
+          <Paper withBorder p='md'>
+            <Group justify='space-between'>
+              <Box>
+                <Text size='sm' c='dimmed'>
+                  Student Name
+                </Text>
+                <Text>{student.name}</Text>
+              </Box>
+              <Box>
+                <Text size='sm' c='dimmed'>
+                  Student ID
+                </Text>
+                <Text>{student.stdNo}</Text>
+              </Box>
+              <Box>
+                <Text size='sm' c='dimmed'>
+                  Programme
+                </Text>
+                <Text>{student.program}</Text>
+              </Box>
+              <Box>
+                <Text size='sm' c='dimmed'>
+                  Nationality
+                </Text>
+                <Text>{student.nationality}</Text>
+              </Box>
+            </Group>
+          </Paper>
 
-        {terms.map((term) => (
-          <Paper key={term.term} withBorder p='md'>
-            <Stack gap='xs'>
-              <Text size='sm' fw={500}>
-                {term.term}
-              </Text>
+          {terms.map((term) => (
+            <TermWrapper key={term.id} termId={term.id} termName={term.term}>
               <Table>
                 <TableCaption>
                   <Group justify='space-between'>
@@ -196,10 +193,10 @@ export default async function Page({ params: { id } }: Props) {
                   ))}
                 </TableBody>
               </Table>
-            </Stack>
-          </Paper>
-        ))}
-      </Stack>
-    </Box>
+            </TermWrapper>
+          ))}
+        </Stack>
+      </Box>
+    </TranscriptProvider>
   );
 }

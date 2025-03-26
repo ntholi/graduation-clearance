@@ -4,8 +4,11 @@ import { PrinterIcon } from 'lucide-react';
 import { pdf } from '@react-pdf/renderer';
 import TranscriptPDF from './TranscriptPDF';
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { getTranscript } from '../actions';
+
+interface CustomWindow extends Window {
+  __hiddenTerms?: Record<string, boolean>;
+}
 
 export default function PrintButton() {
   const { id } = useParams();
@@ -16,10 +19,19 @@ export default function PrintButton() {
       console.error('No transcript data found');
       return;
     }
+
     try {
+      const hiddenTerms = (window as CustomWindow).__hiddenTerms || {};
+
+      const visibleTerms = data.terms.filter((term: any) => {
+        const termKey = `term-${term.id}`;
+        return !hiddenTerms[termKey];
+      });
+
       const blob = await pdf(
-        <TranscriptPDF student={data.student as any} terms={data.terms} />,
+        <TranscriptPDF student={data.student as any} terms={visibleTerms} />,
       ).toBlob();
+
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
