@@ -123,9 +123,9 @@ export default async function Page({ params: { id } }: Props) {
                 </TableCaption>
                 <TableThead>
                   <TableTr>
-                    <TableTh w={100}>Code</TableTh>
-                    <TableTh w={420}>Module Name</TableTh>
-                    <TableTh w={80}>Credit</TableTh>
+                    <TableTh w={80}>Code</TableTh>
+                    <TableTh w={600}>Module Name</TableTh>
+                    <TableTh w={60}>Credit</TableTh>
                     <TableTh>Grade</TableTh>
                   </TableTr>
                 </TableThead>
@@ -164,7 +164,7 @@ export default async function Page({ params: { id } }: Props) {
                         </Group>
                       </TableTd>
                       <TableTd>
-                        <Group align='center' gap={'xs'}>
+                        <Group align='center' gap={5}>
                           <UpdateCreditsDialog
                             gradeId={grade.id}
                             currentCredits={grade.credits}
