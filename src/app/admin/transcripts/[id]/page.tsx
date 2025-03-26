@@ -178,11 +178,10 @@ export default async function Page({ params: { id } }: Props) {
                           />
                           <Text
                             c={
-                              (grade.courseCode as string).endsWith(
-                                grade.credits,
-                              )
-                                ? undefined
-                                : 'red'
+                              !grade.courseCode.endsWith(grade.credits) ||
+                              grade.credits < 6
+                                ? 'red'
+                                : undefined
                             }
                             size='sm'
                           >
