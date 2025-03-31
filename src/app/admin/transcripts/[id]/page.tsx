@@ -40,7 +40,9 @@ export default async function Page({ params: { id } }: Props) {
   const { student, terms } = data;
 
   const duplicateCourses = new Set<string>();
+  const duplicateCourseNames = new Set<string>();
   const courseCodeCounts = new Map<string, number>();
+  const courseNameCounts = new Map<string, number>();
 
   const failedCourses = terms.reduce((acc, term) => {
     const failed = term.grades.filter((grade: { grade: string }) =>
@@ -50,10 +52,14 @@ export default async function Page({ params: { id } }: Props) {
   }, []);
 
   terms.forEach((term) => {
-    term.grades.forEach((grade: { courseCode: string }) => {
+    term.grades.forEach((grade: { courseCode: string; courseName: string }) => {
       courseCodeCounts.set(
         grade.courseCode,
         (courseCodeCounts.get(grade.courseCode) || 0) + 1,
+      );
+      courseNameCounts.set(
+        grade.courseName,
+        (courseNameCounts.get(grade.courseName) || 0) + 1,
       );
     });
   });
@@ -66,6 +72,17 @@ export default async function Page({ params: { id } }: Props) {
       )
     ) {
       duplicateCourses.add(courseCode);
+    }
+  });
+
+  courseNameCounts.forEach((count, courseName) => {
+    if (
+      count > 1 &&
+      !failedCourses.some(
+        (course: { courseName: string }) => course.courseName === courseName,
+      )
+    ) {
+      duplicateCourseNames.add(courseName);
     }
   });
 
@@ -161,7 +178,8 @@ export default async function Page({ params: { id } }: Props) {
                             gradeId={grade.id}
                             currentName={grade.courseName}
                             color={
-                              duplicateCourses.has(grade.courseCode)
+                              duplicateCourses.has(grade.courseCode) ||
+                              duplicateCourseNames.has(grade.courseName)
                                 ? 'red'
                                 : 'dimmed'
                             }
@@ -171,7 +189,16 @@ export default async function Page({ params: { id } }: Props) {
                             }}
                           />
 
-                          <Text size='sm'>{grade.courseName}</Text>
+                          <Text
+                            size='sm'
+                            c={
+                              duplicateCourseNames.has(grade.courseName)
+                                ? 'red'
+                                : undefined
+                            }
+                          >
+                            {grade.courseName}
+                          </Text>
                         </Group>
                       </TableTd>
                       <TableTd>
