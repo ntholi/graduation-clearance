@@ -259,8 +259,6 @@ def refresh_student_enrollments(student_numbers: list[int]):
 
 def main():
     init_db()
-    refresh_student_enrollments([901013949])
-    return
     while True:
         # update_grades(901013975)
         approve_signup_requests()

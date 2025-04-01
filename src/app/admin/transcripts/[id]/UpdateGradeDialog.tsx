@@ -15,6 +15,10 @@ const MODULE_OPTIONS = [
     value: 'BBCM2112#Change Management',
     label: 'Change Management (BBCM2112)',
   },
+  {
+    value: 'BBEC1210#Principles of Economics',
+    label: 'Principles of Economics (BBEC1210)',
+  },
 ];
 
 export default function UpdateGradeDialog({
