@@ -2,19 +2,13 @@ import time
 from datetime import datetime
 
 from database import db_session, init_db
-from database.models import (
-    Enrollment,
-    Grade,
-    SignUpRequest,
-    SignUpRequestStatus,
-    Student,
-    User,
-    UserRole,
-)
+from database.models import (Enrollment, Grade, SignUpRequest,
+                             SignUpRequestStatus, Student, User, UserRole)
 from rich import print
 from scrapper import Scrapper
 from services.blocked import block_not_graduating
-from services.cleanup import delete_duplicate_requests, delete_non_graduating_requests
+from services.cleanup import (delete_duplicate_requests,
+                              delete_non_graduating_requests)
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, scoped_session
 
@@ -54,9 +48,21 @@ def batch_save_enrollments(
     enrollments = []
     all_grades = []
 
+    student = db_session.query(Student).filter(Student.std_no == str(std_no)).first()
+    if not student:
+        raise ValueError(f"Student {std_no} not found")
+
     for enrollment, grades in enrollments_data:
-        enrollment.std_no = std_no
-        enrollments.append(enrollment)
+        # Create a new enrollment object without the student relationship
+        new_enrollment = Enrollment(
+            std_no=student.std_no,
+            term=enrollment.term,
+            semester=enrollment.semester,
+            gpa=enrollment.gpa,
+            cgpa=enrollment.cgpa,
+            credits=enrollment.credits
+        )
+        enrollments.append(new_enrollment)
         all_grades.extend(grades)
 
     session.add_all(enrollments)
@@ -203,8 +209,58 @@ def update_grades(std_no: int):
         print(f"Error updating grades for student {std_no}: {e}")
 
 
+def refresh_student_enrollments(student_numbers: list[int]):
+    """
+    Scrapes transcripts for a list of student numbers, deletes existing enrollments,
+    and re-saves the enrollments with their grades.
+    
+    Args:
+        student_numbers: List of student numbers to process
+    """
+    scrapper = Scrapper()
+    
+    for i, std_no in enumerate(student_numbers):
+        try:
+            print(f"Processing student {i+1}/{len(student_numbers)}: {std_no}")
+            
+            # Fetch the student data and enrollments with grades
+            _, enrollments_with_grades = scrapper.get_student_data(std_no)
+            
+            print('Doing', enrollments_with_grades)
+            if not enrollments_with_grades:
+                print(f"No data found for student {std_no}, skipping...")
+                continue
+                
+            # Delete existing enrollments for this student
+            existing_enrollments = (
+                db_session.query(Enrollment)
+                .filter(Enrollment.std_no == str(std_no))
+                .all()
+            )
+            
+            if existing_enrollments:
+                print(f"Deleting {len(existing_enrollments)} existing enrollments for student {std_no}")
+                for enrollment in existing_enrollments:
+                    db_session.delete(enrollment)
+                db_session.flush()
+                
+            # Save the new enrollments with grades
+            batch_save_enrollments(db_session, std_no, enrollments_with_grades)
+            
+            print(f"Successfully refreshed enrollments for student {std_no}")
+            
+        except IntegrityError as e:
+            db_session.rollback()
+            print(f"Database integrity error for student {std_no}: {e}")
+        except Exception as e:
+            db_session.rollback()
+            print(f"Unexpected error refreshing enrollments for student {std_no}: {e}")
+
+
 def main():
     init_db()
+    refresh_student_enrollments([901013949])
+    return
     while True:
         # update_grades(901013975)
         approve_signup_requests()
