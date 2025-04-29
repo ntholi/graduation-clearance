@@ -5,13 +5,17 @@ import { pdf } from '@react-pdf/renderer';
 import TranscriptPDF from './TranscriptPDF';
 import { useParams } from 'next/navigation';
 import { getTranscript } from '../actions';
+import { useAtom } from 'jotai';
+import { completionDateAtom } from './components/TranscriptProvider';
 
 interface CustomWindow extends Window {
   __hiddenTerms?: Record<string, boolean>;
+  __completionDate?: string;
 }
 
 export default function PrintButton() {
   const { id } = useParams();
+  const [completionDate] = useAtom(completionDateAtom);
 
   const handlePrint = async () => {
     const data = await getTranscript(id as string);
@@ -29,7 +33,11 @@ export default function PrintButton() {
       });
 
       const blob = await pdf(
-        <TranscriptPDF student={data.student as any} terms={visibleTerms} />,
+        <TranscriptPDF
+          student={data.student as any}
+          terms={visibleTerms}
+          completionDate={completionDate}
+        />,
       ).toBlob();
 
       const url = URL.createObjectURL(blob);

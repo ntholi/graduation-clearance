@@ -127,9 +127,11 @@ const TermSection = ({ term }: { term: Term }) => (
 const TranscriptPDF = ({
   student,
   terms,
+  completionDate = 'November 2024',
 }: {
   student: Student;
   terms: Term[];
+  completionDate?: string;
 }) => {
   const leftTerms = terms.slice(0, 6);
   const rightTerms = terms.slice(6);
@@ -161,7 +163,7 @@ const TranscriptPDF = ({
             </View>
             <View style={tw('w-1/2')}>
               <HeaderRow label='Date of Admission' value={terms[0].term} />
-              <HeaderRow label='Date of Completion' value={'November 2024'} />
+              <HeaderRow label='Date of Completion' value={completionDate} />
               <HeaderRow
                 label='Programme'
                 value={correctSpelling(student.program)}

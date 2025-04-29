@@ -21,9 +21,13 @@ import PrintButton from './PrintButton';
 import UpdateGradeDialog from './UpdateGradeDialog';
 import UpdateCreditsDialog from './UpdateCreditsDialog';
 import UpdateProgramDialog from './UpdateProgramDialog';
+import UpdateCompletionDateDialog from './UpdateCompletionDateDialog';
 import { revalidatePath } from 'next/cache';
-import TranscriptProvider from './components/TranscriptProvider';
+import TranscriptProvider, {
+  completionDateAtom,
+} from './components/TranscriptProvider';
 import TermWrapper from './components/TermWrapper';
+import CompletionDateDisplay from './components/CompletionDateDisplay';
 
 type Props = {
   params: {
@@ -126,6 +130,15 @@ export default async function Page({ params: { id } }: Props) {
                     }}
                   />
                   <Text>{student.program || 'Not Set'}</Text>
+                </Group>
+              </Box>
+              <Box>
+                <Text size='sm' c='dimmed'>
+                  Date of Completion
+                </Text>
+                <Group align='center' gap={5}>
+                  <UpdateCompletionDateDialog currentDate='November 2024' />
+                  <CompletionDateDisplay />
                 </Group>
               </Box>
               <Box>
