@@ -121,6 +121,43 @@ export async function updateGrade(
   revalidatePath('/admin/transcripts');
 }
 
+export async function deleteGrade(gradeId: number) {
+  const grade = await db
+    .select()
+    .from(grades)
+    .where(eq(grades.id, gradeId))
+    .limit(1)
+    .then((rows) => rows[0]);
+
+  if (!grade) throw new Error('Grade not found');
+
+  const enrollmentId = grade.enrollmentId;
+
+  await db.delete(grades).where(eq(grades.id, gradeId));
+
+  // Get remaining grades for the term
+  const termGrades = await db
+    .select()
+    .from(grades)
+    .where(eq(grades.enrollmentId, enrollmentId));
+
+  // Calculate new total credits for the term
+  const totalCredits = termGrades.reduce((sum, grade) => {
+    if (!failingGrade(grade.grade)) {
+      return sum + (grade.credits || 0);
+    }
+    return sum;
+  }, 0);
+
+  // Update enrollment credits
+  await db
+    .update(enrollments)
+    .set({ credits: totalCredits })
+    .where(eq(enrollments.id, enrollmentId));
+
+  revalidatePath('/admin/transcripts');
+}
+
 export async function updateStudent(stdNo: string, updates: Partial<Student>) {
   const session = await auth();
   if (!session || !session.user?.id) {

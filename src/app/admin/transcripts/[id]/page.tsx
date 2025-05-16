@@ -21,6 +21,7 @@ import PrintButton from './PrintButton';
 import UpdateGradeDialog from './UpdateGradeDialog';
 import UpdateCreditsDialog from './UpdateCreditsDialog';
 import UpdateProgramDialog from './UpdateProgramDialog';
+import DeleteGradeDialog from './DeleteGradeDialog';
 import UpdateCompletionDateDialog from './UpdateCompletionDateDialog';
 import { revalidatePath } from 'next/cache';
 import TranscriptProvider, {
@@ -213,7 +214,7 @@ export default async function Page({ params: { id } }: Props) {
                             {grade.courseName}
                           </Text>
                         </Group>
-                      </TableTd>
+                      </TableTd>{' '}
                       <TableTd>
                         <Group align='center' gap={5}>
                           <UpdateCreditsDialog
@@ -238,7 +239,18 @@ export default async function Page({ params: { id } }: Props) {
                         </Group>
                       </TableTd>
                       <TableTd>
-                        <Text size='sm'>{grade.grade}</Text>
+                        <Group align='center' gap={5}>
+                          <Text size='sm'>{grade.grade}</Text>
+                          <DeleteGradeDialog
+                            gradeId={grade.id}
+                            courseCode={grade.courseCode}
+                            courseName={grade.courseName}
+                            onDelete={async () => {
+                              'use server';
+                              revalidatePath(`/admin/transcripts/${id}`);
+                            }}
+                          />
+                        </Group>
                       </TableTd>
                     </TableTr>
                   ))}
