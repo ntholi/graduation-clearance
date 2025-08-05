@@ -10,6 +10,7 @@ import { completionDateAtom } from './components/TranscriptProvider';
 
 interface CustomWindow extends Window {
   __hiddenTerms?: Record<string, boolean>;
+  __hiddenModules?: Record<string, boolean>;
   __completionDate?: string;
 }
 
@@ -26,11 +27,20 @@ export default function PrintButton() {
 
     try {
       const hiddenTerms = (window as CustomWindow).__hiddenTerms || {};
+      const hiddenModules = (window as CustomWindow).__hiddenModules || {};
 
-      const visibleTerms = data.terms.filter((term: any) => {
-        const termKey = `term-${term.id}`;
-        return !hiddenTerms[termKey];
-      });
+      const visibleTerms = data.terms
+        .filter((term: any) => {
+          const termKey = `term-${term.id}`;
+          return !hiddenTerms[termKey];
+        })
+        .map((term: any) => ({
+          ...term,
+          grades: term.grades.filter((grade: any) => {
+            const moduleKey = `module-${grade.id}`;
+            return !hiddenModules[moduleKey];
+          }),
+        }));
 
       const blob = await pdf(
         <TranscriptPDF

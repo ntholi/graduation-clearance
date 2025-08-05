@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { useAtom } from 'jotai';
 import { Provider as JotaiProvider, atom } from 'jotai';
 import { hiddenTermsAtom } from './HideTermButton';
+import { hiddenModulesAtom } from './HideModuleButton';
 
 // Add a new atom for completion date
 export const completionDateAtom = atom<string>('November 2024');
@@ -14,10 +15,12 @@ type TranscriptProviderProps = {
 
 function TranscriptProviderInner({ children }: TranscriptProviderProps) {
   const [hiddenTerms] = useAtom(hiddenTermsAtom);
+  const [hiddenModules] = useAtom(hiddenModulesAtom);
   const [completionDate] = useAtom(completionDateAtom);
 
   if (typeof window !== 'undefined') {
     (window as any).__hiddenTerms = hiddenTerms;
+    (window as any).__hiddenModules = hiddenModules;
     (window as any).__completionDate = completionDate;
   }
 

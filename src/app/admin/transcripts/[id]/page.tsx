@@ -21,7 +21,8 @@ import PrintButton from './PrintButton';
 import UpdateGradeDialog from './UpdateGradeDialog';
 import UpdateCreditsDialog from './UpdateCreditsDialog';
 import UpdateProgramDialog from './UpdateProgramDialog';
-import DeleteGradeDialog from './DeleteGradeDialog';
+import HideModuleButton from './components/HideModuleButton';
+import ModuleWrapper from './components/ModuleWrapper';
 import UpdateCompletionDateDialog from './UpdateCompletionDateDialog';
 import { revalidatePath } from 'next/cache';
 import TranscriptProvider, {
@@ -173,7 +174,7 @@ export default async function Page({ params: { id } }: Props) {
                 </TableThead>
                 <TableBody>
                   {term.grades.map((grade: any) => (
-                    <TableTr key={grade.id}>
+                    <ModuleWrapper key={grade.id} moduleId={grade.id}>
                       <TableTd>
                         <Text
                           c={
@@ -214,7 +215,7 @@ export default async function Page({ params: { id } }: Props) {
                             {grade.courseName}
                           </Text>
                         </Group>
-                      </TableTd>{' '}
+                      </TableTd>
                       <TableTd>
                         <Group align='center' gap={5}>
                           <UpdateCreditsDialog
@@ -241,18 +242,14 @@ export default async function Page({ params: { id } }: Props) {
                       <TableTd>
                         <Group align='center' gap={5}>
                           <Text size='sm'>{grade.grade}</Text>
-                          <DeleteGradeDialog
-                            gradeId={grade.id}
+                          <HideModuleButton
+                            moduleId={grade.id}
                             courseCode={grade.courseCode}
                             courseName={grade.courseName}
-                            onDelete={async () => {
-                              'use server';
-                              revalidatePath(`/admin/transcripts/${id}`);
-                            }}
                           />
                         </Group>
                       </TableTd>
-                    </TableTr>
+                    </ModuleWrapper>
                   ))}
                 </TableBody>
               </Table>
