@@ -321,6 +321,10 @@ const programs = [
     faculty: 'Faculty of Creativity in Tourism & Hospitality',
   },
   {
+    name: 'Event Management',
+    faculty: 'Faculty of Creativity in Tourism & Hospitality',
+  },
+  {
     name: 'Hotel Management',
     faculty: 'Faculty of Creativity in Tourism & Hospitality',
   },
